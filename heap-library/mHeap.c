@@ -66,24 +66,33 @@ int min(heap *h){
 
 void delete(heap *h,int k){
 	int i = 0;
+	int temp;
 	while(i<h->heapsize && h->data[i]!=k){
 		i++;
 	}
 	if(i < h->heapsize){
-		
 		temp = h->data[i];
 		h->data[i] = h->data[h->heapsize-1];
 		h->data[h->heapsize-1] = temp;
-		
-		if(i<(h->heapsize/2)){
-			while(h->data[parent(i)] > h->data[i] && i>0){
-			
-			}
-		}else{
-			
-		}
+		h->heapsize = h->heapsize-1;
+		h->data = (int*)realloc(h->data,h->heapsize*sizeof(int));
+		int newpos = climbheap(h,i);
+		heapify(h,newpos);
 	}
 }
+
+int climbheap(heap *h, int i) {
+	int temp;
+	if (h->data[i] > h->data[parent(i)]) {
+		temp = h->data[i];
+		h->data[i] = h->data[parent(i)];
+		h->data[parent(i)] = temp;
+		return climbheap(h, parent(i));
+	}else{
+		return i;
+	}
+}
+
 
 void freeheap(heap *h){
 	free(h->data);
