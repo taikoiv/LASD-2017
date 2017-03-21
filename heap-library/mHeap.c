@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "mHeap.h"
 
 int left(int i){
 	return 2*i;
@@ -22,8 +23,8 @@ heap* buildHeap(int* data,int size){
 	for(i=0; i<size; i++)
 		array[i]=data[i];
 	h->data = array;
-	for(i = heapsize/2; i>1; i--)
-		heapify(h, min);
+	for(i = h->heapsize/2; i>1; i--)
+		heapify(h, i);
 	return h;
 	
 }
@@ -31,12 +32,12 @@ heap* buildHeap(int* data,int size){
 void heapify(heap *h, int i){
 	if(!isEmpty(h)){
 		int min = 0, scambio =0;
-		int left = left(i);
-		int right = right(i);
-		if(left < h->heapsize&& h->data[left]<h->data[i])
-			min = left;
-		if(right < h->heapsize &&h->data[right]<h->data[min])
-			min = right;
+		int l = left(i);
+		int r = right(i);
+		if(l < h->heapsize&& h->data[l]<h->data[i])
+			min = l;
+		if(r < h->heapsize &&h->data[r]<h->data[min])
+			min = r;
 		if(min!=i){
 			scambio = h->data[i];
 			h->data[i] = h->data[min];
@@ -49,13 +50,13 @@ void heapify(heap *h, int i){
 void insert(heap *h, int k){
 	if(h!=NULL){
 		h->heapsize = h->heapsize+1;
-		h->data[heapsize] = k;
-		heapify(h, parent(heapsize));
+		h->data[h->heapsize] = k;
+		heapify(h, parent(h->heapsize));
 	}
 }
 
 int isEmpty(heap *h){
-	return (h->heapsize==0;
+	return (h->heapsize==0);
 }
 
 
