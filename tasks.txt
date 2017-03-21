@@ -3,7 +3,13 @@ CAMILLA : - BUILDHEAP
           - INSERT
           - ISEMPTY
           
-CHECCO : 
+CHECCO : - MIN
+          - DELETE
+          - SIZE
+          - FREE HEAP
 
 ALESSANDRO : - DOCUMENTAZIONE
+             - STAMPA
+             - MAIN
+             - COMMENTI
              
