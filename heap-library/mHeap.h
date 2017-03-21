@@ -15,6 +15,6 @@ void delete(heap *h,int k);
 heap* buildHeap(int* data,int size);
 void heapSort(heap *h);
 void heapify(heap *h,int i);
-
+void freeheap(heap *h);
 
 #endif
