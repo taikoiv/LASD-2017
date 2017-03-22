@@ -6,6 +6,7 @@
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 void printMenu();
 heap* getRandomHeap();
+heap* getHeapFromInput();
 
 int main(int argc, char *argv[]) {
 	int choice=-1;
@@ -28,9 +29,10 @@ int main(int argc, char *argv[]) {
 		case 1 : h=getRandomHeap();
 				 printHeap(h);
 				 break;
-		case 2 : 
+		case 2 : h=getHeapFromInput();
+				 printHeap(h);
 				 break;
-		case 3 : 
+		case 3 : h=buildHeap(NULL,0);
 				 break;
 	}
 	return 0;
@@ -48,12 +50,35 @@ void printMenu(){
 }
 
 heap* getRandomHeap(){
-	int i;
-	int dim=rand()%30;
-	int *array=(int *) malloc(dim*sizeof(int));
+	int i,dim,*array;
+	heap* h;
+	dim=rand()%30;
+	*array=(int *) malloc(dim*sizeof(int));
 	
 	for(i=0;i<dim;i++)
 		array[i]=rand();
-		
-	return buildHeap(array,dim);
+	h = buildHeap(array,dim);
+	
+	free(array);
+	return h;
+}
+
+heap* getHeapFromInput(){
+	int dim,i,*array;
+	heap *h=NULL;
+	dim=-1;
+	
+	while(dim<0){
+		printf("How many elements to insert?\n");
+		scanf("%d",&dim);
+	}
+	array=(int*)malloc(dim*sizeof(int));
+	for(i=0;i<dim;i++){
+		printf("Element %d ",i+1);
+		scanf("%d",array+i);
+	}
+	
+	h=buildHeap(array,dim);
+	free(array);
+	return h;
 }
