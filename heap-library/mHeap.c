@@ -101,6 +101,7 @@ void delete(heap *h,int k){
 	secondo il teorema di un tizio francese la giusta proporzione per il resize durante la cancellazione è quando :
 	1/3 dell'array è pieno e 2/3 vuoti => deallocare 1/3 vuoto.
 	in questo modo per ogni resize di ha SEMPRE la metà dell'array pieno e l'altra vuota.
+	F:Quindi diresti di non farla proprio? oppure di calcolarne le porzioni?
 	*/
 }
 
