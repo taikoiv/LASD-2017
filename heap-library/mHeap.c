@@ -14,7 +14,19 @@ int parent(int i){
 	return i/2;
 }
 
-heap* buildHeap(int* data,int size){
+int climbheap(heap *h, int i) {
+	int temp;
+	if (h->data[i] > h->data[parent(i)]) {
+		temp = h->data[i];
+		h->data[i] = h->data[parent(i)];
+		h->data[parent(i)] = temp;
+		return climbheap(h, parent(i));
+	}else{
+		return i;
+	}
+}
+
+heap* buildHeap(int* data,int size){ //NON FUNZIONA
 	int i = 0, *array;
 	heap *h;
 	h = (heap *)malloc(sizeof(heap));
@@ -26,7 +38,7 @@ heap* buildHeap(int* data,int size){
 	for(i = h->heapsize/2; i>1; i--)
 		heapify(h, i);
 	return h;
-	
+	//IMPLEMENTARE RESIZE DELL'ARRAY
 }
 
 void heapify(heap *h, int i){
@@ -75,29 +87,31 @@ void delete(heap *h,int k){
 		h->data[i] = h->data[h->heapsize-1];
 		h->data[h->heapsize-1] = temp;
 		h->heapsize = h->heapsize-1;
-		h->data = (int*)realloc(h->data,h->heapsize*sizeof(int));
+		h->data = (int*)realloc(h->data,h->heapsize*sizeof(int)); //SECONDO ME FA SCHIFO
 		int newpos = climbheap(h,i);
 		heapify(h,newpos);
 	}
+	/*
+	secondo il teorema di un tizio francese la giusta proporzione per il resize durante la cancellazione è quando :
+	1/3 dell'array è pieno e 2/3 vuoti => deallocare 1/3 vuoto.
+	in questo modo per ogni resize di ha SEMPRE la metà dell'array pieno e l'altra vuota.
+	*/
 }
-
-int climbheap(heap *h, int i) {
-	int temp;
-	if (h->data[i] > h->data[parent(i)]) {
-		temp = h->data[i];
-		h->data[i] = h->data[parent(i)];
-		h->data[parent(i)] = temp;
-		return climbheap(h, parent(i));
-	}else{
-		return i;
-	}
-}
-
 
 void freeheap(heap *h){
 	free(h->data);
 	free(h);
 }
+
 int size(heap *h){
 	return h->heapsize;
+}
+
+void printHeap(heap *h){
+	int i;
+	int dim=size(h);
+	printf("\nHeap values :\n |");
+	for(i=0;i<dim;i++)
+		printf(" %d |",h->data[i]);
+	printf("\n");
 }

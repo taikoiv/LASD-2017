@@ -16,6 +16,6 @@ heap* buildHeap(int* data,int size);
 void heapSort(heap *h);
 void heapify(heap *h,int i);
 void freeheap(heap *h);
-int climbheap(heap *h, int i);
+void printHeap(heap *h);
 
 #endif
