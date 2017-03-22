@@ -26,31 +26,41 @@ int climbheap(heap *h, int i) {
 	}
 }
 
-heap* buildHeap(int* data,int size){ //NON FUNZIONA
+heap* buildHeap(int* data,int size){ 
+	//printf("ok\n");
 	int i = 0, *array;
 	heap *h;
 	h = (heap *)malloc(sizeof(heap));
 	array = (int *)malloc(size*sizeof(int));
+	h->data = array;
 	h->size = h->heapsize = size;
 	for(i=0; i<size; i++)
 		array[i]=data[i];
 	h->data = array;
-	for(i = h->heapsize/2; i>1; i--)
+	for(i = h->heapsize/2; i>=0; i--){
+		//printf("dentro for\n");
 		heapify(h, i);
+	 }
 	return h;
 	//IMPLEMENTARE RESIZE DELL'ARRAY
 }
 
 void heapify(heap *h, int i){
 	if(!isEmpty(h)){
-		int min = 0, scambio =0;
+		int min = i, scambio =0;
 		int l = left(i);
 		int r = right(i);
+		//printf("r: %d l: %d\n", r, l);
+		//printf("data[r]: %d data[l]: %d data[i]: %d\n", h->data[r], h->data[l], h->data[i]);
 		if(l < h->heapsize&& h->data[l]<h->data[i])
 			min = l;
+		//printf("l: %d min: %d\n", l, min);
 		if(r < h->heapsize &&h->data[r]<h->data[min])
 			min = r;
+		//printf("r: %d min: %d\n", r, min);
 		if(min!=i){
+			//printf("min: %d i: %d\n", min, i); 
+			//system("pause");
 			scambio = h->data[i];
 			h->data[i] = h->data[min];
 			h->data[min] = scambio;
