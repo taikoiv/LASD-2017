@@ -116,3 +116,22 @@ void printHeap(heap *h){
 		printf(" %d |",h->data[i]);
 	printf("\n");
 }
+
+void heapSort(int *data,int dim){
+	heap *h=buildHeap(data,dim);
+	int i=size(h)-1,temp;
+	for(;i>0;i--){
+		printf("%d \n",min(h));
+		data[i]=min(h);
+		
+		temp=h->data[h->heapsize-1];
+		h->data[h->heapsize-1]=h->data[0];
+		h->data[0]=temp;
+		
+		h->heapsize=h->heapsize-1;
+		heapify(h,0);
+	}
+	data[0]=h->data[0];
+	
+	freeheap(h);
+}

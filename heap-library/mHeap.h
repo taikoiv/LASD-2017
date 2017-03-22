@@ -13,9 +13,9 @@ int min(heap *h);
 void insert(heap *h,int k);
 void delete(heap *h,int k);
 heap* buildHeap(int* data,int size);
-void heapSort(heap *h);
 void heapify(heap *h,int i);
 void freeheap(heap *h);
 void printHeap(heap *h);
+void heapSort(int *data,int dim);
 
 #endif
