@@ -53,7 +53,7 @@ heap* getRandomHeap(){
 	int i,dim,*array;
 	heap* h;
 	dim=rand()%30;
-	*array=(int *) malloc(dim*sizeof(int));
+	array=(int *) malloc(dim*sizeof(int));
 	
 	for(i=0;i<dim;i++)
 		array[i]=rand();
