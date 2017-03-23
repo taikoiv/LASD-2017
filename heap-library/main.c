@@ -9,6 +9,7 @@ void printMenu();
 heap* getRandomHeap();
 heap* getHeapFromInput();
 void printOpMenu();
+void sortArray();
 
 int main(int argc, char *argv[]) {
 	int choice=-1,value;
@@ -16,10 +17,10 @@ int main(int argc, char *argv[]) {
 	heap *h=NULL;
 	
 	printf("Welcome to min Heap library example \n\n");
-	while(choice<0 || choice>3){
+	while(choice<0 || choice>4){
 		printMenu();
 		scanf("%d",&choice);
-		if(choice<0 || choice>3){
+		if(choice<0 || choice>4){
 			printf("NOT A VALID VALUE \n");
 			system("pause");
 		}
@@ -27,7 +28,8 @@ int main(int argc, char *argv[]) {
 	}
 	
 	switch(choice){
-		case 0 : return 0;
+		case 0 : printf("goodbye\n");
+				 return 0;
 		case 1 : h=getRandomHeap();
 				 printHeap(h);
 				 break;
@@ -36,6 +38,9 @@ int main(int argc, char *argv[]) {
 				 break;
 		case 3 : h=buildHeap(NULL,0);
 				 break;
+		case 4 : sortArray();
+				 system("pause");
+				 return 0;
 	}
 	
 	choice=-1;
@@ -92,6 +97,7 @@ void printMenu(){
 	printf("1) Build a random heap\n");
 	printf("2) Build an heap with input values\n");
 	printf("3) Build an empty heap\n");
+	printf("4) Heapsort!\n");
 	printf("--------------------------------------------------------------------------------------\n");
 	printf("0) Exit\n");
 	printf("*====================================================================================*\n");
@@ -102,12 +108,11 @@ void printOpMenu(){
 	printf("*====================================================================================*\n");
 	printf("1) Insert an element\n");
 	printf("2) Delete element\n");
-	printf("3) Heapsort!\n");
-	printf("4) Delete heap\n");
-	printf("5) Get heap size\n");
-	printf("6) Check if heap is empty\n");
-	printf("7) Get min value\n");
-	printf("8) Print heap\n");
+	printf("3) Delete heap\n");
+	printf("4) Get heap size\n");
+	printf("5) Check if heap is empty\n");
+	printf("6) Get min value\n");
+	printf("7) Print heap\n");
 	printf("--------------------------------------------------------------------------------------\n");
 	printf("0) Exit\n");
 	printf("*====================================================================================*\n");
@@ -125,6 +130,26 @@ heap* getRandomHeap(){
 	
 	free(array);
 	return h;
+}
+
+void sortArray(){
+	int *array=NULL;
+	int i,dim=0;
+	do{
+		printf("What's the sequence size?\n");
+		scanf("%d",&dim);
+	}while(dim<0);
+	
+	array=malloc(dim*sizeof(int));
+	for(i=0;i<dim;i++){
+		printf("Element %d : ",i+1);
+		scanf("%d",&array[i]);
+	}
+	heapSort(array,dim);
+	printf("\n| ");
+	for(i=0;i<dim;i++)
+		printf("%d | ",array[i]);
+	printf("\n");
 }
 
 heap* getHeapFromInput(){
