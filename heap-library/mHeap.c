@@ -11,12 +11,13 @@ int right(int i){
 }
 
 int parent(int i){
+	if(i==1) return i;
 	return i/2;
 }
 
 int climbheap(heap *h, int i) {
 	int temp;
-	if (h->data[i] > h->data[parent(i)]) {
+	if (i!=1 && h->data[i] < h->data[parent(i)]) {
 		temp = h->data[i];
 		h->data[i] = h->data[parent(i)];
 		h->data[parent(i)] = temp;
@@ -64,12 +65,18 @@ heap* buildHeap(int* data,int dim){
 void insert(heap *h, int k){
 	if(h!=NULL){
 		if(h->data[0]==h->size){
-			h->data = (int *)realloc(h->data, 2*h->size);
-			h->size = 2*h->size;
+			int *array, i, *temp;
+			array = (int *)malloc(h->size*2*sizeof(int));
+			for(i=0; i<=h->size; i++)
+				array[i]=h->data[i];
+			temp = h->data;
+			h->data=array;
+			free(temp);
+			h->size = (h->size)*2;
 		}
 		h->data[0]++;
 		h->data[size(h)] = k;
-		heapify(h,  climbheap(h, size(h)));
+		heapify(h, climbheap(h, size(h)));
 	}
 }
 
