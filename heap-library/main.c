@@ -51,24 +51,34 @@ int main(int argc, char *argv[]) {
 					 scanf("%d",&value);
 					 insert(h,value);
 					 break;
-			case 2 : 
+			case 2 : printf("Enter the value to delete : ");
+					 scanf("%d",&value);
+					 delete(h,value);
 					 break;
 			case 3 : 
 					 break;
-			case 4 : 
+			case 4 : /* TO FIX
+					 value=0;
+					 printf("Are you sure?(Y or N)\n");
+					 while(value!='Y' || value!='N'){
+					 	scanf("%c",&value);
+					 }
+					 if(value=='Y') freeheap(h);*/
 					 break;
-			case 5 : 
+			case 5 : printf("Currently heap has %d elements \n",size(h));
 					 break;
-			case 6 : 
+			case 6 : if(isEmpty(h))
+						printf("Heap is empty\n");
+					 else
+					 	printf("Heap is not empty\n");
 					 break;
-			case 7 : 
+			case 7 : printf("Min value in the heap : %d\n",min(h));
 					 break;
 			case 8 : printHeap(h);
-					 system("pause");
 					 break;
 			default : printf("NOT A VALID VALUE \n");
-					  system("pause");
 		}
+		system("pause");
 		system("cls");
 	}
 	printf("Goodbye\n");
