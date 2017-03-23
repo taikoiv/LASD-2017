@@ -3,13 +3,13 @@
 #include <time.h>
 #include "mHeap.h"
 
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+/* THIS FILE IS JUST AN EXAMPLE THAT EXPLAIN HOW TO USE mHeap LIBRAY */
 
-void printMenu();
-heap* getRandomHeap();
-heap* getHeapFromInput();
-void printOpMenu();
-void sortArray();
+void printMenu(); //PRINT PRIMARY MENU
+heap* getRandomHeap(); //CREATE AN HEAP WITH RANDOM VALUES
+heap* getHeapFromInput(); //CREATE AN HEAP WITH INPUT VALUES
+void printOpMenu(); //PRINT SECONDARY MENU
+void sortArray(); //CREATE AND SORT AN ARRAY FROM INPUT
 
 int main(int argc, char *argv[]) {
 	int choice=-1,value;
@@ -28,13 +28,11 @@ int main(int argc, char *argv[]) {
 	}
 	
 	switch(choice){
-		case 0 : printf("goodbye\n");
+		case 0 : printf("Goodbye\n");
 				 return 0;
 		case 1 : h=getRandomHeap();
-				 printHeap(h);
 				 break;
 		case 2 : h=getHeapFromInput();
-				 printHeap(h);
 				 break;
 		case 3 : h=buildHeap(NULL,0);
 				 break;
@@ -60,30 +58,32 @@ int main(int argc, char *argv[]) {
 					 scanf("%d",&value);
 					 delete(h,value);
 					 break;
-			case 3 : 
-					 break;
-			case 4 : /* TO FIX
-					 value=0;
-					 printf("Are you sure?(Y or N)\n");
-					 while(value!='Y' || value!='N'){
-					 	scanf("%c",&value);
+			case 3 : value=-1;
+					 do{
+					 	printf("Press 1 to continue or 0 to cancel\n");
+					 	scanf("%d",&value);
+					 }while(value!=0 && value!=1);
+					 if(value==1){
+					 	freeheap(h);
+					 	printf("Heap successfully deleted\n");
+					 	printf("Goodbye\n");
+					 	return 0;
 					 }
-					 if(value=='Y') freeheap(h);*/
 					 break;
-			case 5 : printf("Currently heap has %d elements \n",size(h));
+			case 4 : printf("Heap has %d elements \n",size(h));
 					 break;
-			case 6 : if(isEmpty(h))
+			case 5 : if(isEmpty(h))
 						printf("Heap is empty\n");
 					 else
 					 	printf("Heap is not empty\n");
 					 break;
-			case 7 : printf("Min value in the heap : %d\n",min(h));
+			case 6 : printf("Min value in the heap : %d\n",min(h));
 					 break;
-			case 8 : printHeap(h);
+			case 7 : printHeap(h);
 					 break;
 			default : printf("NOT A VALID VALUE \n");
 		}
-		system("pause");
+		if(choice!=0) system("pause");
 		system("cls");
 	}
 	printf("Goodbye\n");
