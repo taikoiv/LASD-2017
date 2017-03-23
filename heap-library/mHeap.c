@@ -26,31 +26,14 @@ int climbheap(heap *h, int i) {
 	}
 }
 
-heap* buildHeap(int* data,int size){ 
-	int i = 0, *array;
-	heap *h;
-	h = (heap *)malloc(sizeof(heap));
-	array = (int *)malloc(size*sizeof(int));
-	h->data = array;
-	h->size = size;
-	h->heapsize = size;
-	for(i=0; i<size; i++)
-		array[i]=data[i];
-	h->data = array;
-	for(i = h->heapsize/2; i>=0; i--){
-		heapify(h, i);
-	 }
-	return h;
-}
-
 void heapify(heap *h, int i){
 	if(!isEmpty(h)){
 		int min = i, scambio =0;
 		int l = left(i);
 		int r = right(i);
-		if(l < h->heapsize&& h->data[l]<h->data[i])
+		if(l < size(h) && h->data[l]<h->data[i])
 			min = l;
-		if(r < h->heapsize &&h->data[r]<h->data[min])
+		if(r < size(h) && h->data[r]<h->data[min])
 			min = r;
 		if(min!=i){
 			scambio = h->data[i];
@@ -61,39 +44,56 @@ void heapify(heap *h, int i){
 	}
 }
 
+heap* buildHeap(int* data,int dim){ 
+	int i = 0, *array;
+	heap *h;
+	h = (heap *)malloc(sizeof(heap));
+	array = (int *)malloc((dim+1)*sizeof(int));
+	h->data = array;
+	h->size = dim;
+	h->data[0] = dim;
+	for(i=1; i<=dim; i++)
+		array[i]=data[i-1];
+	h->data = array;
+	for(i = size(h)/2; i>=1; i--){
+		heapify(h, i);
+	 }
+	return h;
+}
+
 void insert(heap *h, int k){
 	if(h!=NULL){
-		if(h->heapsize==h->size){
+		if(h->data[0]==h->size){
 			h->data = (int *)realloc(h->data, 2*h->size);
 			h->size = 2*h->size;
 		}
-		h->heapsize = h->heapsize+1;
-		h->data[h->heapsize-1] = k;
-		heapify(h, parent(h->heapsize));
+		h->data[0]++;
+		h->data[size(h)-1] = k;
+		heapify(h, parent(size(h)));
 	}
 }
 
 int isEmpty(heap *h){
-	return (h->heapsize==0);
+	return (size(h)==0);
 }
 
 
 int min(heap *h){
-	return h->data[0];
+	return h->data[1];
 }
 
 void delete(heap *h,int k){
 	int i = 0;
 	int temp;
-	while(i<h->heapsize && h->data[i]!=k){
+	while(i<size(h) && h->data[i]!=k){
 		i++;
 	}
-	if(i < h->heapsize){
+	if(i < size(h)){
 		temp = h->data[i];
-		h->data[i] = h->data[h->heapsize-1];
-		h->data[h->heapsize-1] = temp;
-		h->heapsize = h->heapsize-1;
-		h->data = (int*)realloc(h->data,h->heapsize*sizeof(int)); //SECONDO ME FA SCHIFO
+		h->data[i] = h->data[size(h)-1];
+		h->data[size(h)-1] = temp;
+		h->data[0]--;
+		h->data = (int*)realloc(h->data,size(h)*sizeof(int)); //SECONDO ME FA SCHIFO
 		int newpos = climbheap(h,i);
 		heapify(h,newpos);
 	}
@@ -111,14 +111,31 @@ void freeheap(heap *h){
 }
 
 int size(heap *h){
-	return h->heapsize;
+	return h->data[0];
 }
 
 void printHeap(heap *h){
 	int i;
 	int dim=size(h);
 	printf("\nHeap values :\n |");
-	for(i=0;i<dim;i++)
+	for(i=1;i<=dim;i++)
 		printf(" %d |",h->data[i]);
 	printf("\n");
+}
+
+void heapSort(int *data, int dim){
+	heap *h=buildHeap(data,dim);
+	int i,temp;
+	
+	for(i=size(h);i>1;i--){
+		data[i-1]=min(h);
+		
+		temp=h->data[size(h)];
+		h->data[size(h)]=h->data[1];
+		h->data[1]=temp;
+		h->data[0]--;
+		
+		heapify(h,1);
+	}
+	data[0]=h->data[1];
 }
