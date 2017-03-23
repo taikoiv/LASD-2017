@@ -31,9 +31,9 @@ void heapify(heap *h, int i){
 		int min = i, scambio =0;
 		int l = left(i);
 		int r = right(i);
-		if(l < size(h) && h->data[l]<h->data[i])
+		if(l <= size(h) && h->data[l]<h->data[i])
 			min = l;
-		if(r < size(h) && h->data[r]<h->data[min])
+		if(r <= size(h) && h->data[r]<h->data[min])
 			min = r;
 		if(min!=i){
 			scambio = h->data[i];
@@ -68,8 +68,8 @@ void insert(heap *h, int k){
 			h->size = 2*h->size;
 		}
 		h->data[0]++;
-		h->data[size(h)-1] = k;
-		heapify(h, parent(size(h)));
+		h->data[size(h)] = k;
+		heapify(h,  climbheap(h, size(h)));
 	}
 }
 
