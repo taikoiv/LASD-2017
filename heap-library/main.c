@@ -11,6 +11,11 @@ heap* getHeapFromInput(); //CREATE AN HEAP WITH INPUT VALUES
 void printOpMenu(); //PRINT SECONDARY MENU
 void sortArray(); //CREATE AND SORT AN ARRAY FROM INPUT
 
+void clearBuffer(){ //clear the stdin when user write an invalid input data
+	char c;
+	while ((c = getchar()) != '\n' && c != EOF) { };
+}
+
 int main(int argc, char *argv[]) {
 	int choice=-1,value;
 	srand(time(NULL));
@@ -21,6 +26,7 @@ int main(int argc, char *argv[]) {
 		printMenu();
 		scanf("%d",&choice);
 		if(choice<0 || choice>4){
+			clearBuffer();
 			printf("NOT A VALID VALUE \n");
 			system("pause");
 		}
@@ -62,13 +68,14 @@ int main(int argc, char *argv[]) {
 					 do{
 					 	printf("Press 1 to continue or 0 to cancel\n");
 					 	scanf("%d",&value);
+					 	clearBuffer();
 					 }while(value!=0 && value!=1);
 					 if(value==1){
 					 	freeheap(h);
 					 	printf("Heap successfully deleted\n");
 					 	printf("Goodbye\n");
 					 	return 0;
-					 }
+					 } else choice=-1;
 					 break;
 			case 4 : printf("Heap has %d elements \n",size(h));
 					 break;
@@ -82,6 +89,7 @@ int main(int argc, char *argv[]) {
 			case 7 : printHeap(h);
 					 break;
 			default : printf("NOT A VALID VALUE \n");
+					  clearBuffer();
 		}
 		if(choice!=0) system("pause");
 		system("cls");
