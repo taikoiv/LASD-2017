@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-void printMenu(){
+void printMenu(){ //PRINT PRIMARY MENU
 	printf("\t\t\t\tENTER A CHOICE\n");
 	printf("*====================================================================================*\n");
 	printf("1) Build a random heap\n");
@@ -111,7 +111,7 @@ void printMenu(){
 	printf("*====================================================================================*\n");
 }
 
-void printOpMenu(){
+void printOpMenu(){ //PRINT SECONDARY MENU
 	printf("\t\t\t\tENTER A CHOICE\n");
 	printf("*====================================================================================*\n");
 	printf("1) Insert an element\n");
@@ -126,10 +126,10 @@ void printOpMenu(){
 	printf("*====================================================================================*\n");
 }
 
-heap* getRandomHeap(){
+heap* getRandomHeap(){ //BUILD A RANDOM HEAP WITH RANDOM DIMENSION AND VALUES
 	int i,dim,*array;
 	heap* h;
-	dim=rand()%30;
+	dim=rand();
 	array=(int *) malloc(dim*sizeof(int));
 	
 	for(i=0;i<dim;i++)
@@ -140,7 +140,7 @@ heap* getRandomHeap(){
 	return h;
 }
 
-void sortArray(){
+void sortArray(){ //GET AND ORDER AN ARRAY OF INTEGERS
 	int *array=NULL;
 	int i,dim=0;
 	do{
@@ -160,7 +160,7 @@ void sortArray(){
 	printf("\n");
 }
 
-heap* getHeapFromInput(){
+heap* getHeapFromInput(){ // GET HEAP VALUES AND DIMENSION FROM STDIN
 	int dim,i,*array;
 	heap *h=NULL;
 	dim=-1;

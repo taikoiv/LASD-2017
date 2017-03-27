@@ -19,7 +19,7 @@ typedef struct{
 
 int isEmpty(heap *h);					// IF HEAP CONTAINS 0 ELEMENTS RETURN 0 ELSE RETURN 1
 int size(heap *h);						// RETURN HOW MANY ELEMENTS HEAP CONTAINS
-int min(heap *h);						// RETURN THE MINIMUM VALUE IN THE HEAP
+int min(heap *h);						// RETURN THE MINIMUM VALUE IN THE HEAP OR 0 IF HEAP IS EMPTY
 void insert(heap *h,int k);				// ADD k TO THE HEAP
 void delete(heap *h,int k);				// DELETE k FROM THE HEAP
 

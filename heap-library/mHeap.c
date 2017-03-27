@@ -15,7 +15,7 @@ int parent(int i){
 	return i/2;
 }
 
-int climbheap(heap *h, int i) {
+int climbheap(heap *h, int i) { //swap element with his parent until is possible
 	int temp;
 	if (i!=1 && h->data[i] < h->data[parent(i)]) {
 		temp = h->data[i];
@@ -27,7 +27,7 @@ int climbheap(heap *h, int i) {
 	}
 }
 
-void heapify(heap *h, int i){
+void heapify(heap *h, int i){ //restore heap properties
 	if(!isEmpty(h)){
 		int min = i, scambio =0;
 		int l = left(i);
@@ -86,30 +86,29 @@ int isEmpty(heap *h){
 
 
 int min(heap *h){
-	return h->data[1];
+	if(!isEmpty(h))
+		return h->data[1];
+	return 0;
 }
 
 void delete(heap *h,int k){
-	int i = 0;
+	int i = 1;
 	int temp;
-	while(i<size(h) && h->data[i]!=k){
+	while(i<=size(h) && h->data[i]!=k){
 		i++;
 	}
-	if(i < size(h)){
+	if(i <= size(h)){
 		temp = h->data[i];
-		h->data[i] = h->data[size(h)-1];
-		h->data[size(h)-1] = temp;
+		h->data[i] = h->data[size(h)];
+		h->data[size(h)] = temp;
 		h->data[0]--;
-		h->data = (int*)realloc(h->data,size(h)*sizeof(int)); //SECONDO ME FA SCHIFO
+		if(h->data[0]==h->size/3){
+			h->size=2*size(h)+1;
+			h->data = (int*)realloc(h->data,(2*size(h)+1)*sizeof(int));
+		}
 		int newpos = climbheap(h,i);
 		heapify(h,newpos);
 	}
-	/*
-	secondo il teorema di un tizio francese la giusta proporzione per il resize durante la cancellazione è quando :
-	1/3 dell'array è pieno e 2/3 vuoti => deallocare 1/3 vuoto.
-	in questo modo per ogni resize di ha SEMPRE la metà dell'array pieno e l'altra vuota.
-	F:Quindi diresti di non farla proprio? oppure di calcolarne le porzioni?
-	*/
 }
 
 void freeheap(heap *h){
@@ -124,6 +123,10 @@ int size(heap *h){
 void printHeap(heap *h){
 	int i;
 	int dim=size(h);
+	if(dim==0){
+		printf("HEAP IS EMPTY!\n");
+		return;
+	}
 	printf("\nHeap values :\n |");
 	for(i=1;i<=dim;i++)
 		printf(" %d |",h->data[i]);
