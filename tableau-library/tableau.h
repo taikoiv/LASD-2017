@@ -2,13 +2,14 @@
 #define TABLEAU_H
 
 typedef struct {
-	int size;
+	int n,m;
 	int **data;
 } tableau;
 
-createTableau();
-extractMin();
-insert();
-void printTableau();
-
+tableau* createTableau(); // BOH FAI TU
+int extractMin(tableau *t);
+void insert(tableau *t,int k);
+void printTableau(tableau *t);
+int isEmpty(tableau *t);
+int size(tableau *t);
 #endif
