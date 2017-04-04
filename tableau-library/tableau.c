@@ -27,7 +27,7 @@ coordinates* position(int i,int j){
 
 coordinates* left(tableau *t,coordinates *i){
 	coordinates* cs=NULL;
-	if((i->x)+1<=t->n && t->data[(i->x)+1][i->y]!=INT_MAX){
+	if((i->x)+1<=t->properties[0] && t->data[(i->x)+1][i->y]!=INT_MAX){
 		cs=(coordinates*) malloc(sizeof(coordinates));
 		cs->x=(i->x)+1;
 		cs->y=i->y;
@@ -38,7 +38,7 @@ coordinates* left(tableau *t,coordinates *i){
 
 coordinates* right(tableau *t,coordinates *i){
 	coordinates* cs=NULL;
-	if((i->y)+1<=t->m && t->data[i->x][(i->y)+1]!=INT_MAX){
+	if((i->y)+1<=t->properties[1] && t->data[i->x][(i->y)+1]!=INT_MAX){
 		cs=(coordinates*) malloc(sizeof(coordinates));
 		cs->x=i->x;
 		cs->y=(i->y)+1;
@@ -67,14 +67,15 @@ coordinates* parent(tableau *t,coordinates *i){
 
 void printTableau(tableau *t){
 	int i, j;
-	for(i=1; i<=t->n; i++){
-		for(j=1; j<=t->data[i][0]; j++)
-			printf("%d ", t->data[i][j]);
+	for(i=0; i<t->properties[0]; i++){
+		for(j=0; j<t->properties[1]; j++)
+			if(t->data[i][j]!=INT_MAX)
+				printf("%d ", t->data[i][j]);
 		printf("\n");
 	}
 }
 
-void tableaufy(tableau *t,coordinates *i){ //TO DO
+void tableaufy(tableau *t,coordinates *i){
 	if(!isEmpty(t)){
 		int scambio=0;
 		coordinates *min = i;
@@ -97,27 +98,35 @@ void tableaufy(tableau *t,coordinates *i){ //TO DO
 }
 
 int isEmpty(tableau *t){
-	if(t->data[0][0]==0)
+	if(t->properties[2]==0)
 		return 1;
 	return 0;
 }
 
 int size(tableau *t){
-	return t->data[0][0];
+	return t->properties[2];
 }
 
-void insert(tableau *t,int k){
-	if(size(t)==(t->n-1)*(t->m-1)){
+void insert(tableau *t,int k){// forse funziona
+	if(size(t)==(t->properties[0])*(t->properties[1])){
 		TABLERROR=-1;
 		return;
 	}	
-	int i;
+	int i,j=0;
 	coordinates* cs=NULL;
-	for(i=1;i<=t->n && t->data[i][0]!=t->m;i++);
-	t->data[i][++t->data[i][0]]=k;
-	t->data[0][t->data[i][0]]++;
-	cs=position(i,t->data[i][0]);
-	t->data[0][0]++;
+	for(i==t->properties[3];i<=t->properties[4];i-- , j++){
+		if(t->data[i][j]==INT_MAX){
+			t->data[i][j]=k;
+			t->properties[2]++;
+			cs=position(i,j);
+			if(i==t->properties[4])
+				if(t->properties[3]!=t->properties[1])
+					t->properties[3]++;
+				else 
+					t->properties[4]++;
+		}
+	}
+	
 	climbTableau(t,cs);
 	
 	free(cs);
@@ -139,16 +148,29 @@ void climbTableau(tableau *t,coordinates *cs){
 }
 
 int extractMin(tableau *t){
-	int min = t->data[1][1], i;
+	int min = t->data[0][0], i=t->properties[4],j;
 	coordinates *cs;
-	for(i=t->n; i<=1 && t->data[i][0]!=0; i--);
-	t->data[0][t->data[i][0]]--;
-	t->data[i][0]--;
-	t->data[1][1]=t->data[i][t->data[i][0]+1];
-	t->data[i][t->data[i][0]+1]=INT_MAX;
-	t->data[0][0]--;
-	cs=position(1, 1);
+	if(size(t)==0){
+		TABLERROR=-2;
+		return INT_MAX;
+	}
+	for(j=t->properties[3];j>=0;j--, i++)
+		if(t->data[i][j]!=INT_MAX){
+			t->data[0][0]=t->data[i][j];
+			t->data[i][j]=INT_MAX;
+			t->properties[2]--;
+			if(i==t->properties[4])
+				if(t->properties[4]!=0)
+					t->properties[4]--;
+				else if(t->properties[3]!=0)
+					t->properties[3]--;
+					 
+			break;
+		}
+		
+	cs=position(0,0);
 	tableaufy(t, cs);
+	
 	free(cs);
 	return min;	
 }
