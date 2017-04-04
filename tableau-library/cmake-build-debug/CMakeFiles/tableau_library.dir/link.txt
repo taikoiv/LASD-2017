@@ -1,0 +1,1 @@
+/usr/bin/cc  -g  -Wl,--enable-auto-import CMakeFiles/tableau_library.dir/main.c.o CMakeFiles/tableau_library.dir/tableau.c.o  -o tableau_library.exe -Wl,--out-implib,libtableau_library.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

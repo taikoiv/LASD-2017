@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/Checco/Desktop/LASD-2017/tableau-library/main.c
+stdio.h
+-
+stdlib.h
+-
+time.h
+-
+tableau.h
+/cygdrive/c/Users/Checco/Desktop/LASD-2017/tableau-library/tableau.h
+
+/cygdrive/c/Users/Checco/Desktop/LASD-2017/tableau-library/tableau.c
+stdio.h
+-
+stdlib.h
+-
+math.h
+-
+limits.h
+-
+tableau.h
+/cygdrive/c/Users/Checco/Desktop/LASD-2017/tableau-library/tableau.h
+
+/cygdrive/c/Users/Checco/Desktop/LASD-2017/tableau-library/tableau.h
+

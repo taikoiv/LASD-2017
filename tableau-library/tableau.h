@@ -14,10 +14,11 @@ typedef struct {
 	int **data;
 } tableau;
 
-tableau* createTableau(); // BOH FAI TU
+tableau* createTableau(int *data, int n,int m, int tot);
 int extractMin(tableau *t);
 void insert(tableau *t,int k);
 void printTableau(tableau *t);
+void freetableau(tableau *t);
 int isEmpty(tableau *t);
 int size(tableau *t);
 #endif
