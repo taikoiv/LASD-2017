@@ -1,14 +1,23 @@
 #ifndef TABLEAU_H
 #define TABLEAU_H
 
+/*
+#DEFINE N_ROW properties[0]
+#DEFINE N_COLUMN properties[1]
+#DEFINE SIZE properties[2]
+#DEFINE ANTIDIAGONAL properties[3]
+#DEFINE LEAF_R properties[4]
+#DEFINE LEAF_C properties[5]
+*/
 typedef struct {
-	int properties[5]; // DO NOT TOUCH THIS VALUES PLEASE
+	int properties[6]; // DO NOT TOUCH THIS VALUES, PLEASE
 	/*
 	properties[0] : row number
 	properties[1] : column number
 	properties[2] : tableau size
-	properties[3] : last anti-diagonal column index fatti i cazzi tuoi bastardo
-	properties[4] : last anti-diagonal row index fatti i cazzi tuoi bastardo
+	properties[3] : anti-diagonal index 
+	properties[4] : last leaf row index
+	properties[5] : last leaf column index
 	*/
 	
 	int **data;

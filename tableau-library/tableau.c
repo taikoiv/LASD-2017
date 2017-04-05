@@ -5,6 +5,12 @@
 #include "tableau.h"
 
 int TABLERROR=0;
+/*
+	ERROR CODES:
+	-1 : FULL TABLEAU
+	-2 : EMPTY TABLEAU
+*/
+
 
 typedef struct{ // X => RIGA | Y=>COLONNA
 	int x,y;
@@ -131,32 +137,42 @@ tableau* createTableau(int *data, int n,int m,int tot){
     return t;
 }
 
-void insert(tableau *t,int k){// forse funziona
+void insert(tableau *t,int k){
     if(size(t)==(t->properties[0])*(t->properties[1])){
 		TABLERROR=-1;
         return;
 	}	
-	int i,j=0;
+	int i=t->properties[4];
+	int j=t->properties[5];
 	coordinates* cs=NULL;
-	for(i=t->properties[4];i>=t->properties[3];i--){
-        if(t->data[i][j]==INT_MAX){
+    if(t->data[i][j]==INT_MAX){
             t->data[i][j]=k;
             t->properties[2]++;
             cs=position(i,j);
-            if(i==t->properties[4]) {
-                if (t->properties[3] < t->properties[1]) {
-                    t->properties[3]++;
-                }else {
-                    t->properties[4]++;
-                }
-            }
-        }
-        if(j==t->properties[1]){
-            j=0;
-        }else{
-            j++;
-        }
-	}
+            
+            //SCALO SULL'ANTIDIAGONALE
+			t->properties[4]--; 
+	        t->properties[5]++;
+			
+			if(t->properties[3]<t->properties[0]){ // SE NON SFORA ANTIDIAGONALE MAGGIORE
+	            if(j==0){
+					t->properties[3]++;
+	        		if(t->properties[3]<t->properties[0]){ //SE CONTINUA A NON SFORARE DOPO AVER SCALATO ANTIDIAGONALE
+	        			t->properties[4]=t->properties[3];
+	        			t->properties[5]=0;
+					} else { //SE SFORA LA PRIMA VOLTA l'ANTIDIAGONALE MAGGIORE
+						t->properties[4]=t->properties[0]-1;
+						t->properties[5]=t->properties[3]-t->properties[0];
+					}
+				}
+			}else{ //SFORATA ANTIDIAGONALE MAGGIORE
+				if(t->properties[5]>=t->properties[1]){
+					t->properties[3]++;
+					t->properties[4]=t->properties[0]-1;
+					t->properties[5]=t->properties[3]-t->properties[0];
+				}
+			}
+    }
     climbTableau(t,cs);
 	free(cs);
 }
@@ -177,26 +193,50 @@ void climbTableau(tableau *t,coordinates *cs){
 }
 
 int extractMin(tableau *t){
-	int min = t->data[0][0], i=t->properties[4],j;
-	coordinates *cs;
-	if(size(t)==0){
+	int min = t->data[0][0];
+	int i=t->properties[4]+1; //INDICE RIGA ULTIMO ELEMENTO INSERITO
+	int j=t->properties[5]-1; //INDICE COLONNA ULTIMO ELEMENTO INSERITO
+	coordinates *cs=NULL;
+	
+	if(isEmpty(t)){
 		TABLERROR=-2;
 		return INT_MAX;
 	}
-	for(j=t->properties[3];j>=0;j--, i++)
-		if(t->data[i][j]!=INT_MAX){
-			t->data[0][0]=t->data[i][j];
-			t->data[i][j]=INT_MAX;
-			t->properties[2]--;
-			if(i==t->properties[4])
-				if(t->properties[4]!=0)
-					t->properties[4]--;
-				else if(t->properties[3]!=0)
-					t->properties[3]--;
-					 
-			break;
-		}
+    
+    //POSSIBILI CASI ULTIMO ELEMENTO INSERITO
+	if(i==2&&j==-1){ // CASO BASE 1 ELEMENTO
+		t->properties[4]--;
+		t->properties[2]--;
+		t->data[i][j]=INT_MAX;
+		return min;
+	}
+	
+	t->properties[2]--;
+	
+	if(i<t->properties[0]-1 && j>0){ // CASO GENERICO PROSSIMO ELEMENTO
+	
+		t->data[0][0]=t->data[i][j];
+		t->data[i][j]=INT_MAX;
+		t->properties[4]=i;
+		t->properties[5]=j;
 		
+	} else if(i>=t->properties[0]-1 && j>0){ //CASO PARTICOLARE PROSSIMO ELEMENTO SU ULTIMA RIGA
+		
+		j=t->properties[5]=t->properties[1]-1;
+		i=t->properties[4]=t->properties[0]-1;
+		t->data[0][0]=t->data[i][j];
+		t->data[i][j]=INT_MAX;
+		
+	} else if(i<t->properties[0]-1 && j<=0){ //CASO PARTICOLARE PROSSIMO ELEMENTO SU PRIMA COLONNA
+	
+		j=t->properties[5]=i-1;
+		i=t->properties[4]=0;
+		t->data[0][0]=t->data[i][j];
+		t->data[i][j]=INT_MAX;
+		
+	}
+	
+	//RISTABILISCO PROPRIETà TABLEAU
 	cs=position(0,0);
 	tableaufy(t, cs);
 	
