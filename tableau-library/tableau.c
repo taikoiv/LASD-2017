@@ -4,13 +4,6 @@
 #include <limits.h>
 #include "tableau.h"
 
-int TABLERROR=0;
-/*
-	ERROR CODES:
-	-1 : FULL TABLEAU
-	-2 : EMPTY TABLEAU
-*/
-
 /*
 	THIS STRUCT IS USED TO SAVE THE INDEX OF THE ROW AND THE ONE OF THE COLUMN OF AN ELEMENT IN THE TABLEAU
 */
@@ -18,6 +11,7 @@ typedef struct{
 	int x,y;
 } coordinates;
 
+int TABLERROR;
 int Dimension(int n); //RETURNS THE SIZE NEEDED FOR A TABLEAU IN ORDER TO ORDER A SEQUENCE OF N*N ELEMENTS
 coordinates* position(int i,int j); //RETURNS THE COORDINATES OF AN ELEMENT OF THE TABLEAU
 coordinates* parent(tableau *t,coordinates* i); //THIS FUNCTION RETURNS EITHER NULL OR THE COORDINATES OF THE PARENT THAT HAS BEEN CHOSEN
@@ -237,7 +231,6 @@ int extractMin(tableau *t){
 	int i=t->properties[4]+1; //ROW INDEX OF THE LAST INSERTED ELEMENT
 	int j=t->properties[5]-1; //COLUMN INDEX OF THE LAST INSERTED ELEMENT
 	coordinates *cs=NULL;
-	t->properties[2]--;
 	if(isEmpty(t)){
 		TABLERROR=-2;
 		return INT_MAX;
@@ -248,9 +241,9 @@ int extractMin(tableau *t){
 		t->properties[4]--;
 		printf("caso base %d\n", t->properties[4]);
 		t->data[i][j]=INT_MAX;
+		t->properties[2]--;
 		return min;
 	}
-	
 	
 	if(i<=t->properties[0]-1 && j>0){ // GENERAL CASE
 		printf("caso generale\n");
@@ -258,6 +251,7 @@ int extractMin(tableau *t){
 		t->data[i][j]=INT_MAX;
 		t->properties[4]=i;
 		t->properties[5]=j;
+		t->properties[2]--;
 		
 	} else if(i>=t->properties[0]-1 && j>0){ //IF THE ELEMENT IS ON THE LAST ROW
 		printf("last row\n");
@@ -265,6 +259,7 @@ int extractMin(tableau *t){
 		i=t->properties[4]=t->properties[0]-1;
 		t->data[0][0]=t->data[i][j];
 		t->data[i][j]=INT_MAX;
+		t->properties[2]--;
 		
 	} else if(i<t->properties[0]-1 && j<=0){ //IF THE ELEMENT IS ON THE FIRST COLUMN
 		printf("last column\n");
@@ -272,6 +267,7 @@ int extractMin(tableau *t){
 		i=t->properties[4]=0;
 		t->data[0][0]=t->data[i][j];
 		t->data[i][j]=INT_MAX;
+		t->properties[2]--;
 		
 	}
 	
@@ -296,7 +292,6 @@ int *YoungSort(int *sequenza, int n){
 	int i=0, dimensione=0;
 	tableau *t;
 	dimensione=Dimension(n);
-	
 	t=createTableau(sequenza, dimensione, dimensione, n);
 	for(; i<n; i++)
 		sequenza[i]=extractMin(t);
