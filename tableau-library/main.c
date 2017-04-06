@@ -6,7 +6,7 @@
 #define EMPTY 0
 #define AUTOINS 1
 
-#ifdef _WIN32_
+#ifdef _WIN32
 #define CLS "cls"
 #define PAUSE "pause"
 #else
@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
 void printMenu(){ //PRINT PRIMARY MENU
 	printf("\t\t\t\tENTER A CHOICE\n");
 	printf("*====================================================================================*\n");
-	printf("1) Build an tableau with input values\n");
+	printf("1) Build a tableau with input values\n");
 	printf("2) Build an empty tableau\n");
 	printf("3) YoungSort!\n");
 	printf("--------------------------------------------------------------------------------------\n");
@@ -165,3 +165,4 @@ tableau* getTabFromInput(int mode){ // GET HEAP VALUES AND DIMENSION FROM STDIN
 	free(array);
 	return h;
 }
+

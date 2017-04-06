@@ -11,17 +11,28 @@ int TABLERROR=0;
 	-2 : EMPTY TABLEAU
 */
 
-
-typedef struct{ // X => RIGA | Y=>COLONNA
+/*
+	THIS STRUCT IS USED TO SAVE THE INDEX OF THE ROW AND THE ONE OF THE COLUMN OF AN ELEMENT IN THE TABLEAU
+*/
+typedef struct{ 
 	int x,y;
 } coordinates;
 
-coordinates* position(int i,int j); //COSTRUISCE E RESTITUISCE COORDINATES
-coordinates* parent(tableau *t,coordinates* i); //RESTITUISCE NULL SE NON ESISTONO, ARRAY di 1 elemento se ce ne ï¿½ 1, ARRAY di 2 se ï¿½ figlio di puttana
-coordinates* left(tableau *t,coordinates *i);//RESTITUISCE COORDINATE DEL FIGLIO SINISTRO O NULL SE NON ESISTE
-coordinates* right(tableau *t,coordinates *i);//RESTITUISCE COORDINATE DEL FIGLIO DESTRO O NULL SE NON ESISTE
-void tableaufy(tableau *t,coordinates *cs); //HEAPIFY
-void climbTableau(tableau *t,coordinates *cs); //CLIMBHEAP
+int Dimension(int n); //RETURNS THE SIZE NEEDED FOR A TABLEAU IN ORDER TO ORDER A SEQUENCE OF N*N ELEMENTS
+coordinates* position(int i,int j); //RETURNS THE COORDINATES OF AN ELEMENT OF THE TABLEAU
+coordinates* parent(tableau *t,coordinates* i); //THIS FUNCTION RETURNS EITHER NULL OR THE COORDINATES OF THE PARENT THAT HAS BEEN CHOSEN
+coordinates* left(tableau *t,coordinates *i);//THIS FUNCTION RETURNS THE COORDINATES OF THE LEFT SON OF A FATHER OR NULL IF SUCH ELEMENT DOES NOT EXIST
+coordinates* right(tableau *t,coordinates *i);//THIS FUNCTION RETURNS THE COORDINATES OF THE RIGHT SON OF A FATHER OR NULL IF SUCH ELEMENT DOES NOT EXIST
+void tableaufy(tableau *t,coordinates *cs); //THIS FUNCTION PERFORMS THE "HEAPIFY" ALGORITHM ADAPTED TO WORK ON A TABLEAU
+void climbTableau(tableau *t,coordinates *cs); //THIS FUNCTION CLIMBS THE TABLEAU AS LONG AS THE ELEMENTS MUST BE EXCHANGED IN ORDER TO RESTORE THE TABLEAU PROPERTIES
+
+int Dimension(int n){
+	int dimensione = 0;
+	dimensione=sqrt(n);
+	if(n*n!=dimensione)
+		dimensione=dimensione+1;
+	return dimensione;
+}
 
 coordinates* position(int i,int j){
 	coordinates *cs=(coordinates*) malloc(sizeof(coordinates));
@@ -70,6 +81,7 @@ coordinates* parent(tableau *t,coordinates *i){
 	return cs;
 }
 
+/* FUNCTION USED TO PRINT A TABLEAU */
 void printTableau(tableau *t){
 	int i, j;
 	for(i=0; i<t->properties[0]; i++){
@@ -102,19 +114,27 @@ void tableaufy(tableau *t,coordinates *i){
 	}
 }
 
+/* CHECKS WHETHER A TABLEAU IS EMPTY */
+
 int isEmpty(tableau *t){
 	if(t->properties[2]==0)
 		return 1;
 	return 0;
 }
 
+/* RETURNS THE NUMBER OF ELEMENTS CURRENTLY STORED IN A TABLEAU */
+
 int size(tableau *t){
 	return t->properties[2];
 }
+
+/* FUNCTION THAT CREATES A NEW TABLEAU */
+
 tableau* createTableau(int *data, int n,int m,int tot){
     int i,j;
-    int **r = (int **)malloc(n*sizeof(int*));
-    for(i = 0;i<n;i++){
+    int **r;
+	r = (int **)malloc(n*sizeof(int*));
+    for(i = 0; i<n; i++){
         r[i]=(int*)malloc(m*sizeof(int));
     }
     for (i = 0; i < n; i++) {
@@ -130,12 +150,15 @@ tableau* createTableau(int *data, int n,int m,int tot){
     t->properties[2] = 0;
     t->properties[3] = 0;
     t->properties[4] = 0;
+    t->properties[5] = 0;
 
     for(i = 0;i<tot;i++){
-        insert(t,data[i]);
+        insert(t, data[i]);
     }
     return t;
 }
+
+/* FUNCTION THAT INSERTS A NEW ELEMENT IN AN ALREADY FILLED TABLEAU MAKING SURE THAT THE PROPERTIES OF SUCH STRUCTURE ARE KEPT */
 
 void insert(tableau *t,int k){
     if(size(t)==(t->properties[0])*(t->properties[1])){
@@ -145,34 +168,41 @@ void insert(tableau *t,int k){
 	int i=t->properties[4];
 	int j=t->properties[5];
 	coordinates* cs=NULL;
-    if(t->data[i][j]==INT_MAX){
+    //if(t->data[i][j]==INT_MAX){
             t->data[i][j]=k;
             t->properties[2]++;
             cs=position(i,j);
             
-            //SCALO SULL'ANTIDIAGONALE
-			t->properties[4]--; 
-	        t->properties[5]++;
+            //MOVING THROUGH THE ANTIDIAGONALS
+			i--; 
+	        j++;
 			
-			if(t->properties[3]<t->properties[0]){ // SE NON SFORA ANTIDIAGONALE MAGGIORE
-	            if(j==0){
+			if(t->properties[3]<t->properties[0]){ // IF THE ELEMENT IS STILL BETWEEN THE FIRST ELEMENT OF THE TABLEAU AND THE ELEMENTS OF THE MAIN ANTIDIAGONAL
+	            if(t->properties[4]==0){
 					t->properties[3]++;
-	        		if(t->properties[3]<t->properties[0]){ //SE CONTINUA A NON SFORARE DOPO AVER SCALATO ANTIDIAGONALE
-	        			t->properties[4]=t->properties[3];
-	        			t->properties[5]=0;
-					} else { //SE SFORA LA PRIMA VOLTA l'ANTIDIAGONALE MAGGIORE
-						t->properties[4]=t->properties[0]-1;
-						t->properties[5]=t->properties[3]-t->properties[0];
+	        		if(t->properties[3]<t->properties[0]){ //IF AFTER CHANGING ANTIDIAGONAL IS STILL BEFORE THE MAIN ONE
+	        			i=t->properties[3];
+	        			j=0;
+					} else { //IF IS THE ANTIDIAGONAL RIGHT NEXT TO THE MAIN ONE
+						i=t->properties[0]-1;
+						j=t->properties[3]-t->properties[0]+1;
 					}
-				}
-			}else{ //SFORATA ANTIDIAGONALE MAGGIORE
-				if(t->properties[5]>=t->properties[1]){
+				} else if(j>=t->properties[1]){
+						t->properties[3]++;
+						i=t->properties[3];
+						j=0;
+					}
+						
+			}else{ //IF IT IS PAST THE MAIN ANTIDIAGONAL
+				if(j>=t->properties[1]){
 					t->properties[3]++;
-					t->properties[4]=t->properties[0]-1;
-					t->properties[5]=t->properties[3]-t->properties[0];
+					i=t->properties[0]-1;
+					j=t->properties[3]-t->properties[0]+1;
 				}
 			}
-    }
+    //}
+    t->properties[4]=i;
+    t->properties[5]=j;
     climbTableau(t,cs);
 	free(cs);
 }
@@ -192,43 +222,44 @@ void climbTableau(tableau *t,coordinates *cs){
 	}
 }
 
+/* RETURNS THE SMALLEST ELEMENT OF THE TABLEAU, DELETES IT FROM THE STRUCTURE AND RESTORES THE TABLEAU PROPERTIES */
+
 int extractMin(tableau *t){
 	int min = t->data[0][0];
-	int i=t->properties[4]+1; //INDICE RIGA ULTIMO ELEMENTO INSERITO
-	int j=t->properties[5]-1; //INDICE COLONNA ULTIMO ELEMENTO INSERITO
+	int i=t->properties[4]+1; //ROW INDEX OF THE LAST INSERTED ELEMENT
+	int j=t->properties[5]-1; //COLUMN INDEX OF THE LAST INSERTED ELEMENT
 	coordinates *cs=NULL;
-	
+	t->properties[2]--;
 	if(isEmpty(t)){
 		TABLERROR=-2;
 		return INT_MAX;
 	}
     
-    //POSSIBILI CASI ULTIMO ELEMENTO INSERITO
-	if(i==2&&j==-1){ // CASO BASE 1 ELEMENTO
+    //CASES TO FIND THE LAST INSERTED ELEMENT
+	if(i==2&&j==-1){ // IF THE TABLEAU ONLY HAS ONE ELEMENT
 		t->properties[4]--;
-		t->properties[2]--;
+		printf("caso base %d\n", t->properties[4]);
 		t->data[i][j]=INT_MAX;
 		return min;
 	}
 	
-	t->properties[2]--;
 	
-	if(i<t->properties[0]-1 && j>0){ // CASO GENERICO PROSSIMO ELEMENTO
-	
+	if(i<=t->properties[0]-1 && j>0){ // GENERAL CASE
+		printf("caso generale\n");
 		t->data[0][0]=t->data[i][j];
 		t->data[i][j]=INT_MAX;
 		t->properties[4]=i;
 		t->properties[5]=j;
 		
-	} else if(i>=t->properties[0]-1 && j>0){ //CASO PARTICOLARE PROSSIMO ELEMENTO SU ULTIMA RIGA
-		
+	} else if(i>=t->properties[0]-1 && j>0){ //IF THE ELEMENT IS ON THE LAST ROW
+		printf("last row\n");
 		j=t->properties[5]=t->properties[1]-1;
 		i=t->properties[4]=t->properties[0]-1;
 		t->data[0][0]=t->data[i][j];
 		t->data[i][j]=INT_MAX;
 		
-	} else if(i<t->properties[0]-1 && j<=0){ //CASO PARTICOLARE PROSSIMO ELEMENTO SU PRIMA COLONNA
-	
+	} else if(i<t->properties[0]-1 && j<=0){ //IF THE ELEMENT IS ON THE FIRST COLUMN
+		printf("last column\n");
 		j=t->properties[5]=i-1;
 		i=t->properties[4]=0;
 		t->data[0][0]=t->data[i][j];
@@ -236,7 +267,7 @@ int extractMin(tableau *t){
 		
 	}
 	
-	//RISTABILISCO PROPRIETà TABLEAU
+	//RESTORES TABLEAU PROPERTIES
 	cs=position(0,0);
 	tableaufy(t, cs);
 	
@@ -244,7 +275,22 @@ int extractMin(tableau *t){
 	return min;	
 }
 
+/* FUNCTION THAT DELETES A WHOLE TABLEAU */
+
 void freetableau(tableau *t){
     free(t->data);
     free(t);
+}
+
+/* SORTING ALGORTHM FOR A SEQUENCE OF NUMBERS THAT USES THE TABLEAU PROPERTIES */
+
+int *YoungSort(int *sequenza, int n){
+	int i=0, dimensione=0;
+	tableau *t;
+	dimensione=Dimension(n);
+	
+	t=createTableau(sequenza, dimensione, dimensione, n);
+	for(; i<n; i++)
+		sequenza[i]=extractMin(t);
+	return sequenza;
 }
