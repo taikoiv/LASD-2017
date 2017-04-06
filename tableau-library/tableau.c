@@ -84,10 +84,11 @@ coordinates* parent(tableau *t,coordinates *i){
 /* FUNCTION USED TO PRINT A TABLEAU */
 void printTableau(tableau *t){
 	int i, j;
+	printf("\n");
 	for(i=0; i<t->properties[0]; i++){
 		for(j=0; j<t->properties[1]; j++)
 			if(t->data[i][j]!=INT_MAX)
-				printf("%d ", t->data[i][j]);
+				printf("%d\t", t->data[i][j]);
 		printf("\n");
 	}
 }
@@ -168,7 +169,7 @@ void insert(tableau *t,int k){
 	int i=t->properties[4];
 	int j=t->properties[5];
 	coordinates* cs=NULL;
-	//printf("INSERISCO IN %d | %d \n",i,j);
+	//printf("INSERISCO IN %d | %d   Diagonale:%d \n",i,j,t->properties[3]);
     if(t->data[i][j]==INT_MAX){
             t->data[i][j]=k;
             t->properties[2]++;
@@ -182,7 +183,7 @@ void insert(tableau *t,int k){
 	            if(t->properties[4]==0){
 					t->properties[3]++;
 	        		if(t->properties[3]<t->properties[0]){ //IF AFTER CHANGING ANTIDIAGONAL IS STILL BEFORE THE MAIN ONE
-	        			i=t->properties[3];
+						i=t->properties[3];
 	        			j=0;
 					} else { //IF IS THE ANTIDIAGONAL RIGHT NEXT TO THE MAIN ONE
 						i=t->properties[0]-1;
@@ -190,11 +191,17 @@ void insert(tableau *t,int k){
 					}
 				} else if(j>=t->properties[1]){
 						t->properties[3]++;
-						i=t->properties[3];
-						j=0;
+						if(t->properties[3]<t->properties[0]){
+							i=t->properties[3];
+							j=0;
+						} else {
+							i=t->properties[0]-1;
+							j=t->properties[3]-t->properties[0]+1;
+						}
 					}
 						
 			}else{ //IF IT IS PAST THE MAIN ANTIDIAGONAL
+				//printf("j:%d - colonne:%d\n",j,t->properties[1]);
 				if(j>=t->properties[1] || i<0){ //INDEXS OF NEXT ELEMENT TO INSERT ARE OVER THE TABLEAU LIMITS
 					t->properties[3]++;
 					i=t->properties[0]-1;
