@@ -35,7 +35,7 @@ int extractMin(tableau *t);
 void insert(tableau *t,int k);
 void printTableau(tableau *t);
 void freetableau(tableau *t);
-int youngSort(int *sequenza, int n);
+int *youngSort(int *sequenza, int n);
 int isEmpty(tableau *t);
 int size(tableau *t);
 #endif

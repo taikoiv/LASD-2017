@@ -163,7 +163,7 @@ void sortArray(){
         scanf("%d",&array[i]);
         clearBuffer();
     }
-    YoungSort(array,dim);
+    youngSort(array,dim);
     printf("\n| ");
     for(i=0;i<dim;i++)
         printf("%d | ",array[i]);
