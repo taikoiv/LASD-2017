@@ -288,7 +288,7 @@ void freetableau(tableau *t){
 
 /* SORTING ALGORTHM FOR A SEQUENCE OF NUMBERS THAT USES THE TABLEAU PROPERTIES */
 
-int *YoungSort(int *sequenza, int n){
+int *youngSort(int *sequenza, int n){
 	int i=0, dimensione=0;
 	tableau *t;
 	dimensione=Dimension(n);
