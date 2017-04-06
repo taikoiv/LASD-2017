@@ -204,7 +204,7 @@ void insert(tableau *t,int k){
     t->properties[4]=i;
     t->properties[5]=j;
     
-    //printf("PROSSIMO IN %d | %d DIAGONALE = %d \n",i,j,t->properties[3]);
+    printf("PROSSIMO IN %d | %d DIAGONALE = %d \n",i,j,t->properties[3]);
     climbTableau(t,cs);
 	free(cs);
 }
@@ -267,6 +267,9 @@ int extractMin(tableau *t){
 			i=t->properties[3]-(t->properties[1]-1);
 		}
 
+	}else{
+		i++;
+		j--;
 	}
 	//RESTORES TABLEAU PROPERTIES
 	t->data[0][0]=t->data[i][j];

@@ -1,14 +1,6 @@
 #ifndef TABLEAU_H
 #define TABLEAU_H
 
-/*
-#DEFINE N_ROW properties[0]
-#DEFINE N_COLUMN properties[1]
-#DEFINE SIZE properties[2]
-#DEFINE ANTIDIAGONAL properties[3]
-#DEFINE LEAF_R properties[4]
-#DEFINE LEAF_C properties[5]
-*/
 typedef struct {
 	int properties[6]; // DO NOT TOUCH THIS VALUES, PLEASE
 	/*

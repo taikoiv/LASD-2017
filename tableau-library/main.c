@@ -99,6 +99,7 @@ int main(int argc, char *argv[]) {
 					min = extractMin(h);
 					if(TABLERROR==-2){
 					 	printf("Error: Tableau is empty, you can't extact any more elements\n");
+					 	TABLERROR=0;
 					}else{
 						printf("Min value in the tableau : %d\n",min);
 					}			
@@ -110,6 +111,7 @@ int main(int argc, char *argv[]) {
 		}
         if(TABLERROR==-1){
             printf("Error: Tableau is full, you can't add any more elements\n");
+            TABLERROR=0;
             system(PAUSE);
             system(CLS);
         }else {
