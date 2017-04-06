@@ -44,7 +44,7 @@ coordinates* position(int i,int j){
 
 coordinates* left(tableau *t,coordinates *i){
 	coordinates* cs=NULL;
-	if((i->x)+1<=t->properties[0] && t->data[(i->x)+1][i->y]!=INT_MAX){
+	if((i->x)+1<t->properties[0] && t->data[(i->x)+1][i->y]!=INT_MAX){
 		cs=(coordinates*) malloc(sizeof(coordinates));
 		cs->x=(i->x)+1;
 		cs->y=i->y;
@@ -55,7 +55,7 @@ coordinates* left(tableau *t,coordinates *i){
 
 coordinates* right(tableau *t,coordinates *i){
 	coordinates* cs=NULL;
-	if((i->y)+1<=t->properties[1] && t->data[i->x][(i->y)+1]!=INT_MAX){
+	if((i->y)+1<t->properties[1] && t->data[i->x][(i->y)+1]!=INT_MAX){
 		cs=(coordinates*) malloc(sizeof(coordinates));
 		cs->x=i->x;
 		cs->y=(i->y)+1;
@@ -169,7 +169,6 @@ void insert(tableau *t,int k){
 	int i=t->properties[4];
 	int j=t->properties[5];
 	coordinates* cs=NULL;
-	//printf("INSERISCO IN %d | %d   Diagonale:%d \n",i,j,t->properties[3]);
     if(t->data[i][j]==INT_MAX){
             t->data[i][j]=k;
             t->properties[2]++;
@@ -201,7 +200,6 @@ void insert(tableau *t,int k){
 					}
 						
 			}else{ //IF IT IS PAST THE MAIN ANTIDIAGONAL
-				//printf("j:%d - colonne:%d\n",j,t->properties[1]);
 				if(j>=t->properties[1] || i<0){ //INDEXS OF NEXT ELEMENT TO INSERT ARE OVER THE TABLEAU LIMITS
 					t->properties[3]++;
 					i=t->properties[0]-1;
