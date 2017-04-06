@@ -227,54 +227,54 @@ void climbTableau(tableau *t,coordinates *cs){
 /* RETURNS THE SMALLEST ELEMENT OF THE TABLEAU, DELETES IT FROM THE STRUCTURE AND RESTORES THE TABLEAU PROPERTIES */
 
 int extractMin(tableau *t){
+	printTableau(t);
 	int min = t->data[0][0];
-	int i=t->properties[4]+1; //ROW INDEX OF THE LAST INSERTED ELEMENT
-	int j=t->properties[5]-1; //COLUMN INDEX OF THE LAST INSERTED ELEMENT
+	int i=t->properties[4]; //ROW INDEX WHERE TO INSERT THE NEXT ELEMENT
+	int j=t->properties[5]; //COLUMN INDEX WHERE TO INSERT THE NEXT ELEMENT
 	coordinates *cs=NULL;
 	if(isEmpty(t)){
 		TABLERROR=-2;
 		return INT_MAX;
 	}
-    
+    t->properties[2]--;
     //CASES TO FIND THE LAST INSERTED ELEMENT
-	if(i==2&&j==-1){ // IF THE TABLEAU ONLY HAS ONE ELEMENT
-		t->properties[4]--;
-		printf("caso base %d\n", t->properties[4]);
-		t->data[i][j]=INT_MAX;
-		t->properties[2]--;
-		return min;
+    if(j>=t->properties[1]){//LAST TABLEAU ELEMENT
+    	i=t->properties[0]-1;
+    	j=t->properties[1]-1;
+    	t->properties[3]--;
+	}
+    else if(i==1&&j==0){//IF THERE IS ONLY ONE ELEMENT IN THE TABLEAU
+    	t->properties[3] = 0;
+		t->properties[4] = 0;
+		t->properties[5] = 0;
+    	t->data[0][0]=INT_MAX;
+    	return min;
 	}
 	
-	if(i<=t->properties[0]-1 && j>0){ // GENERAL CASE
-		printf("caso generale\n");
-		t->data[0][0]=t->data[i][j];
-		t->data[i][j]=INT_MAX;
-		t->properties[4]=i;
-		t->properties[5]=j;
-		t->properties[2]--;
-		
-	} else if(i>=t->properties[0]-1 && j>0){ //IF THE ELEMENT IS ON THE LAST ROW
-		printf("last row\n");
-		j=t->properties[5]=t->properties[1]-1;
-		i=t->properties[4]=t->properties[0]-1;
-		t->data[0][0]=t->data[i][j];
-		t->data[i][j]=INT_MAX;
-		t->properties[2]--;
-		
-	} else if(i<t->properties[0]-1 && j<=0){ //IF THE ELEMENT IS ON THE FIRST COLUMN
-		printf("last column\n");
-		j=t->properties[5]=i-1;
-		i=t->properties[4]=0;
-		t->data[0][0]=t->data[i][j];
-		t->data[i][j]=INT_MAX;
-		t->properties[2]--;
-		
+	else if(j==0 && i>0){//IF ELEMENT IS ON THE FIRST COLUMN
+		t->properties[3]--;
+		j=t->properties[3]-1;
+		i=0;
 	}
-	
+	else if(i==t->properties[0]-1){//IF ELEMENT IS ON THE LAST ROW
+		t->properties[3]--;
+		if(t->properties[3]<=t->properties[1]){
+			i=0;
+			j=t->properties[3];
+		}
+		else{
+			j=t->properties[1]-1;
+			i=t->properties[3]-(t->properties[1]-1);
+		}
+
+	}
 	//RESTORES TABLEAU PROPERTIES
+	t->data[0][0]=t->data[i][j];
+	t->data[i][j]=INT_MAX;
+	t->properties[4]=i;
+	t->properties[5]=j;
 	cs=position(0,0);
 	tableaufy(t, cs);
-	
 	free(cs);
 	return min;	
 }
