@@ -227,7 +227,6 @@ void climbTableau(tableau *t,coordinates *cs){
 /* RETURNS THE SMALLEST ELEMENT OF THE TABLEAU, DELETES IT FROM THE STRUCTURE AND RESTORES THE TABLEAU PROPERTIES */
 
 int extractMin(tableau *t){
-	printTableau(t);
 	int min = t->data[0][0];
 	int i=t->properties[4]; //ROW INDEX WHERE TO INSERT THE NEXT ELEMENT
 	int j=t->properties[5]; //COLUMN INDEX WHERE TO INSERT THE NEXT ELEMENT
@@ -253,18 +252,18 @@ int extractMin(tableau *t){
 	
 	else if(j==0 && i>0){//IF ELEMENT IS ON THE FIRST COLUMN
 		t->properties[3]--;
-		j=t->properties[3]-1;
+		j=t->properties[3];
 		i=0;
 	}
 	else if(i==t->properties[0]-1){//IF ELEMENT IS ON THE LAST ROW
 		t->properties[3]--;
-		if(t->properties[3]<=t->properties[1]){
+		if(t->properties[3]<t->properties[1]){
 			i=0;
 			j=t->properties[3];
 		}
 		else{
 			j=t->properties[1]-1;
-			i=t->properties[3]-(t->properties[1]-1);
+			i=t->properties[3]-t->properties[1]+1;
 		}
 
 	}else{
@@ -279,6 +278,7 @@ int extractMin(tableau *t){
 	cs=position(0,0);
 	tableaufy(t, cs);
 	free(cs);
+	printTableau(t);
 	return min;	
 }
 
