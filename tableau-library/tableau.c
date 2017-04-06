@@ -168,7 +168,8 @@ void insert(tableau *t,int k){
 	int i=t->properties[4];
 	int j=t->properties[5];
 	coordinates* cs=NULL;
-    //if(t->data[i][j]==INT_MAX){
+	//printf("INSERISCO IN %d | %d \n",i,j);
+    if(t->data[i][j]==INT_MAX){
             t->data[i][j]=k;
             t->properties[2]++;
             cs=position(i,j);
@@ -194,15 +195,17 @@ void insert(tableau *t,int k){
 					}
 						
 			}else{ //IF IT IS PAST THE MAIN ANTIDIAGONAL
-				if(j>=t->properties[1]){
+				if(j>=t->properties[1] || i<0){ //INDEXS OF NEXT ELEMENT TO INSERT ARE OVER THE TABLEAU LIMITS
 					t->properties[3]++;
 					i=t->properties[0]-1;
 					j=t->properties[3]-t->properties[0]+1;
 				}
 			}
-    //}
+    }
     t->properties[4]=i;
     t->properties[5]=j;
+    
+    //printf("PROSSIMO IN %d | %d DIAGONALE = %d \n",i,j,t->properties[3]);
     climbTableau(t,cs);
 	free(cs);
 }
