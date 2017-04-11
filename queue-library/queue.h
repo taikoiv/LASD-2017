@@ -8,6 +8,8 @@ typedef struct {
   int *data;
 } queue;
 
+external int Q_ERROR
+
 queue* newQueue();
 int isEmpty(queue* q);
 void enqueue(queue* q,int k);
