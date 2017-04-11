@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
 #include "queue.h"
 
@@ -44,7 +41,7 @@ int main(int argc, char *argv[]) {
 	srand(time(NULL));
 	queue *q = NULL;
 
-	printf("Welcome to min Tableau library example \n\n");
+	printf("Welcome to queue library example \n\n");
 	while(choice<0 || choice>3){
 		printMenu();
 		scanf("%d",&choice);

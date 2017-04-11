@@ -4,7 +4,8 @@
 #define MAX 100
 
 typedef struct {
-  int head,tail;
+  int head;
+  int tail;
   int data[MAX];
   //int *data for dynamic method
 } queue;

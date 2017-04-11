@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "queue.h"
 
 int Q_ERROR=0;
@@ -12,7 +13,7 @@ queue* newQueue(){
 }
 
 int isEmpty(queue* q){
-	if(head==0)
+	if(q->head==0)
 		return 1;
 	return 0;
 }
@@ -44,7 +45,7 @@ void reverse(queue* q){
 	while(!isEmpty(q)){
 		k=dequeue(q);
 		reverse(q);
-		enqueue(e,k);
+		enqueue(q,k);
 	}
 }
 
@@ -63,7 +64,7 @@ void printQueue(queue* q){
 queue* randomQueue(){
 	queue* q=newQueue();
 	int i;
-	for(i=0;i<rand()%MAX){
+	for(i=0; i<rand()%MAX; i++){
 		enqueue(q,rand());
 	}
 	return q;
