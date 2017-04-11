@@ -8,7 +8,7 @@ typedef struct {
   int *data;
 } queue;
 
-external int Q_ERROR
+extern int Q_ERROR
 
 queue* newQueue();
 int isEmpty(queue* q);
