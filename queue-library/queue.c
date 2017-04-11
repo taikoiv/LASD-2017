@@ -5,6 +5,7 @@
 int Q_ERROR=0;
 
 void reverse(queue* q); //REVERSE QUEUE ORDER
+void printQueueSub(queue* q); //PRINT THE ELEMENT i OF THE QUEUE
 
 queue* newQueue(){
 	queue *q=(queue*) malloc(sizeof(queue));
@@ -50,15 +51,12 @@ void reverse(queue* q){
 }
 
 void printQueue(queue* q){
-	int k;
-	printf("QUEUE :");
-	while(!isEmpty(q)){
-		k=dequeue(q);
-		printf(" %d",k);
-		enqueue(q,k);
+	printf("CODA :");
+	if(!isEmpty(q)){
+		printQueueSub(q);
+		reverse(q);
 	}
 	printf("\n");
-	reverse(q);
 }
 
 queue* randomQueue(){
@@ -68,4 +66,14 @@ queue* randomQueue(){
 		enqueue(q,rand());
 	}
 	return q;
+}
+
+void printQueueSub(queue* q){
+	int k;
+	if(!isEmpty(q)){
+		k=dequeue(q);
+		printf("%d ",k);
+		printQueueSub(q);
+		enqueue(q,k);
+	}
 }
