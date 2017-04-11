@@ -2,7 +2,7 @@
 LASD 2017 repository.
 
 # About us
-Group ID : 11 </br>
+Group ID : <b>11</b> </br>
 Group Members :
   <ul>
   <li>Francesco Borrelli N86/2055</li>
