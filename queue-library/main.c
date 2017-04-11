@@ -36,8 +36,8 @@ queue *createFromInput(int n){
 		
 
 int main(int argc, char *argv[]) {
-	int choice=-1,value;
-	int min, n;
+	int choice=-1, value;
+	int element, n;
 	srand(time(NULL));
 	queue *q = NULL;
 
@@ -80,7 +80,11 @@ int main(int argc, char *argv[]) {
                 clearBuffer();
 				enqueue(q,value);
 				break;
-			case 2 : value=-1;
+			case 2 : element = dequeue(q);
+					 system(CLS);
+					 printf("%d\n", element);
+					 break;
+			case 3: value=-1;
 				do{
 					printf("Press 1 to continue or 0 to cancel\n");
 					scanf("%d",&value);
@@ -93,12 +97,12 @@ int main(int argc, char *argv[]) {
 					return 0;
 				} else choice=-1;
 				break;
-			case 3 : if(isEmpty(q))
+			case 4 : if(isEmpty(q))
 					printf("Queue is empty\n");
 				else
 					printf("Queue is not empty\n");
 				break;
-			case 4 : printQueue(q);
+			case 5 : printQueue(q);
 				break;
 			default : printf("NOT A VALID VALUE \n");
 				clearBuffer();
@@ -134,9 +138,10 @@ void printOpMenu(){ //PRINT SECONDARY MENU
 	printf("\t\t\t\tENTER A CHOICE\n");
 	printf("*====================================================================================*\n");
 	printf("1) Insert an element\n");
-	printf("2) Delete tableau\n");
-	printf("3) Check if tableau is empty\n");
-	printf("4) Print tableau\n");
+	printf("2) Extract an element\n");
+	printf("3) Delete queue\n");
+	printf("4) Check if queue is empty\n");
+	printf("5) Print queue\n");
 	printf("--------------------------------------------------------------------------------------\n");
 	printf("0) Exit\n");
 	printf("*====================================================================================*\n");
