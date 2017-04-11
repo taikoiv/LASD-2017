@@ -2,11 +2,13 @@
 LASD 2017 repository.
 
 # About us
-Group ID : 11
+Group ID : 11 </br>
 Group Members :
-  Francesco Borrelli N86/2055,
-  Alessandro Grieco N86/1314,
-  Camilla Zampella N86/1390
+  <ul>
+  <li>Francesco Borrelli N86/2055</li>
+  <li>Alessandro Grieco N86/1314</li>
+  <li>Camilla Zampella N86/1390</li>
+  </ul>
 
 # Completed libraries :
   - <b>[Heap](https://github.com/taikoiv/LASD-2017/tree/master/heap-library)</b></br>
