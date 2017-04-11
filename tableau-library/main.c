@@ -17,8 +17,8 @@
 /* THIS FILE IS JUST AN EXAMPLE THAT EXPLAIN HOW TO USE mHeap LIBRAY */
 int TABLERROR;
 void printMenu(); //PRINT PRIMARY MENU
-tableau* getTabFromInput(int mode); //CREATE AN HEAP WITH INPUT VALUES
-tableau* getTabFromRandomVal(); //CREATE AN HEAP WITH RANDOM VALUES
+tableau* getTabFromInput(int mode); //CREATE A TABLEAU WITH INPUT VALUES
+tableau* getTabFromRandomVal(); //CREATE A TABLEAU WITH RANDOM VALUES
 void printOpMenu(); //PRINT SECONDARY MENU
 void sortArray(); //CREATE AND SORT AN ARRAY FROM INPUT
 
@@ -98,8 +98,8 @@ int main(int argc, char *argv[]) {
 			case 5 : 
 					min = extractMin(h);
 					if(TABLERROR==-2){
+						TABLERROR = 0;
 					 	printf("Error: Tableau is empty, you can't extact any more elements\n");
-					 	TABLERROR=0;
 					}else{
 						printf("Min value in the tableau : %d\n",min);
 					}			
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
 		}
         if(TABLERROR==-1){
             printf("Error: Tableau is full, you can't add any more elements\n");
-            TABLERROR=0;
+            TABLERROR = 0;
             system(PAUSE);
             system(CLS);
         }else {
@@ -165,7 +165,7 @@ void sortArray(){
         scanf("%d",&array[i]);
         clearBuffer();
     }
-    youngSort(array,dim);
+    YoungSort(array,dim);
     printf("\n| ");
     for(i=0;i<dim;i++)
         printf("%d | ",array[i]);
@@ -173,7 +173,7 @@ void sortArray(){
 }
 
 
-tableau* getTabFromRandomVal(){ //BUILD A RANDOM HEAP WITH RANDOM DIMENSION AND VALUES
+tableau* getTabFromRandomVal(){ //BUILD A RANDOM TABLEAU WITH RANDOM DIMENSION AND VALUES
     int r,c,i,tot,*array;
     tableau* h=NULL;
     r=rand();
@@ -181,7 +181,7 @@ tableau* getTabFromRandomVal(){ //BUILD A RANDOM HEAP WITH RANDOM DIMENSION AND 
     tot = rand()%(r*c);
     array = (int *) malloc((c * r) * sizeof(int));
     for(i=0;i<(c*r);i++)
-        array[i]=rand();
+        array[i]=rand()%r;
         
     h = createTableau(array,r,c,tot);
     free(array);
@@ -189,7 +189,7 @@ tableau* getTabFromRandomVal(){ //BUILD A RANDOM HEAP WITH RANDOM DIMENSION AND 
 }
 
 
-tableau* getTabFromInput(int mode){ // GET HEAP VALUES AND DIMENSION FROM STDIN
+tableau* getTabFromInput(int mode){ // GET TABLEAU VALUES AND DIMENSION FROM STDIN
 	int r,c,i,tot,*array,tmp;
 	tableau *h=NULL;
 	r=-1;

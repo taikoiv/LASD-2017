@@ -204,7 +204,7 @@ void insert(tableau *t,int k){
     t->properties[4]=i;
     t->properties[5]=j;
     
-    printf("PROSSIMO IN %d | %d DIAGONALE = %d \n",i,j,t->properties[3]);
+    //printf("PROSSIMO IN %d | %d DIAGONALE = %d \n",i,j,t->properties[3]);
     climbTableau(t,cs);
 	free(cs);
 }
@@ -226,8 +226,9 @@ void climbTableau(tableau *t,coordinates *cs){
 
 /* RETURNS THE SMALLEST ELEMENT OF THE TABLEAU, DELETES IT FROM THE STRUCTURE AND RESTORES THE TABLEAU PROPERTIES */
 
+
 int extractMin(tableau *t){
-	int min = t->data[0][0];
+int min = t->data[0][0];
 	int i=t->properties[4]; //ROW INDEX WHERE TO INSERT THE NEXT ELEMENT
 	int j=t->properties[5]; //COLUMN INDEX WHERE TO INSERT THE NEXT ELEMENT
 	coordinates *cs=NULL;
@@ -250,23 +251,19 @@ int extractMin(tableau *t){
     	return min;
 	}
 	
-	else if(j==0 && i>0){//IF ELEMENT IS ON THE FIRST COLUMN
-		t->properties[3]--;
-		j=t->properties[3];
-		i=0;
-	}
-	else if(i==t->properties[0]-1){//IF ELEMENT IS ON THE LAST ROW
+	else if((j==0 && i>0)||(i==t->properties[0]-1)){//IF ELEMENT IS ON THE FIRST COLUMN OR ON THE LAST ROW
 		t->properties[3]--;
 		if(t->properties[3]<t->properties[1]){
-			i=0;
 			j=t->properties[3];
-		}
-		else{
+			i=0;
+		}else{
 			j=t->properties[1]-1;
 			i=t->properties[3]-t->properties[1]+1;
 		}
+		
+	}
 
-	}else{
+	else{
 		i++;
 		j--;
 	}
@@ -278,7 +275,6 @@ int extractMin(tableau *t){
 	cs=position(0,0);
 	tableaufy(t, cs);
 	free(cs);
-	printTableau(t);
 	return min;	
 }
 
@@ -291,7 +287,7 @@ void freetableau(tableau *t){
 
 /* SORTING ALGORTHM FOR A SEQUENCE OF NUMBERS THAT USES THE TABLEAU PROPERTIES */
 
-int *youngSort(int *sequenza, int n){
+int *YoungSort(int *sequenza, int n){
 	int i=0, dimensione=0;
 	tableau *t;
 	dimensione=Dimension(n);
