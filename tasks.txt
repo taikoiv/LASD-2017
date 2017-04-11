@@ -1,15 +1,7 @@
-CAMILLA : - BUILDHEAP
-          - HEAPIFY
-          - INSERT
-          - ISEMPTY
+CAMILLA : -MAIN
+          -GIOCO
+          -DOCS
           
-CHECCO : - MIN
-          - DELETE
-          - SIZE
-          - FREE HEAP
+CHECCO : -STACK LIBRARY
 
-ALESSANDRO : - DOCUMENTAZIONE
-             - STAMPA
-             - MAIN
-             - COMMENTI
-             
+ALESSANDRO : - QUEUE LIBRARY
