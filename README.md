@@ -8,6 +8,6 @@ Group Members :
   Camilla Zampella N86/1390
 
 # Completed libraries :
-  - #[Heap](https://github.com/taikoiv/LASD-2017/tree/master/heap-library)
-  - #[Young tableau](https://github.com/taikoiv/LASD-2017/tree/master/tableau-library)
-  - #[Queue](https://github.com/taikoiv/LASD-2017/tree/master/queue-library)
+  - <b>[Heap](https://github.com/taikoiv/LASD-2017/tree/master/heap-library)</b></br>
+  - <b>[Young tableau](https://github.com/taikoiv/LASD-2017/tree/master/tableau-library)</b></br>
+  - <b>[Queue](https://github.com/taikoiv/LASD-2017/tree/master/queue-library)</b></br>
