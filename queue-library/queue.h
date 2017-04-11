@@ -9,7 +9,7 @@ typedef struct {
   //int *data for dynamic method
 } queue;
 
-extern int Q_ERROR //CONTAINS AN ERROR CODE
+extern int Q_ERROR;//CONTAINS AN ERROR CODE
 /*
   ERROR CODES:
     -1 : EMPTY QUEUE (IT IS NOT POSSIBLE TO DEQUEUE)
