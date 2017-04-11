@@ -32,3 +32,5 @@
 *.dSYM/
 *.su
 *.layout
+*.layout
+queue-library/queue-library.layout
