@@ -1,12 +1,12 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#define MAX 100
+#define MAX 3
 
 typedef struct {
-  int head;
-  int tail;
-  int data[MAX];
+  int head; // POSITION OF THE FIRST ELEMENT TO EXTRACT
+  int tail; // POSITION TO INSERT A NEW ELEMENT
+  int data[MAX]; //DATA IN THE QUEUE
   //int *data for dynamic method
 } queue;
 
@@ -23,5 +23,7 @@ void enqueue(queue* q,int k); //ADD AN ELEMENT IN THE QUEUE
 int dequeue(queue* q); //EXTRACT AN ELEMENT FROM THE QUEUE
 void printQueue(queue* q); //PRINT THE QUEUE
 queue* randomQueue(); //CREATE A QUEUE WITH RANDOM VALUES
-
+/*
+ALL THE FUNCTIONS IN THE LIBRARY HAVE A COSTANT TIME COMPLEXITY
+*/
 #endif

@@ -81,8 +81,8 @@ int main(int argc, char *argv[]) {
 				enqueue(q,value);
 				break;
 			case 2 : element = dequeue(q);
-					 system(CLS);
-					 printf("%d\n", element);
+					 if(Q_ERROR==0)
+					 	printf("Extracted element :%d\n", element);
 					 break;
 			case 3: value=-1;
 				do{
@@ -107,7 +107,12 @@ int main(int argc, char *argv[]) {
 			default : printf("NOT A VALID VALUE \n");
 				clearBuffer();
 		}
-        /*if(Q_ERROR==-1){
+        if(Q_ERROR==-1){
+        	printf("Error : Queue is empty, you can't extract an element\n");
+        	Q_ERROR=0;
+        	system(PAUSE);
+        	system(CLS);
+		} else if(Q_ERROR==-2){
             printf("Error: Queue is full, you can't add any more elements\n");
             Q_ERROR=0;
             system(PAUSE);
@@ -115,7 +120,7 @@ int main(int argc, char *argv[]) {
         }else {
             if (choice != 0) system(PAUSE);
             system(CLS);
-        }*/
+        }
 	}
 	printf("Goodbye\n");
 	if(q)

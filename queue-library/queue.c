@@ -5,7 +5,7 @@
 int Q_ERROR=0;
 
 void reverse(queue* q); //REVERSE QUEUE ORDER
-void printQueueSub(queue* q); //PRINT THE ELEMENT i OF THE QUEUE
+void printQueueSub(queue* q); //SUBFUNCTION OF PRINTQUEUE
 
 queue* newQueue(){
 	queue *q=(queue*) malloc(sizeof(queue));
@@ -20,6 +20,10 @@ int isEmpty(queue* q){
 }
 
 void enqueue(queue* q,int k){
+	if(q->head==q->tail){
+		Q_ERROR=-2;
+		return;
+	}
 	q->data[q->tail]=k;
 	if(q->head==0)
 		q->head=1;
@@ -43,7 +47,7 @@ int dequeue(queue* q){
 
 void reverse(queue* q){
 	int k;
-	while(!isEmpty(q)){
+	if(!isEmpty(q)){
 		k=dequeue(q);
 		reverse(q);
 		enqueue(q,k);
@@ -61,8 +65,9 @@ void printQueue(queue* q){
 
 queue* randomQueue(){
 	queue* q=newQueue();
-	int i;
-	for(i=0; i<rand()%MAX; i++){
+	int i,n=rand()%MAX;
+	
+	for(i=0; i<n; i++){
 		enqueue(q,rand());
 	}
 	return q;
