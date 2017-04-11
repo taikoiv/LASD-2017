@@ -23,7 +23,42 @@ void clearBuffer(){ //clear the stdin when user write an invalid input data
 	while ((c = getchar()) != '\n' && c != EOF) { };
 }
 
-queue *createFromInput(int n){
+void gioco(){
+	stack *s=NULL, *t=NULL;
+	s = randomStack();
+	printf("Stack 1: ");
+	printStack(s);
+	t = randomStack();
+	printf("\nStack 2: ");
+	printStack(t);
+	printf("\n");
+	giocoImp(s, t);
+}
+
+void giocoImp(stack *s, stack *t){
+	int vals, valt, sum;
+	if(!isEmpty(s)&&(!isEmpty(t))){
+		vals = pop(s);
+		valt = pop(t);
+		sum = (vals+valt)%10;
+		if(sum>5)
+			push(t, valt);
+		else push(s, vals);
+		system(PAUSE);
+		system(CLS);
+		printf("Stack 1: ");
+		printStack(s);
+		printf("\nStack 2: ");
+		printStack(t);
+		printf("\n");
+		giocoImp(s, t);
+	}
+	else if(isEmpty(s))
+		printf("Stack number 2 has won!!\n");
+	else printf("Stack number 1 has won!!\n");
+}
+
+stack *createFromInput(int n){
 	int i = 0, val = 0;
 	stack *s = NULL;
 	s = newStack();
@@ -31,7 +66,7 @@ queue *createFromInput(int n){
 		scanf("%d", &val);
 	    push(s, val);
 	}
-	return q;
+	return s;
 }
 		
 
@@ -42,10 +77,10 @@ int main(int argc, char *argv[]) {
 	stack *s = NULL;
 
 	printf("Welcome to stack library example \n\n");
-	while(choice<0 || choice>3){
+	while(choice<0 || choice>4){
 		printMenu();
 		scanf("%d",&choice);
-		if(choice<0 || choice>3){
+		if(choice<0 || choice>4){
 			clearBuffer();
 			printf("NOT A VALID VALUE \n");
 			system(PAUSE);
@@ -56,7 +91,7 @@ int main(int argc, char *argv[]) {
 	switch(choice){
 		case 0 : printf("Goodbye\n");
 			return 0;
-		case 1 : q = newStack();
+		case 1 : s = newStack();
 			break;
 		case 2 : 
 				 printf("How many elements do you wish to insert?\n");
@@ -65,6 +100,8 @@ int main(int argc, char *argv[]) {
 			break;
 		case 3 : s = randomStack();
 			break;
+		case 4 : gioco();
+			 	return 0;
 	}
 	choice=-1;
 	printf("\n\nYour stack is created, now let's do operations on it\n");
@@ -80,7 +117,7 @@ int main(int argc, char *argv[]) {
                 clearBuffer();
 				push(s,value);
 				break;
-			case 2 : element = pull(s);
+			case 2 : element = pop(s);
 					 system(CLS);
 					 printf("%d\n", element);
 					 break;
@@ -102,14 +139,14 @@ int main(int argc, char *argv[]) {
 				else
 					printf("Stack is not empty\n");
 				break;
-			case 5 : printQueue(s);
+			case 5 : printStack(s);
 				break;
 			default : printf("NOT A VALID VALUE \n");
 				clearBuffer();
 		}
         if(S_ERROR==-2){
             printf("Error: Queue is full, you can't add any more elements\n");
-            Q_ERROR=0;
+            S_ERROR=0;
             system(PAUSE);
             system(CLS);
         }else if (S_ERROR==-1){
@@ -134,6 +171,7 @@ void printMenu(){ //PRINT PRIMARY MENU
 	printf("1) Build an empty stack\n");
     printf("2) Build a stack with elements given in input\n");
     printf("3) Build a stack with random elements\n");
+    printf("4) Play!!\n");
     printf("--------------------------------------------------------------------------------------\n");
 	printf("0) Exit\n");
 	printf("*====================================================================================*\n");
