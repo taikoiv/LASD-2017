@@ -1,0 +1,8 @@
+CAMILLA:
+tramite array
+tramite array statici
+tramite numero statico puntatori
+
+ALESSANDRO
+tramite lista
+tramite simil albero binario
