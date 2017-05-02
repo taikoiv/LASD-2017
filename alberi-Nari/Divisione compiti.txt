@@ -6,3 +6,4 @@ tramite numero statico puntatori
 ALESSANDRO
 tramite lista
 tramite simil albero binario
+main
