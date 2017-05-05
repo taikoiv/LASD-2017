@@ -17,10 +17,8 @@ void print(tree *head, int enters);
 tree *deleteNode(tree *head, int val);
 int height(tree* t);
 tree *rotation(tree* t,int n,int direction);
-
 tree *newRandomBst(int nNodes);
 tree *insertBstNode(tree *head, int val);
-
-
+tree *balanceBst(tree *head);
 
 #endif	
