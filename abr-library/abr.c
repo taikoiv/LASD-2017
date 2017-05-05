@@ -81,7 +81,7 @@ void print(tree *head, int enters){
 tree *merge(tree *head, tree *other){
 	if(head!=NULL && other!=NULL){
 		if(head->info==other->info){
-			 
+			  
 		}
 	}
 	else if(head!=NULL&&other==NULL){
@@ -138,3 +138,13 @@ tree *deleteNode(tree *head, int val){
 	}
 	return head;
 }
+
+tree *newRandomBst(int nNodes){
+	
+}
+
+
+tree *insertBstNode(tree *head, int val){
+	
+}
+
