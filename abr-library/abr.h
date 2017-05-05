@@ -16,6 +16,7 @@ tree *merge(tree* head, tree* other);
 void print(tree *head, int enters);
 tree *deleteNode(tree *head, int val);
 int height(tree* t);
+tree *rotation(tree* t,int n,int direction);
 
 
 

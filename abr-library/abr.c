@@ -138,3 +138,17 @@ tree *deleteNode(tree *head, int val){
 	}
 	return head;
 }
+
+tree *rotation(tree* t,int n,int direction){
+	while(n>0){
+		if(direction==0){ //LEFT ROTATION
+			t=lRotation(t);
+		}else if(direction=1){ //RIGHT ROTATION
+			t=rRotation
+		} else {
+			printf("NOT A VALID DIRECTION\n");
+			return t;
+		}
+		n--;
+	}
+}
