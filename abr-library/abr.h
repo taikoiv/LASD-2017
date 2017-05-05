@@ -13,11 +13,10 @@ typedef struct Tree tree;
 tree *newRandomTree(int nNodes);
 tree *insertNode(tree *head, int val);
 tree *merge(tree* head, tree* other);
-void print(tree *head, int enters);
+void printBst(tree *head);
 tree *deleteNode(tree *head, int val);
 int height(tree* t);
 tree *rotation(tree* t,int n,int direction);
-
 tree *newRandomBst(int nNodes);
 tree *insertBstNode(tree *head, int val);
 

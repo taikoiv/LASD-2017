@@ -6,10 +6,22 @@
 #define X 1
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
+void stampa(tree *t){
+	if(t!=NULL){
+		printf("%d  ", t->info);
+		stampa(t->left);
+		stampa(t->right);
+	}
+}
+
 int main() {
 	srand(time(NULL));
-	tree *head;
-	head = newRandomTree(10);
-	print(head, 0);
+	tree *head, *other;
+	//other = newRandomBst(10);
+	head = newRandomBst(10);
+	printf("altezza : %d\n\n", height(head)); 
+	stampa(head);
+	printf("\n-------------------------------------------------\n");
+	printBst(head);
 	return 0;
 }

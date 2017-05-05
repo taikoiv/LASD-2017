@@ -2,15 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include "abr.h"
-
 tree* staccaMin(tree *node,tree *father);
 tree* delete(tree* node);
 
-/*int *createqueue(){
-	
-}
-int *enqueue(int *q, val);
-int dequeue(int *q);*/
 
 int height(tree* t){
 	int hsx,hdx,h=0;
@@ -47,14 +41,21 @@ tree *newRandomTree(int nNodes){
 	return head;
 }
 
-void print(tree *head, int enters){
-	int i=0;
-	if(head!=NULL){
-		print(head->left, enters);
-		printf("%d ", head->info);
-		print(head->right, enters);
-	}
+void print(tree *head, int spaces, int levelsx, int leveldx, int level){
+  int i;
+ if( head != NULL ){
+ 	for(i=spaces; i>0; --i)
+  		printf("   ");
+ 	printf("%d\n", head->info);
+ 	print(head->right, spaces+2, levelsx, leveldx++, level++);
+  	print(head->left, spaces-2, levelsx++, leveldx, level);
+  }
 }
+
+void printBst(tree *head){
+	int h = height(head);
+	print(head, h+1, 0, 0, 0);
+} 
 
 /*void bfs_bintree (tree *head)
 {
@@ -140,11 +141,28 @@ tree *deleteNode(tree *head, int val){
 }
 
 tree *newRandomBst(int nNodes){
-	
+	tree *head = NULL;
+	while(nNodes>0){
+		head = insertBstNode(head, rand()%20);
+		nNodes--;
+	}
+	return head;
 }
 
 
 tree *insertBstNode(tree *head, int val){
-	
+	if(head!=NULL){
+		if(head->info>val)
+			head->left=insertBstNode(head->left, val);
+		else if(head->info<val)
+			head->right=insertBstNode(head->right, val);
+	}
+	else{
+		head = (tree *)malloc(sizeof(tree));
+		head->info = val;
+		head->left = NULL;
+		head->right = NULL;
+	}
+	return head;
 }
 
