@@ -1,6 +1,6 @@
 [Project]
-FileName=Alberi-Nari.dev
-Name=Alberi-Nari
+FileName=Abr.dev
+Name=Abr
 Type=1
 Ver=2
 ObjFiles=
@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=7
+UnitCount=3
 
 [VersionInfo]
 Major=1
@@ -50,8 +50,8 @@ ProductVersion=
 AutoIncBuildNr=0
 SyncProduct=1
 
-[Unit3]
-FileName=mainprova.c
+[Unit1]
+FileName=main.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -61,7 +61,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit2]
-FileName=arrayDinamici.h
+FileName=abr.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -70,48 +70,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit1]
-FileName=arrayDinamici.c
-CompileCpp=0
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit5]
-FileName=arrayStatici.c
-CompileCpp=0
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit4]
-FileName=arrayStatici.h
-CompileCpp=0
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit6]
-FileName=puntatoriStatici.c
-CompileCpp=0
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit7]
-FileName=puntatoriStatici.h
+[Unit3]
+FileName=abr.h
 CompileCpp=0
 Folder=
 Compile=1

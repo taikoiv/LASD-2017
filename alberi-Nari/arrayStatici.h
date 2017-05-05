@@ -1,9 +1,11 @@
-#ifndef ARRAYDINAMICI_H
-#define ARRAYDINAMICI_H
+#ifndef ARRAYSTATICI_H
+#define ARRAYSTATICI_H
+
+#define dim 10
 
 struct Tree{
 	int info; 
-	struct Tree **bros;
+	struct Tree *bros[dim];
 	struct Tree *sons;
 };
 

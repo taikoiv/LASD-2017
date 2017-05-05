@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "arrayDinamici.h"
+#include "arrayStatici.h"
 
 int isEmpty(tree *head){
 	return head==NULL;
@@ -15,7 +15,7 @@ tree *createTree(int nodes){
 		int i=0, nson = 0;
 		head = (tree *)malloc(sizeof(tree));
 		head->bros = (tree**)malloc(sizeof(tree*));
-		for(; i<nodes; i++){
+		for(; i<rand()%dim; i++){
 			head->bros[i]=(tree*)malloc(sizeof(tree));
 			head->bros[i]->info = rand();
 			nson = rand()%(nodes-nson);

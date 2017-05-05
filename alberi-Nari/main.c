@@ -1,12 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ntree.h"
-#include "ntree.c"
-#include "code.h"
-#include "code.c"
+#include "arrayDinamici.h""
 
-#include "ntee_arr.h"
-#include "ntee_arr.c"
 
 int main(){
     t_node *root = NULL, *tmp = NULL;
