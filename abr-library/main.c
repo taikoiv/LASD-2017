@@ -18,7 +18,7 @@ int main() {
 	srand(time(NULL));
 	tree *head, *other;
 	other = newRandomBst(10);
-	head = newRandomBst(30);
+	head = newRandomBst(20);
 	printf("altezza : %d\n\n", height(head)); 
 	stampa(head);
 	printf("\n-------------------------------------------------\n");

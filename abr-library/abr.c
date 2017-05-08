@@ -4,6 +4,7 @@
 #include <math.h>
 #include "abr.h"
 
+#define SPAZIO 10
 //SUPPORT METHODS PROTOTIPES
 tree* staccaMin(tree *node,tree *father);
 tree* delete(tree* node);
@@ -20,12 +21,21 @@ void updateH(tree* t);
 int *enqueue(int *q, val);
 int dequeue(int *q);*/
 
+void stampa(tree *t){
+	if(t!=NULL){
+		printf("%d ", t->info,t->h);
+		stampa(t->left);
+		stampa(t->right);
+	}
+}
+
 tree* rBalance(tree* t){
 	tree *dx=t->right;
 	if(dx!=NULL){
 		if(height(dx->right)<height(dx->left)){
-			dx=rotation(dx,1,0);
-			updateH(dx);	
+					t->right=rotation(t->right,1,0);
+			
+			updateH(t->right);	
 		}
 		t=rotation(t,1,1);
 		updateH(t);
@@ -37,8 +47,9 @@ tree* lBalance(tree* t){
 	tree *sx=t->left;
 	if(sx!=NULL){
 		if(height(sx->left)<height(sx->right)){
-			sx=rotation(sx,1,1);
-			updateH(sx);	
+			t->left=rotation(t->left,1,1);
+			
+			updateH(t->left);	
 		}
 		t=rotation(t,1,0);
 		updateH(t);
@@ -56,9 +67,10 @@ tree *balanceBst(tree *t){
 	if(t!=NULL){
 		while(abs(height(t->left)-height(t->right))>1){
 			if(height(t->left)>height(t->right))
-				t=lBalance(t);
+					t=lBalance(t);
 			else t=rBalance(t);
 		}
+			
 	}
 	return t;
 }
@@ -73,7 +85,7 @@ tree *rotation(tree* t,int n,int direction){
 		return t;
 	}
 	while(n>0){
-		if(rotation==0){ //LEFT ROTATION
+		if(direction==0){ //LEFT ROTATION
 			t=lRotation(t);
 		} else { // RIGHT ROTATION
 			t=rRotation(t);
@@ -105,7 +117,7 @@ tree* lRotation(tree* t){
 		sx=t->left;
 		t->left=sx->right;
 		sx->right=t;
-		
+
 		updateH(t);
 		updateH(sx);
 	} else {
@@ -154,25 +166,22 @@ void print(tree *head, int spaces, int height){
     	if (height == 1){
     		for(i=spaces; i>0; i--)
     			printf(" ");
-        	printf("%d\t", head->info);
+        	printf("%d", head->info);
         }
     	else if (height > 1){
-    		spaces=spaces-height;
-    		print(head->left, spaces, height-1);
-    		spaces=spaces+2*height;
-    		print(head->right, spaces, height-1);
+    		print(head->left, spaces/2, height-1);
+    		print(head->right, spaces+(sizeof(int)), height-1);
 		}
 	} 
 }
 
 void printBst(tree *head){
 	int h = height(head);
-	int spaces = (h*h)/2;
+	int spaces = pow(2,h);
     int i;
     for (i=1; i<=h; i++){
-    	spaces = spaces-2;
         print(head, spaces ,i);
-        printf("\n");
+        printf("\n\n");
     }
 } 
 
@@ -257,7 +266,7 @@ tree *deleteNode(tree *head, int val){ //SEARCH THE NODE TO DELETE
 tree *newRandomBst(int nNodes){
 	tree *head = NULL;
 	while(nNodes>0){
-		head = insertBstNode(head, rand());
+		head = insertBstNode(head, rand()%30);
 		nNodes--;
 	}
 	return head;
