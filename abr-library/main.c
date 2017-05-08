@@ -18,11 +18,14 @@ int main() {
 	srand(time(NULL));
 	tree *head, *other;
 	other = newRandomBst(10);
-	head = newRandomBst(20);
-	printf("altezza : %d\n\n", height(head)); 
-	stampa(head);
-	printf("\n-------------------------------------------------\n");
+	head = newRandomBst(10);
+	//stampa(head);
 	printBst(head);
+	printf("\n-------------------------------------------------\n");
+	head=balanceBst(head);
+	printBst(head);
+	printf("\n");
+	//stampa(head);
 	return 0;
 
 }

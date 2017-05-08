@@ -4,7 +4,6 @@
 #include <math.h>
 #include "abr.h"
 
-#define SPAZIO 10
 //SUPPORT METHODS PROTOTIPES
 tree* staccaMin(tree *node,tree *father);
 tree* delete(tree* node);
@@ -21,20 +20,11 @@ void updateH(tree* t);
 int *enqueue(int *q, val);
 int dequeue(int *q);*/
 
-void stampa(tree *t){
-	if(t!=NULL){
-		printf("%d ", t->info,t->h);
-		stampa(t->left);
-		stampa(t->right);
-	}
-}
-
 tree* rBalance(tree* t){
 	tree *dx=t->right;
 	if(dx!=NULL){
 		if(height(dx->right)<height(dx->left)){
-					t->right=rotation(t->right,1,0);
-			
+			t->right=rotation(t->right,1,0);
 			updateH(t->right);	
 		}
 		t=rotation(t,1,1);
@@ -48,7 +38,6 @@ tree* lBalance(tree* t){
 	if(sx!=NULL){
 		if(height(sx->left)<height(sx->right)){
 			t->left=rotation(t->left,1,1);
-			
 			updateH(t->left);	
 		}
 		t=rotation(t,1,0);
@@ -129,7 +118,7 @@ tree* lRotation(tree* t){
 
 int height(tree* t){
 	if(t!=NULL) return t->h;
-	return 0;
+	return -1;
 }
 
 tree *insertNode(tree *head, int val){
