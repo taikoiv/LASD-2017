@@ -154,25 +154,22 @@ void print(tree *head, int spaces, int height){
     	if (height == 1){
     		for(i=spaces; i>0; i--)
     			printf(" ");
-        	printf("%d\t", head->info);
+        	printf("%d", head->info);
         }
     	else if (height > 1){
-    		spaces=spaces-height;
-    		print(head->left, spaces, height-1);
-    		spaces=spaces+2*height;
-    		print(head->right, spaces, height-1);
+    		print(head->left, spaces/2, height-1);
+    		print(head->right, spaces+(sizeof(int)), height-1);
 		}
 	} 
 }
 
 void printBst(tree *head){
 	int h = height(head);
-	int spaces = (h*h)/2;
+	int spaces = pow(2,h);
     int i;
     for (i=1; i<=h; i++){
-    	spaces = spaces-2;
         print(head, spaces ,i);
-        printf("\n");
+        printf("\n\n");
     }
 } 
 
@@ -257,7 +254,7 @@ tree *deleteNode(tree *head, int val){ //SEARCH THE NODE TO DELETE
 tree *newRandomBst(int nNodes){
 	tree *head = NULL;
 	while(nNodes>0){
-		head = insertBstNode(head, rand());
+		head = insertBstNode(head, rand()%100);
 		nNodes--;
 	}
 	return head;
