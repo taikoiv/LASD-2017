@@ -8,8 +8,9 @@
 
 void stampa(tree *t){
 	if(t!=NULL){
-		printf("%d  ", t->info);
+		
 		stampa(t->left);
+		printf("%d ", t->info,t->h);
 		stampa(t->right);
 	}
 }
@@ -24,4 +25,5 @@ int main() {
 	printf("\n-------------------------------------------------\n");
 	printBst(head);
 	return 0;
+
 }

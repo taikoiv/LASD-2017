@@ -148,7 +148,7 @@ tree *newRandomTree(int nNodes){
 	return head;
 }
 
-void print(tree *head, int *spaces, int height){
+void print(tree *head, int spaces, int height){
 	int i=0;
 	if (head != NULL){
     	if (height == 1){
@@ -158,9 +158,9 @@ void print(tree *head, int *spaces, int height){
         }
     	else if (height > 1){
     		spaces=spaces-height;
-    		print(head->left, &spaces, height-1);
+    		print(head->left, spaces, height-1);
     		spaces=spaces+2*height;
-    		print(head->right, &spaces, height-1);
+    		print(head->right, spaces, height-1);
 		}
 	} 
 }
@@ -176,20 +176,31 @@ void printBst(tree *head){
     }
 } 
 
-tree *merge(tree *head, tree *other){
-	if(head!=NULL && other!=NULL){
-		if(head->info==other->info){
-			  
+tree *merge(tree *t1, tree *t2){
+	tree* temp;
+	if(t1!=NULL){
+		if(t2==NULL){
+			t2=t1;
+		} else if(t1->info>t2->info){
+			temp=t1->left;
+			t1->left=NULL;
+			t2->right=merge(t1,t2->right);
+			t2=merge(temp,t2);
+		} else if(t1->info<t2->info){
+			temp=t1->right;
+			t1->right=NULL;
+			t2->left=merge(t1,t2->left);
+			t2=merge(temp,t2);
+		} else {
+			t2->left=merge(t1->left,t2->left);
+			t2->right=merge(t1->right,t2->right);
+			t1->left=NULL;
+			t1->right=NULL;
+			free(t1);
 		}
 	}
-	else if(head!=NULL&&other==NULL){
-		
-	}
-	else if(head==NULL&&other!=NULL){
-		
-	}
-	
-	return head;
+	if(t2!=NULL) updateH(t2);
+	return t2;
 }
 
 tree *staccaMin(tree *node, tree *father){
@@ -259,12 +270,14 @@ tree *insertBstNode(tree *head, int val){
 			head->left=insertBstNode(head->left, val);
 		else if(head->info<val)
 			head->right=insertBstNode(head->right, val);
+		updateH(head);
 	}
 	else{
 		head = (tree *)malloc(sizeof(tree));
 		head->info = val;
 		head->left = NULL;
 		head->right = NULL;
+		head->h=1;
 	}
 	return head;
 }
