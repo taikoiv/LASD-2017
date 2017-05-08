@@ -267,6 +267,7 @@ tree *newRandomBst(int nNodes){
 	tree *head = NULL;
 	while(nNodes>0){
 		head = insertBstNode(head, rand()%30);
+
 		nNodes--;
 	}
 	return head;
