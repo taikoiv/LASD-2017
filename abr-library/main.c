@@ -8,9 +8,8 @@
 
 void stampa(tree *t){
 	if(t!=NULL){
-		
-		stampa(t->left);
 		printf("%d ", t->info,t->h);
+		stampa(t->left);
 		stampa(t->right);
 	}
 }
@@ -18,7 +17,7 @@ void stampa(tree *t){
 int main() {
 	srand(time(NULL));
 	tree *head, *other;
-	//other = newRandomBst(10);
+	other = newRandomBst(10);
 	head = newRandomBst(30);
 	printf("altezza : %d\n\n", height(head)); 
 	stampa(head);

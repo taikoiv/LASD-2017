@@ -134,7 +134,7 @@ tree *insertNode(tree *head, int val){
 		head->info = val;
 		head->left = NULL;
 		head->right = NULL;
-		head->h=1;
+		head->h=0;
 	}
 	return head;
 }
@@ -277,7 +277,7 @@ tree *insertBstNode(tree *head, int val){
 		head->info = val;
 		head->left = NULL;
 		head->right = NULL;
-		head->h=1;
+		head->h=0;
 	}
 	return head;
 }
