@@ -35,49 +35,39 @@ tree *insertNode(tree *head, int val){
 tree *newRandomTree(int nNodes){
 	tree *head = NULL;
 	while(nNodes>0){
-		head = insertNode(head, rand()%10);
+		head = insertNode(head, rand());
 		nNodes--;
 	}
 	return head;
 }
 
-void print(tree *head, int spaces, int levelsx, int leveldx, int level){
-  int i;
- if( head != NULL ){
- 	for(i=spaces; i>0; --i)
-  		printf("   ");
- 	printf("%d\n", head->info);
- 	print(head->right, spaces+2, levelsx, leveldx++, level++);
-  	print(head->left, spaces-2, levelsx++, leveldx, level);
-  }
+void print(tree *head, int *spaces, int height){
+	int i=0;
+	if (head != NULL){
+    	if (height == 1){
+    		for(i=spaces; i>0; i--)
+    			printf(" ");
+        	printf("%d\t", head->info);
+        }
+    	else if (height > 1){
+    		spaces=spaces-height;
+    		print(head->left, &spaces, height-1);
+    		spaces=spaces+2*height;
+    		print(head->right, &spaces, height-1);
+		}
+	} 
 }
 
 void printBst(tree *head){
 	int h = height(head);
-	print(head, h+1, 0, 0, 0);
+	int spaces = (h*h)/2;
+    int i;
+    for (i=1; i<=h; i++){
+    	spaces = spaces-2;
+        print(head, spaces ,i);
+        printf("\n");
+    }
 } 
-
-/*void bfs_bintree (tree *head)
-{
-  queue_t *q;
-  tree *temp;
-
-  q = queue_allocate ();
-  queue_insert (q, head);
-
-  while (!queue_is_empty (q))
-  {
-    temp = queue_remove (q);
-
-    if (temp->left)
-      queue_insert (temp->left);
-
-    if (temp->right)
-      queue_insert (temp->right);
-  }
-  queue_free (q);
-  return;
-}*/
 
 tree *merge(tree *head, tree *other){
 	if(head!=NULL && other!=NULL){
@@ -143,7 +133,7 @@ tree *deleteNode(tree *head, int val){
 tree *newRandomBst(int nNodes){
 	tree *head = NULL;
 	while(nNodes>0){
-		head = insertBstNode(head, rand()%20);
+		head = insertBstNode(head, rand());
 		nNodes--;
 	}
 	return head;
