@@ -1,18 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "abr.h"
 
+//SUPPORT METHODS PROTOTIPES
 tree* staccaMin(tree *node,tree *father);
 tree* delete(tree* node);
 tree* lRotation(tree* t);
 tree* rRotation(tree* t);
+tree* rBalance(tree* t);
+tree* lBalance(tree* t);
+int height(tree* t);
+void updateH(tree* t);
 
 /*int *createqueue(){
 	
 }
 int *enqueue(int *q, val);
 int dequeue(int *q);*/
+
+tree* rBalance(tree* t){
+	tree *dx=t->right;
+	if(dx!=NULL){
+		if(height(dx->right)<height(dx->left)){
+			dx=rotation(dx,1,0);
+			updateH(dx);	
+		}
+		t=rotation(t,1,1);
+		updateH(t);
+	}
+	return t;
+}
+
+tree* lBalance(tree* t){
+	tree *sx=t->left;
+	if(sx!=NULL){
+		if(height(sx->left)<height(sx->right)){
+			sx=rotation(sx,1,1);
+			updateH(sx);	
+		}
+		t=rotation(t,1,0);
+		updateH(t);
+	}
+	return t;
+}
+
+void updateH(tree* t){
+	if(height(t->left)>height(t->right))
+		t->h=height(t->left)+1;
+	else t->h=height(t->right)+1;
+}
+
+tree *balanceBst(tree *t){
+	if(t!=NULL){
+		while(abs(height(t->left)-height(t->right))>1){
+			if(height(t->left)>height(t->right))
+				t=lBalance(t);
+			else t=rBalance(t);
+		}
+	}
+	return t;
+}
 
 tree *rotation(tree* t,int n,int direction){
 	if(direction<0 || direction>1){
@@ -34,12 +83,15 @@ tree *rotation(tree* t,int n,int direction){
 	return t;
 }
 
-tree* lRotation(tree* t){
+tree* rRotation(tree* t){
 	tree* dx=NULL;
 	if(t->right!=NULL){
 		dx=t->right;
 		t->right=dx->left;
 		dx->left=t;
+		
+		updateH(t);
+		updateH(dx);
 	} else {
 		printf("IT'S NOT POSSIBLE TO ROTATE BEACAUSE THERE IS NO RIGHT CHILD IN THIS BST\n");
 		return t;
@@ -47,12 +99,15 @@ tree* lRotation(tree* t){
 	return dx;
 }
 
-tree* rRotation(tree* t){
+tree* lRotation(tree* t){
 	tree* sx=NULL;
 	if(t->left!=NULL){
 		sx=t->left;
 		t->left=sx->right;
 		sx->right=t;
+		
+		updateH(t);
+		updateH(sx);
 	} else {
 		printf("IT'S NOT POSSIBLE TO ROTATE BEACAUSE THERE IS NO LEFT CHILD IN THIS BST\n");
 		return t;	
@@ -61,27 +116,25 @@ tree* rRotation(tree* t){
 }
 
 int height(tree* t){
-	int hsx,hdx,h=0;
-	if(t!=NULL){
-		hsx=height(t->left);
-		hdx=height(t->right);
-		if(hsx>hdx) h=hsx+1;
-		else h=hdx+1;
-	}
-	return h;
+	if(t!=NULL) return t->h;
+	return 0;
 }
 
 tree *insertNode(tree *head, int val){
 	if(head!=NULL){
 		if(head->info>val)
 			head->left=insertNode(head->left, val);
-		else head->right=insertNode(head->right, val);
+		else 
+			head->right=insertNode(head->right, val);
+			
+		updateH(head);
 	}
 	else{
 		head = (tree *)malloc(sizeof(tree));
 		head->info = val;
 		head->left = NULL;
 		head->right = NULL;
+		head->h=1;
 	}
 	return head;
 }
@@ -103,28 +156,6 @@ void print(tree *head, int enters){
 		print(head->right, enters);
 	}
 }
-
-/*void bfs_bintree (tree *head)
-{
-  queue_t *q;
-  tree *temp;
-
-  q = queue_allocate ();
-  queue_insert (q, head);
-
-  while (!queue_is_empty (q))
-  {
-    temp = queue_remove (q);
-
-    if (temp->left)
-      queue_insert (temp->left);
-
-    if (temp->right)
-      queue_insert (temp->right);
-  }
-  queue_free (q);
-  return;
-}*/
 
 tree *merge(tree *head, tree *other){
 	if(head!=NULL && other!=NULL){
@@ -149,11 +180,14 @@ tree *staccaMin(tree *node, tree *father){
 		father->right=node->right;
 	else father->left=node->right;
 	
+	updateH(father);
+	
 	return node;
 }
 
-tree *delete(tree *node){
+tree *delete(tree *node){ //DELETE THE NODE
 	tree *temp=NULL;
+	
 	if(node->left!=NULL && node->right!=NULL){
 		temp=staccaMin(node->right,node);
 		node->info=temp->info;
@@ -170,11 +204,14 @@ tree *delete(tree *node){
 		node=node->right;
 	}
 	
+	updateH(node);
+	
 	free(temp);
+	
 	return node;
 }
 
-tree *deleteNode(tree *head, int val){
+tree *deleteNode(tree *head, int val){ //SEARCH THE NODE TO DELETE
 	if(head!=NULL){
 		if(head->info>val)
 			head->left = deleteNode(head->left, val);

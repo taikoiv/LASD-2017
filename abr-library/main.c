@@ -16,7 +16,7 @@ int main() {
 	if(c==0){
 		tree *trees[X];
 		for(i=0;i<X;i++){
-			trees[i]=newRandomTree(65536);
+			trees[i]=newRandomTree(131072);
 			c=height(trees[i]);
 			avg+=c;
 			printf("ALBERO %d - ALTEZZA = %d\n",i+1,c);
