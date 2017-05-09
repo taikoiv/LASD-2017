@@ -3,7 +3,6 @@
 #include <time.h>
 #include "abr.h"
 
-#define X 1
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 void stampa(tree *t){
@@ -18,7 +17,7 @@ int main() {
 	srand(time(NULL));
 	tree *head, *other;
 	other = newRandomBst(10);
-	head = newRandomBst(10);
+	head = newRandomBst(150);
 	//stampa(head);
 	printBst(head);
 	printf("\n-------------------------------------------------\n");

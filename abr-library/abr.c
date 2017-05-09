@@ -7,44 +7,48 @@
 //SUPPORT METHODS PROTOTIPES
 tree* staccaMin(tree *node,tree *father);
 tree* delete(tree* node);
-tree* lRotation(tree* t);
-tree* rRotation(tree* t);
-tree* rBalance(tree* t);
-tree* lBalance(tree* t);
-int height(tree* t);
-void updateH(tree* t);
+tree* lRotation(tree* t); //IT APPLIES THE LEFT ROTATION ON THE BST
+tree* rRotation(tree* t); //IT APPLIES THE RIGHT ROTATION ON THE BST
+tree* rBalance(tree* t);  //THIS FUNCTION BALANCES THE BST IN CASE THE RIGHT SUB-TREE IS NOT ALREADY BALANCED
+tree* lBalance(tree* t);  //THIS FUNCTION BALANCES THE BST IN CASE THE left SUB-TREE IS NOT ALREADY BALANCED
+int height(tree* t);      //RETURNS THE HEIGHT OF THE BST
+void updateH(tree* t);    //THIS FUNCTION UPDATES THE BST'S HEIGHT
 
-/*int *createqueue(){
-	
-}
-int *enqueue(int *q, val);
-int dequeue(int *q);*/
-
-tree* rBalance(tree* t){
+/*--------------------------------BALANCE FUNCTIONS----------------------------------*/
+tree* rBalance(tree* t){ // WHEN THE TREE IS NOT BALANCED BEACAUSE OF THE RIGHT SUB-TREE
 	tree *dx=t->right;
 	if(dx!=NULL){
 		if(height(dx->right)<height(dx->left)){
-			t->right=rotation(t->right,1,0);
-			updateH(t->right);	
+			t->right=rotation(t->right,1,0); //LEFT ROTATION ON THE RIGHT SUB-TREE	
 		}
-		t=rotation(t,1,1);
-		updateH(t);
+		t=rotation(t,1,1); //RIGHT ROTATION ON THE ROOT
 	}
 	return t;
 }
 
-tree* lBalance(tree* t){
+tree* lBalance(tree* t){ // WHEN THE TREE IS NOT BALANCED BEACAUSE OF THE LEFT SUB-TREE
 	tree *sx=t->left;
 	if(sx!=NULL){
 		if(height(sx->left)<height(sx->right)){
-			t->left=rotation(t->left,1,1);
-			updateH(t->left);	
+			t->left=rotation(t->left,1,1); //RIGHT ROTATION ON THE LEFT SUB-TREE	
 		}
-		t=rotation(t,1,0);
-		updateH(t);
+		t=rotation(t,1,0); //LEFT ROTATION ON THE ROOT
 	}
 	return t;
 }
+
+tree *balanceBst(tree *t){
+	if(t!=NULL){
+		while(abs(height(t->left)-height(t->right))>1){ //WHILE BST IS NOT BALANCED
+			if(height(t->left)>height(t->right)) //VIOLATION IS ON THE LEFT SUB-TREE
+					t=lBalance(t);
+			else t=rBalance(t); //VIOLATION IS ON THE RIGHT SUB-TREE
+		}	
+	}
+	return t;
+}
+
+/*------------------------------------------------------------------------------*/
 
 void updateH(tree* t){
 	if(height(t->left)>height(t->right))
@@ -52,25 +56,15 @@ void updateH(tree* t){
 	else t->h=height(t->right)+1;
 }
 
-tree *balanceBst(tree *t){
-	if(t!=NULL){
-		while(abs(height(t->left)-height(t->right))>1){
-			if(height(t->left)>height(t->right))
-					t=lBalance(t);
-			else t=rBalance(t);
-		}
-			
-	}
-	return t;
-}
+/*-------------------ROTATION FUNCTIONS--------------------------------------------*/
 
 tree *rotation(tree* t,int n,int direction){
 	if(direction<0 || direction>1){
-		printf("NOT A VALID ROTATION\n");
+		ABRERROR=-1;
 		return t;
 	}
 	if(t==NULL){
-		printf("IT'S NOT POSSIBLE TO ROTATE AN EMPTY ABR!\n");
+		ABRERROR=-2;
 		return t;
 	}
 	while(n>0){
@@ -84,7 +78,7 @@ tree *rotation(tree* t,int n,int direction){
 	return t;
 }
 
-tree* rRotation(tree* t){
+tree* rRotation(tree* t){ 
 	tree* dx=NULL;
 	if(t->right!=NULL){
 		dx=t->right;
@@ -94,7 +88,7 @@ tree* rRotation(tree* t){
 		updateH(t);
 		updateH(dx);
 	} else {
-		printf("IT'S NOT POSSIBLE TO ROTATE BEACAUSE THERE IS NO RIGHT CHILD IN THIS BST\n");
+		ABRERROR=-3;
 		return t;
 	}
 	return dx;
@@ -110,27 +104,30 @@ tree* lRotation(tree* t){
 		updateH(t);
 		updateH(sx);
 	} else {
-		printf("IT'S NOT POSSIBLE TO ROTATE BEACAUSE THERE IS NO LEFT CHILD IN THIS BST\n");
+		ABRERROR=-4;
 		return t;	
 	}
 	return sx;
 }
+
+/*------------------------------------------------------------------*/
 
 int height(tree* t){
 	if(t!=NULL) return t->h;
 	return -1;
 }
 
+/*----------------INSERT AND CREATE BST WITH DUPLICATES-----------------*/
+
 tree *insertNode(tree *head, int val){
 	if(head!=NULL){
 		if(head->info>val)
 			head->left=insertNode(head->left, val);
 		else 
-			head->right=insertNode(head->right, val);
+			head->right=insertNode(head->right, val); //if val already exists it will be insert in the right sub-tree
 			
 		updateH(head);
-	}
-	else{
+	}else{ //creation of a new node
 		head = (tree *)malloc(sizeof(tree));
 		head->info = val;
 		head->left = NULL;
@@ -149,15 +146,19 @@ tree *newRandomTree(int nNodes){
 	return head;
 }
 
+/*-----------------------------------------------------------------------*/
+
+/*-----------------------DRAW FUNCTIONS----------------------------------*/
+
 void print(tree *head, int spaces, int height){
 	int i=0;
 	if (head != NULL){
-    	if (height == 1){
+    	if (height == 1){ //IF THE NODE IS ON THE LEVEL THAT WE ARE CURRENTLY PRINTING ON
     		for(i=spaces; i>0; i--)
-    			printf(" ");
+    			printf(" "); //PRINT SOME SPACES
         	printf("%d", head->info);
         }
-    	else if (height > 1){
+    	else if (height > 1){ //GO TO THE LEFT AND THE RIGHT SUB-TREES
     		print(head->left, spaces/2, height-1);
     		print(head->right, spaces+(sizeof(int)), height-1);
 		}
@@ -166,22 +167,26 @@ void print(tree *head, int spaces, int height){
 
 void printBst(tree *head){
 	int h = height(head);
-	int spaces = pow(2,h);
+	int spaces = pow(2,h); // SPACES IS EQUALS TO THE NUMBER OF THE LEAVES IN A FULL BST
     int i;
-    for (i=1; i<=h; i++){
+    for (i=1; i<=h; i++){ //TO DRAW IN LEVELS
         print(head, spaces ,i);
         printf("\n\n");
     }
-} 
+}
+
+/*--------------------------------------------------------------------------------------*/
+
+/*-----------------------------MERGE FUNCTION-------------------------------------------*/
 
 tree *merge(tree *t1, tree *t2){
 	tree* temp;
 	if(t1!=NULL){
-		if(t2==NULL){
+		if(t2==NULL){ //ATTACHES THE SUB-TREE
 			t2=t1;
-		} else if(t1->info>t2->info){
+		} else if(t1->info>t2->info){ 
 			temp=t1->left;
-			t1->left=NULL;
+			t1->left=NULL; //BREAKS THE BST
 			t2->right=merge(t1,t2->right);
 			t2=merge(temp,t2);
 		} else if(t1->info<t2->info){
@@ -194,14 +199,18 @@ tree *merge(tree *t1, tree *t2){
 			t2->right=merge(t1->right,t2->right);
 			t1->left=NULL;
 			t1->right=NULL;
-			free(t1);
+			free(t1); //DELETES THE DUPLICATES IN T1
 		}
 	}
-	if(t2!=NULL) updateH(t2);
+	if(t2!=NULL) updateH(t2); //UPDATES THE HEIGHT OF THE BST
 	return t2;
 }
 
-tree *staccaMin(tree *node, tree *father){
+/*------------------------------------------------------------------------*/
+
+/*-------------------------DELETE FUNCTIONS-------------------------------*/
+
+tree *staccaMin(tree *node, tree *father){ //RETURNS THE MINIMUM NODE IN THE RIGHT SUB-TREE
 	if(node->left!=NULL)
 		return staccaMin(node->right,node);
 	if(node==father->right)
@@ -213,7 +222,7 @@ tree *staccaMin(tree *node, tree *father){
 	return node;
 }
 
-tree *delete(tree *node){ //DELETE THE NODE
+tree *delete(tree *node){ //DELETES THE NODE WITHOUT LOSING HIS CHILDREN
 	tree *temp=NULL;
 	
 	if(node->left!=NULL && node->right!=NULL){
@@ -252,6 +261,10 @@ tree *deleteNode(tree *head, int val){ //SEARCH THE NODE TO DELETE
 	return head;
 }
 
+/*--------------------------------------------------------------------------------*/
+
+/*----------------------INSERT AND CREATE BST WITHOUT DUPLICATES----------------------*/
+
 tree *newRandomBst(int nNodes){
 	tree *head = NULL;
 	while(nNodes>0){
@@ -280,4 +293,6 @@ tree *insertBstNode(tree *head, int val){
 	}
 	return head;
 }
+
+/*-----------------------------------------------------------------------*/
 
