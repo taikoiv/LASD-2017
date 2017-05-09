@@ -124,7 +124,7 @@ tree *insertNode(tree *head, int val){
 		if(head->info>val)
 			head->left=insertNode(head->left, val);
 		else 
-			head->right=insertNode(head->right, val); //if val already exists it will be insert in the right sub-tree
+			head->right=insertNode(head->right, val); //if val already exists it will be inserted in the right sub-tree
 			
 		updateH(head);
 	}else{ //creation of a new node
