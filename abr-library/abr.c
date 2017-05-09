@@ -268,7 +268,7 @@ tree *deleteNode(tree *head, int val){ //SEARCH THE NODE TO DELETE
 tree *newRandomBst(int nNodes){
 	tree *head = NULL;
 	while(nNodes>0){
-		head = insertBstNode(head, rand()%30);
+		head = insertBstNode(head, rand());
 
 		nNodes--;
 	}
