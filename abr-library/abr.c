@@ -4,6 +4,8 @@
 #include <math.h>
 #include "abr.h"
 
+int ABRERROR;
+
 //SUPPORT METHODS PROTOTIPES
 tree* staccaMin(tree *node,tree *father);
 tree* delete(tree* node);
@@ -197,8 +199,6 @@ tree *merge(tree *t1, tree *t2){
 		} else {
 			t2->left=merge(t1->left,t2->left);
 			t2->right=merge(t1->right,t2->right);
-			t1->left=NULL;
-			t1->right=NULL;
 			free(t1); //DELETES THE DUPLICATES IN T1
 		}
 	}
@@ -268,7 +268,7 @@ tree *deleteNode(tree *head, int val){ //SEARCH THE NODE TO DELETE
 tree *newRandomBst(int nNodes){
 	tree *head = NULL;
 	while(nNodes>0){
-		head = insertBstNode(head, rand());
+		head = insertBstNode(head, rand()%30);
 
 		nNodes--;
 	}
