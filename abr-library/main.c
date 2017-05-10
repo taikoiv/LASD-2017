@@ -14,6 +14,7 @@ void stampa(tree *t){
 }
 
 int main() {
+	
 	srand(time(NULL));
 	tree *head, *other;
 	other = newRandomBst(10);
@@ -25,6 +26,7 @@ int main() {
 	printBst(head);
 	printf("\n");
 	//stampa(head);
+
 	return 0;
 
 }

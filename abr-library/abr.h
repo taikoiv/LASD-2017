@@ -36,5 +36,6 @@ tree *rotation(tree* t,int n,int direction); //APPLIES N TIME THE SELECTED ROTAT
 tree *newRandomBst(int nNodes); //CREATE A RANDOM BST WITHOUT DUPLICATES
 tree *insertBstNode(tree *head, int val); //BST INSERT FUNCTION
 tree *balanceBst(tree *t); //BALANCE A BST
+void freeBST(tree* t); //FREE ALL THE STRUCT RECURSIVELY
 
 #endif	

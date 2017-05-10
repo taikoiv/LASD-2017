@@ -296,3 +296,10 @@ tree *insertBstNode(tree *head, int val){
 
 /*-----------------------------------------------------------------------*/
 
+void freeBST(tree* t){
+	if(t!=NULL){
+		freeBST(t->left);
+		freeBST(t->right);
+		free(t);
+	}
+}
