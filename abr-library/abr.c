@@ -303,3 +303,28 @@ void freeBST(tree* t){
 		free(t);
 	}
 }
+
+
+void inOrder(tree *t){
+	if(t!=NULL){
+		inOrder(t->left);
+		printf("%d  ", t->info);
+		inOrder(t->right);
+	}
+}
+
+void preOrder(tree *t){
+	if(t!=NULL){
+		printf("%d  ", t->info);
+		preOrder(t->left);
+		preOrder(t->right);
+	}
+}
+
+void postOrder(tree *t){
+	if(t!=NULL){
+		postOrder(t->left);
+		printf("%d  ", t->info);
+		postOrder(t->right);
+	}
+}

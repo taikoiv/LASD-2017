@@ -37,5 +37,7 @@ tree *newRandomBst(int nNodes); //CREATE A RANDOM BST WITHOUT DUPLICATES
 tree *insertBstNode(tree *head, int val); //BST INSERT FUNCTION
 tree *balanceBst(tree *t); //BALANCE A BST
 void freeBST(tree* t); //FREE ALL THE STRUCT RECURSIVELY
-
+void inOrder(tree* t);//PRINTS A TREE IN ORDER
+void preOrder(tree* t);//PRINTS A TREE IN PREORDER
+void postOrder(tree *t);//PRINTS A TREE IN POSTORDER
 #endif	

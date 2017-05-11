@@ -5,14 +5,6 @@
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
-void stampa(tree *t){
-	if(t!=NULL){
-		printf("%d ", t->info,t->h);
-		stampa(t->left);
-		stampa(t->right);
-	}
-}
-
 int main() {
 	
 	srand(time(NULL));
