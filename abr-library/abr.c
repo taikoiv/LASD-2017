@@ -162,19 +162,20 @@ void print(tree *head, int spaces, int height){
         }
     	else if (height > 1){ //GO TO THE LEFT AND THE RIGHT SUB-TREES
     		print(head->left, spaces/2, height-1);
-    		print(head->right, spaces+(sizeof(int)), height-1);
+    		print(head->right, (spaces)+(sizeof(int)), height-1);
 		}
 	} 
 }
 
 void printBst(tree *head){
 	int h = height(head);
-	int spaces = pow(2,h); // SPACES IS EQUALS TO THE NUMBER OF THE LEAVES IN A FULL BST
+	int area = pow(2,h); // SPACES IS EQUALS TO THE NUMBER OF THE LEAVES IN A FULL BST
     int i;
+    int base = (area*2)/h;
     for (i=1; i<=h; i++){ //TO DRAW IN LEVELS
-        print(head, spaces ,i);
-        printf("\n\n");
-    }
+		print(head,base,i);
+		printf("\n\n");
+	}
 }
 
 /*--------------------------------------------------------------------------------------*/
@@ -269,7 +270,6 @@ tree *newRandomBst(int nNodes){
 	tree *head = NULL;
 	while(nNodes>0){
 		head = insertBstNode(head, rand()%30);
-
 		nNodes--;
 	}
 	return head;
@@ -324,7 +324,7 @@ void preOrder(tree *t){
 void postOrder(tree *t){
 	if(t!=NULL){
 		postOrder(t->left);
-		printf("%d  ", t->info);
 		postOrder(t->right);
+		printf("%d  ", t->info);
 	}
 }
