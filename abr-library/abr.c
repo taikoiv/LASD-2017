@@ -131,6 +131,10 @@ tree *insertNode(tree *head, int val){
 		updateH(head);
 	}else{ //creation of a new node
 		head = (tree *)malloc(sizeof(tree));
+		if(head==NULL){
+			printf("THERE IS NO SPACE TO ALLOCATE A NEW NODE. TRY LATER\n");
+			return NULL;
+		}
 		head->info = val;
 		head->left = NULL;
 		head->right = NULL;
@@ -286,6 +290,10 @@ tree *insertBstNode(tree *head, int val){
 	}
 	else{
 		head = (tree *)malloc(sizeof(tree));
+		if(head==NULL){
+			printf("THERE IS NO SPACE TO ALLOCATE A NEW NODE. TRY LATER\n");
+			return NULL;
+		}
 		head->info = val;
 		head->left = NULL;
 		head->right = NULL;
