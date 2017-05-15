@@ -91,10 +91,10 @@ int main(int argc, char *argv[]) {
 			case 5 : 
 				g = newRandomBst(rand());
 				printf("New tree successfully Created\n");
-				printBst(g);
+				preOrder(g);
 				h = merge(g,h);
 				printf("trees  successfully merged\n");
-				printBst(h);
+				preOrder(h);
 				break;
 			case 6 :
 				printBst(h);
