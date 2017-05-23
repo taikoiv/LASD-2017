@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <stdlib.h>
 #include "graph.h"
 
 #define RANDOM_SUCC 0,33
@@ -24,11 +24,11 @@ void insertNode(graph* g){
 	int i;
 	for(i=0;i<g->n;i++){
 		if(g->adj[i]!=NULL && g->adj[i]->node==-1){
-			g->adj[i]->NULL;
+			g->adj[i]=NULL;
 			return;
 		}
 	}
-	g->adj=realloc(g->adj,(n+1)*sizeof(edge));
+	g->adj=realloc(g->adj,((g->n)+1)*sizeof(edge));
 	if(g->adj==NULL){
 		GRAPH_ERROR=-1;
 		g->n=0;
@@ -40,7 +40,7 @@ void insertNode(graph* g){
 void deleteNode(graph* g,int node){
 	int i;
 	for(i=0;i<g->n;i++){
-		deleteEdge(graph* g,int i, int d);
+		deleteEdge(g, i, node);
 	}
 	g->adj[i]=freeEdges(g->adj[i]);
 	g->adj[i]=(edge*) calloc(1,sizeof(edge));
