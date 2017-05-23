@@ -10,10 +10,8 @@ int main(int argc, char *argv[]) {
 	graph *g=createRandomGraph();
 	int* col=(int *) calloc(g->n,sizeof(int));
 	printGraph(g);
-	if(!isConnected(g,col)){
-		//printf("NOT CONNECTED\n");
-		//connectGraph(g,col);
-	}
+	BFS(g,0);
+	printf("USCITO\n");
 	free(col);
 	freeGraph(g);
 	return 0;

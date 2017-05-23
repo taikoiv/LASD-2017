@@ -210,6 +210,7 @@ void freeGraph(graph* g){
 	while(g->n>0){
 		printf("CANCELLO LISTA IN POSIZIONE %d\n",g->n-1);
 		freeEdges(g->adj[g->n-1]);
+		g->adj[g->n-1]=NULL;
 		g->n--;
 	}
 	free(g->adj);
@@ -240,7 +241,7 @@ graph* createRandomGraph(){
 		GRAPH_ERROR=-1;
 		return g;
 	}
-	g->adj=calloc(n,sizeof(edge));
+	g->adj=calloc(n,sizeof(edge*));
 	g->n=n;
 	for(i=0;i<n;i++)
 		for(j=0;j<n;j++){
