@@ -1,20 +1,16 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-struct edge{
+typedef struct edge{
 	int weight;
 	int node;
 	struct edge* next;
-};
+} edge;
 
-typedef struct edge edge;
-
-struct graph {
+typedef struct graph {
 	edge** adj;
 	int n; 
-};
-
-typedef struct graph graph;
+} graph;
 
 graph* createGraph();
 graph* createRandomGraph();
