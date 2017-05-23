@@ -11,7 +11,6 @@ int main(int argc, char *argv[]) {
 	int* col=(int *) calloc(g->n,sizeof(int));
 	printGraph(g);
 	BFS(g,0);
-	printf("USCITO\n");
 	free(col);
 	freeGraph(g);
 	return 0;

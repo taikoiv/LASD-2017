@@ -120,6 +120,7 @@ void BFS(graph* g,int s){
 		}
 		col[k]=2;
 	}
+	freeQueue(q);
 }
 
 void DFS(graph* g){
@@ -182,11 +183,10 @@ edge* addAdj(edge* l,int k){
 
 void initializeBFS(int* col,int n,queue* q,int s){
 	int i;
-	for(i=0;i<=n;i++)
+	for(i=0;i<n;i++)
 		col[i]=0;
 	col[s]=1;
-	enqueue(q,s);
-	
+	enqueue(q,s);	
 }
 
 void DFSVisit(graph* g,int* col,int s){
@@ -208,7 +208,6 @@ void DFSVisit(graph* g,int* col,int s){
 
 void freeGraph(graph* g){
 	while(g->n>0){
-		printf("CANCELLO LISTA IN POSIZIONE %d\n",g->n-1);
 		freeEdges(g->adj[g->n-1]);
 		g->adj[g->n-1]=NULL;
 		g->n--;
@@ -235,7 +234,7 @@ void printGraph(graph *g){
 
 graph* createRandomGraph(){
 	graph* g=(graph*) malloc(sizeof(graph));
-	int i,j,n=rand()%10;
+	int i,j,n=rand()%20;
 	float p;
 	if(g==NULL){
 		GRAPH_ERROR=-1;
@@ -288,6 +287,7 @@ int isConnected(graph *g,int* col){
 						 break;
 			}
 		}
+		freeQueue(q);
 		for(k=0;k<g->n;k++)
 			if(col[k]!=2) return 0;
 	}
