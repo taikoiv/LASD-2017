@@ -18,8 +18,8 @@ typedef struct graph graph;
 
 graph* createGraph();
 graph* createRandomGraph();
-void insertNode(graph* g);
-void deleteNode(graph* g,int node);
+void insertNode(graph* g);				 //NOT ORIDENTED MODE
+void deleteNode(graph* g,int node);		 //NOT ORIENTED MODE
 void addEdge(graph* g,int s, int d);     //NOT ORIENTED MODE
 void deleteEdge(graph* g,int s, int d);  //NOT ORIENTED MODE
 void addOEdge(graph* g,int s, int d);    //ORIENTED MODE
