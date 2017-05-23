@@ -27,7 +27,7 @@ void enqueue(queue* q,int k){
 	q->data[q->tail]=k;
 	if(q->head==0)
 		q->head=1;
-	q->tail=(q->tail%MAX)+1;
+	q->tail=(q->tail%INT_MAX)+1;
 }
 
 int dequeue(queue* q){
@@ -37,7 +37,7 @@ int dequeue(queue* q){
 		Q_ERROR=-1;
 		return Q_ERROR;
 	}
-	q->head=(q->head%MAX)+1;
+	q->head=(q->head%INT_MAX)+1;
 	if(q->head==q->tail){
 		q->head=0;
 		q->tail=1;
@@ -65,7 +65,7 @@ void printQueue(queue* q){
 
 queue* randomQueue(){
 	queue* q=newQueue();
-	int i,n=rand()%MAX;
+	int i,n=rand()%INT_MAX;
 	
 	for(i=0; i<n; i++){
 		enqueue(q,rand());

@@ -1,12 +1,12 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#define MAX 3
+#include <limits.h>
 
 typedef struct {
   int head; // POSITION OF THE FIRST ELEMENT TO EXTRACT
   int tail; // POSITION TO INSERT A NEW ELEMENT
-  int data[MAX]; //DATA IN THE QUEUE
+  int data[INT_MAX]; //DATA IN THE QUEUE
   //int *data for dynamic method
 } queue;
 
