@@ -12,6 +12,7 @@ void initializeBFS(int* col,int n,queue* q,int s);
 void DFSVisit(graph* g,int* col,int s);
 void debugBFS(int *col,int n,queue* q,int k);
 edge* addAdj(edge* l,int k);
+void DFSVisitColors(graph* g,int* col,int s);
 
 graph* createGraph(){
 	graph* g=(graph*) malloc(sizeof(graph));
@@ -32,7 +33,7 @@ graph* createORandomGraph(){
 		GRAPH_ERROR=-1;
 		return g;
 	}
-	g->adj=calloc(n,sizeof(edge));
+	g->adj=calloc(n,sizeof(edge*));
 	g->n=n;
 	for(i=0;i<n;i++)
 		for(j=0;j<n;j++){
@@ -256,44 +257,41 @@ graph* createRandomGraph(){
 }
 
 int isConnected(graph *g,int* col){
+	int k;
 	if(g->n>1){
-		int k;
-		queue *q=newQueue();
-		edge* l=NULL;
-		initializeBFS(col,g->n,q,0);
-		while(!isEmpty(q)){
-			k=dequeue(q);
-			if(g->adj[k]!=NULL && g->adj[k]->node==-1){
-				col[k]=2;
-				break;
-			}
-			l=g->adj[k];
-			while(l!=NULL){
-				if(col[l->node]==0){
-					enqueue(q,l->node);
-					col[l->node]=1;
-				}
-				l=l->next;
-			}
-			col[k]=2;
-		}
-		for(k=0;k<g->n;k++){
-			switch(col[k]){
-				case 0 : printf("%d : BIANCO\n",k);
-						 break;
-				case 1 : printf("%d : GRIGIO\n",k);
-						 break;
-				case 2 : printf("%d : NERO\n",k);
-						 break;
-			}
-		}
-		freeQueue(q);
+		DFSVisitColors(g,col,0);
 		for(k=0;k<g->n;k++)
 			if(col[k]!=2) return 0;
 	}
 	return 1;
 }
 
-void connectGraph(graph *g,int* col){
-	
+void DFSVisitColors(graph* g,int* col,int s){
+	col[s]=1;
+	edge* l=g->adj[s];
+	if(l!=NULL && l->node==-1){
+			col[s]=2;
+			return;
+	}
+	while(l!=NULL){
+		if(col[l->node]==0){
+			DFSVisitColors(g,col,l->node);
+		}
+		l=l->next;
+	}
+	col[s]=2;
+}
+
+void connectGraph(graph *g){
+	int i;
+	int *col=(int*) calloc(g->n,sizeof(int));
+	if(col!=NULL){
+		if(!isConnected(g,col))
+			for(i=1;i<g->n;i++)
+				if(col[i]==0){
+					addEdge(g,0,i);
+					DFSVisitColors(g,col,i);
+				}
+		free(col);
+	}
 }

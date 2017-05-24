@@ -7,10 +7,15 @@
 
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
+	int i;
 	graph *g=createRandomGraph();
 	int* col=(int *) calloc(g->n,sizeof(int));
 	printGraph(g);
-	BFS(g,0);
+	if(!isConnected(g,col)) {
+		connectGraph(g);
+	}
+	printf("----------------------------------------------------------------------------------------\n");
+	printGraph(g);
 	free(col);
 	freeGraph(g);
 	return 0;

@@ -27,6 +27,6 @@ graph* transpose(graph* g);
 void freeGraph(graph* g);
 void printGraph(graph *g);
 int isConnected(graph *g,int* col);
-void connectGraph(graph *g,int* col);
+void connectGraph(graph *g);
 
 #endif
