@@ -27,5 +27,6 @@ void addEdge(graph* g,int s,int d,int w);
 void addNode(graph* g,int h);
 void deleteEdge(graph* g,int s,int d);
 void deleteNode(graph* g,int s);
+void freeGraph(graph* g);
 
 #endif

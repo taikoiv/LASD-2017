@@ -9,5 +9,6 @@ int main(int argc, char *argv[]) {
 	srand(time(NULL));
 	graph* g=createRandomGraph();
 	printGraph(g);
+	freeGraph(g);
 	return 0;
 }
