@@ -27,7 +27,6 @@ graph* createGraph();
 graph* createRandomGraph();
 visit* Djikstra(graph* g,int s);
 void printGraph(graph* g);
-int checkContraints(node* path);
 void collapseGraph(graph* g);
 void addEdge(graph* g,int s,int d,int w);
 void addNode(graph* g,int h);

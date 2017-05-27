@@ -70,16 +70,18 @@ void printGraph(graph* g){
 		int i;
 		edge *l=NULL;
 		for(i=0;i<g->n;i++){
-			printf("%d - %d |",i,g->nodes[i].height);
-			l=g->nodes[i].adj;
-			while(l!=NULL){
-				printf("(%d , %d)",l->k,l->weight);
-				l=l->next;
-				if(l!=NULL){
-					printf(" -> ");
+			if(g->nodes[i].height!>-1){ //NON STAMPO I NODI SENTINELLA
+				printf("%d - %d |",i,g->nodes[i].height);
+				l=g->nodes[i].adj;
+				while(l!=NULL){
+					printf("(%d , %d)",l->k,l->weight);
+					l=l->next;
+					if(l!=NULL){
+						printf(" -> ");
+					}
 				}
+				printf("\n");
 			}
-			printf("\n");
 		}
 	} else {
 		GRAPH_ERROR=-1;
@@ -218,7 +220,8 @@ void deleteNode(graph* g,int s){
 	} GRAPH_ERROR=-1;
 }
 
+visit* Djikstra(graph* g,int s);
+
 /*
-int checkContraints(node* path);
 void collapseGraph(graph* g);
 */
