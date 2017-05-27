@@ -11,6 +11,7 @@ edge* insertEdge(edge* l,int d,int w);
 int isConnected(graph *g,int* col);
 void DFSVisitColors(graph* g,int* col,int s);
 void connectGraph(graph *g);
+edge* removeEdge(edge* l,int k);
 
 edge* insertEdge(edge* l,int d,int w){
 	edge* e=(edge*)malloc(sizeof(edge));
@@ -100,7 +101,7 @@ graph* createGraph(){
 void addEdge(graph* g,int s,int d,int w){
 	edge* e=NULL;
 	if(g!=NULL){
-		if(s>=0 && s<g->n && d>=0 && d<g->n){
+		if(s>=0 && s<g->n && g->nodes[s].height>-1 && d>=0 && d<g->n && g->nodes[d].height>-1){
 			g->nodes[s].adj=insertEdge(g->nodes[s].adj,d,w);
 			g->nodes[d].adj=insertEdge(g->nodes[d].adj,s,w);
 		}else{
@@ -163,10 +164,61 @@ void DFSVisitColors(graph* g,int* col,int s){
 	col[s]=2;
 }
 
+void deleteEdge(graph* g,int s,int d){
+	if(g!=NULL){
+		if(s>=0 && s<g->n && g->nodes[s].height>-1 && d>=0 && d<g->n && g->nodes[d].height>-1){
+			g->nodes[s].adj=removeEdge(g->nodes[s].adj,d);
+			g->nodes[d].adj=removeEdge(g->nodes[d].adj,s);
+		}else GRAPH_ERROR=-4;
+	} else GRAPH_ERROR=-1;
+}
+
+edge* removeEdge(edge* l,int k){
+	if(l!=NULL){
+		if(l->k==k){
+			edge* temp=l;
+			l=l->next;
+			free(temp);
+		}
+		else l->next=removeEdge(l->next,k);
+	}
+	return l;
+}
+
+void addNode(graph* g,int h){
+	if(g!=NULL){
+		if(h>=0){
+			int i=0;
+			while(i<g->n && g->nodes[i].height!=-1)
+				i++;
+			if(i==g->n){
+				g->nodes=realloc(g->nodes,g->n+1);
+				if(g->nodes!=NULL){
+					g->nodes[g->n].height=h;
+					g->nodes[g->n].adj=NULL;
+					g->n++;
+				} else GRAPH_ERROR==-2;
+			} else g->nodes[i].height=h;
+		} else GRAPH_ERROR=-4;
+	} else GRAPH_ERROR=-1;
+}
+
+void deleteNode(graph* g,int s){
+	if(g!=NULL){
+		if(s>=0 && s<g->n){
+			int i=0;
+			while(i<g->n){
+				g->nodes[i].adj=removeEdge(g->nodes[i].adj,s);
+				i++;
+			}
+			g->nodes[s].height=-1;
+			freeEdges(g->nodes[s].adj);
+			g->nodes[s].adj=NULL;
+		} GRAPH_ERROR=-4;
+	} GRAPH_ERROR=-1;
+}
+
 /*
-//node* Djikstra(graph* g);
 int checkContraints(node* path);
 void collapseGraph(graph* g);
-void addNode(graph* g,int h);
-void deleteEdge(graph* g,int s,int d);
-void deleteNode(graph* g,int s);*/
+*/

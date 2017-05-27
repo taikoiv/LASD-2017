@@ -17,9 +17,15 @@ typedef struct graph{
 	node* nodes;
 } graph;
 
+typedef struct visit{
+	int* col;
+	int* pred;
+	int* dist;
+} visit;
+
 graph* createGraph();
 graph* createRandomGraph();
-//node* Djikstra(graph* g);
+visit* Djikstra(graph* g,int s);
 void printGraph(graph* g);
 int checkContraints(node* path);
 void collapseGraph(graph* g);
