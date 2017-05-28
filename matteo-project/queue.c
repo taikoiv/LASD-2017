@@ -6,8 +6,6 @@ int right(int i);
 int parent(int i);
 int climbheap(queue* q, int i);
 void swap(queue* q,int k,int i);
-int isEmpty(queue* q);
-int size(queue* q);
 void heapify(queue *q, int i);
 
 

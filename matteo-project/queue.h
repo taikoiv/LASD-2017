@@ -18,4 +18,7 @@ void insertElem(queue* q,int k,int w);
 int extract(queue* q);
 void updateElem(queue* q,int k,int w);
 void freeQueue(queue* q);
+int isEmpty(queue* q);
+int size(queue* q);
+
 #endif
