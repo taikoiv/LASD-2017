@@ -70,7 +70,7 @@ void printGraph(graph* g){
 		int i;
 		edge *l=NULL;
 		for(i=0;i<g->n;i++){
-			if(g->nodes[i].height!>-1){ //NON STAMPO I NODI SENTINELLA
+			if(g->nodes[i].height>-1){ //NON STAMPO I NODI SENTINELLA
 				printf("%d - %d |",i,g->nodes[i].height);
 				l=g->nodes[i].adj;
 				while(l!=NULL){
