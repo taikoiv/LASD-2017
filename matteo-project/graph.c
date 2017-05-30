@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#inlude <limits.h>
 #include "graph.h"
 
 #define RANDOM_SUCC 0.33
@@ -7,13 +8,13 @@
 int GRAPH_ERROR=0;
 
 void freeEdges(edge* l);
-edge* insertEdge(edge* l,int d,int w);
+edge* insertEdge(edge* l,int d, float w);
 int isConnected(graph *g,int* col);
 void DFSVisitColors(graph* g,int* col,int s);
 void connectGraph(graph *g);
 edge* removeEdge(edge* l,int k);
 
-edge* insertEdge(edge* l,int d,int w){
+edge* insertEdge(edge* l,int d,float w){
 	edge* e=(edge*)malloc(sizeof(edge));
 	e->k=d;
 	e->weight=w;
@@ -24,7 +25,7 @@ edge* insertEdge(edge* l,int d,int w){
 
 graph* createRandomGraph(){
 	graph *g=NULL;
-	int n,i,j,max=-1;
+	int n,i,j,max=INT_MIN;
 	float p;
 	
 	g=(graph*) malloc(sizeof(graph));
@@ -70,11 +71,11 @@ void printGraph(graph* g){
 		int i;
 		edge *l=NULL;
 		for(i=0;i<g->n;i++){
-			if(g->nodes[i].height>-1){ //NON STAMPO I NODI SENTINELLA
-				printf("%d - %d |",i,g->nodes[i].height);
+			if(g->nodes[i].height!=INT_MIN){ //NON STAMPO I NODI SENTINELLA
+				printf("%d - %f |",i,g->nodes[i].height);
 				l=g->nodes[i].adj;
 				while(l!=NULL){
-					printf("(%d , %d)",l->k,l->weight);
+					printf("(%d , %f)",l->k,l->weight);
 					l=l->next;
 					if(l!=NULL){
 						printf(" -> ");
@@ -100,10 +101,10 @@ graph* createGraph(){
 	return g;
 }
 
-void addEdge(graph* g,int s,int d,int w){
+void addEdge(graph* g,int s,int d,float w){
 	edge* e=NULL;
 	if(g!=NULL){
-		if(s>=0 && s<g->n && g->nodes[s].height>-1 && d>=0 && d<g->n && g->nodes[d].height>-1){
+		if(s>=0 && s<g->n && g->nodes[s].height!=INT_MIN && d>=0 && d<g->n && g->nodes[d].height!=INT_MIN){
 			g->nodes[s].adj=insertEdge(g->nodes[s].adj,d,w);
 			g->nodes[d].adj=insertEdge(g->nodes[d].adj,s,w);
 		}else{
@@ -168,7 +169,7 @@ void DFSVisitColors(graph* g,int* col,int s){
 
 void deleteEdge(graph* g,int s,int d){
 	if(g!=NULL){
-		if(s>=0 && s<g->n && g->nodes[s].height>-1 && d>=0 && d<g->n && g->nodes[d].height>-1){
+		if(s>=0 && s<g->n && g->nodes[s].height!=INT_MIN && d>=0 && d<g->n && g->nodes[d].height!=INT_MIN){
 			g->nodes[s].adj=removeEdge(g->nodes[s].adj,d);
 			g->nodes[d].adj=removeEdge(g->nodes[d].adj,s);
 		}else GRAPH_ERROR=-4;
@@ -187,11 +188,11 @@ edge* removeEdge(edge* l,int k){
 	return l;
 }
 
-void addNode(graph* g,int h){
+void addNode(graph* g,float h){
 	if(g!=NULL){
 		if(h>=0){
 			int i=0;
-			while(i<g->n && g->nodes[i].height!=-1)
+			while(i<g->n && g->nodes[i].height!=INT_MIN)
 				i++;
 			if(i==g->n){
 				g->nodes=realloc(g->nodes,g->n+1);
@@ -213,7 +214,7 @@ void deleteNode(graph* g,int s){
 				g->nodes[i].adj=removeEdge(g->nodes[i].adj,s);
 				i++;
 			}
-			g->nodes[s].height=-1;
+			g->nodes[s].height=INT_MIN;
 			freeEdges(g->nodes[s].adj);
 			g->nodes[s].adj=NULL;
 		} GRAPH_ERROR=-4;
