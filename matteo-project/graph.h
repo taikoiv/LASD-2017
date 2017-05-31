@@ -33,5 +33,5 @@ void addNode(graph* g,float h);
 void deleteEdge(graph* g,int s,int d);
 void deleteNode(graph* g,int s);
 void freeGraph(graph* g);
-
+void freeVisit(visit* v);
 #endif

@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
-#inlude <limits.h>
+#include <limits.h>
+#include <float.h>
 #include "graph.h"
+#include "queue.h"
 
 #define RANDOM_SUCC 0.33
 
@@ -13,6 +15,7 @@ int isConnected(graph *g,int* col);
 void DFSVisitColors(graph* g,int* col,int s);
 void connectGraph(graph *g);
 edge* removeEdge(edge* l,int k);
+visit* initializeVisit(graph* g);
 
 edge* insertEdge(edge* l,int d,float w){
 	edge* e=(edge*)malloc(sizeof(edge));
@@ -39,8 +42,10 @@ graph* createRandomGraph(){
 			g->n=0;
 		} else {
 			g->n=n;
+			printf("N RANDOM = %d\n",n);
 			//GENERAZIONE DEI NODI
 			for(i=1;i<n-1;i++){
+				j=0;
 				g->nodes[i].height=rand();
 				if(g->nodes[i].height>max)
 					max=g->nodes[i].height;
@@ -221,8 +226,79 @@ void deleteNode(graph* g,int s){
 	} GRAPH_ERROR=-1;
 }
 
-visit* Djikstra(graph* g,int s);
+visit* Djikstra(graph* g,int s){
+	visit* v=NULL;
+	queue* q=NULL;
+	edge* l=NULL;
+	int i,c;
+	float d;
+	
+	if(g!=NULL){
+		v=initializeVisit(g);
+		if(v!=NULL){
+			v->dist[s]=0;
+			v->col[s]=1;
+			q=newQueue(g->n-1);
+			if(q!=NULL){
+				for(i=0;i<g->n;i++) //FILL THE QUEUE
+					if(g->nodes[i].height>=g->nodes[s].height && g->nodes[i].height!=INT_MIN)
+						insertElem(q,i,v->dist[i]);
+				while(!isEmpty(q)){
+					c=extract(q);
+					printf("estratto : %d\n",c);
+					if(v->dist[c]==FLT_MAX) break;
+					l=g->nodes[c].adj;
+					while(l!=NULL){ //FOREACH ADJ
+						d=v->dist[c]+l->weight;
+						if(d<v->dist[l->k]){ //RELAX, TAKE IT EASY
+							v->dist[l->k]=d;
+							v->pred[l->k]=c;
+							updateElem(q,l->k,v->dist[l->k]);
+						}
+						v->col[c]=2;
+						l=l->next;
+					}
+				}
+			} else {
+				GRAPH_ERROR=-2;
+				freeVisit(v);
+			}
+		}
+	}GRAPH_ERROR=-1;
+	return v;
+}
 
+visit* initializeVisit(graph* g){
+	visit *ret=NULL;
+	int i=0;
+	if(g!=NULL){
+		ret= (visit*) malloc(sizeof(visit));
+		if(ret!=NULL){
+			ret->col=(int*)calloc(g->n,sizeof(int));
+			ret->dist=(float*)malloc(g->n*sizeof(float));
+			ret->pred=(int*)malloc(g->n*sizeof(int));
+			if(ret->col!=NULL && ret->dist!=NULL && ret->pred!=NULL){
+				for(i=0;i<g->n;i++){
+					ret->dist[i]=FLT_MAX;
+					ret->pred[i]=-1;
+				}
+			}else{
+				freeVisit(ret);
+				GRAPH_ERROR=-2;
+			}
+		} else GRAPH_ERROR=-2;
+	} else GRAPH_ERROR=-1;
+	return ret;
+}
+
+void freeVisit(visit* v){
+	if(v!=NULL){
+		if(v->col!=NULL) free(v->col);
+		if(v->dist!=NULL) free(v->dist);
+		if(v->pred!=NULL) free(v->pred);
+		free(v);
+	}
+}
 /*
 void collapseGraph(graph* g);
 */

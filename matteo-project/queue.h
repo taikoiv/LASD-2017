@@ -3,7 +3,7 @@
 
 typedef struct queue_elem{
 	int k;
-	int weight;
+	float weight;
 } queue_elem;
 
 typedef struct queue{
@@ -14,11 +14,12 @@ typedef struct queue{
 } queue;
 
 queue* newQueue(int n);
-void insertElem(queue* q,int k,int w);
+void insertElem(queue* q,int k,float w);
 int extract(queue* q);
-void updateElem(queue* q,int k,int w);
+void updateElem(queue* q,int k,float w);
 void freeQueue(queue* q);
 int isEmpty(queue* q);
 int size(queue* q);
+void printQueue(queue* q);
 
 #endif
