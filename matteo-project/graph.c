@@ -243,22 +243,25 @@ visit* Djikstra(graph* g,int s){
 				for(i=0;i<g->n;i++) //FILL THE QUEUE
 					if(g->nodes[i].height>=g->nodes[s].height && g->nodes[i].height!=INT_MIN)
 						insertElem(q,i,v->dist[i]);
+					else v->dist[i]=-2;
 				while(!isEmpty(q)){
 					c=extract(q);
-					printf("estratto : %d\n",c);
 					if(v->dist[c]==FLT_MAX) break;
 					l=g->nodes[c].adj;
 					while(l!=NULL){ //FOREACH ADJ
-						d=v->dist[c]+l->weight;
-						if(d<v->dist[l->k]){ //RELAX, TAKE IT EASY
-							v->dist[l->k]=d;
-							v->pred[l->k]=c;
-							updateElem(q,l->k,v->dist[l->k]);
+						if(v->dist[l->k]!=-2){ // IF K IS NOT A UTIL NODE
+							d=v->dist[c]+l->weight;
+							if(d<v->dist[l->k]){ //RELAX, TAKE IT EASY
+								v->dist[l->k]=d;
+								v->pred[l->k]=c;
+								updateElem(q,l->k,v->dist[l->k]);
+							}
+							v->col[c]=2;
 						}
-						v->col[c]=2;
 						l=l->next;
 					}
 				}
+				freeQueue(q);
 			} else {
 				GRAPH_ERROR=-2;
 				freeVisit(v);

@@ -53,11 +53,12 @@ int climbheap(queue* q, int i) { //swap element with his parent until is possibl
 }
 
 void swap(queue* q,int k,int i){
+		//SWAP POSITIONS
 		int t=q->pos[q->heap[k].k];
 		q->pos[q->heap[k].k]=q->pos[q->heap[i].k];
 		q->pos[q->heap[i].k]=t;
-		
-		queue_elem temp = q->heap[k];
+		//SWAP ELEMENTS
+		queue_elem temp = q->heap[k]; 
 		q->heap[k] = q->heap[i];
 		q->heap[i] = temp;
 }
@@ -99,7 +100,7 @@ int size(queue* q){
 }
 
 void updateElem(queue* q,int k,float w){
-		int oldWeight=q->heap[q->pos[k]].weight;
+		float oldWeight=q->heap[q->pos[k]].weight;
 		q->heap[q->pos[k]].weight=w;
 		if(w>oldWeight){
 			heapify(q,q->pos[k]);
@@ -107,7 +108,6 @@ void updateElem(queue* q,int k,float w){
 		else{
 			climbheap(q,q->pos[k]);
 		}
-	}
 }
 
 void freeQueue(queue* q){
