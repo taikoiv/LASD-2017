@@ -24,7 +24,7 @@ visit* initializeVisit(graph* g);
 
 edge* insertEdge(edge* l,int d,float w){
 	if(l!=NULL){
-		if(l->k==d) return NULL;
+		if(l->k==d) return l;
 		l->next=insertEdge(l->next,d,w);
 	} else {
 		edge* e=(edge*)malloc(sizeof(edge));
@@ -247,23 +247,22 @@ visit* Djikstra(graph* g,int s){
 	edge* l=NULL;
 	int i,c;
 	float d;
-	
 	if(g!=NULL && g->n!=0){
 		v=initializeVisit(g);
 		if(v!=NULL){
 			v->dist[s]=0;
-			v->col[s]=1;
 			q=newQueue(g->n-1);
 			if(q!=NULL){
 				for(i=0;i<g->n;i++) //FILL THE QUEUE
 					insertElem(q,i,v->dist[i]);
 				while(!isEmpty(q)){
 					c=extract(q);
+					v->col[c]=1;
 					if(v->dist[c]==FLT_MAX) break;
 						l=g->nodes[c].adj;
 						while(l!=NULL){ //FOREACH ADJ
 							d=v->dist[c]+l->weight;
-							if(d<v->dist[l->k] && v->col[l->k]==0 && g->nodes[c].height<g->nodes[l->k].height){ //RELAX, TAKE IT EASY
+							if(d<v->dist[l->k] && g->nodes[c].height<g->nodes[l->k].height){ //RELAX, TAKE IT EASY
 								v->dist[l->k]=d;
 								v->pred[l->k]=c;
 								v->col[l->k]=1;
