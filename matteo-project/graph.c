@@ -8,6 +8,11 @@
 #define RANDOM_SUCC 0.33
 
 int GRAPH_ERROR=0;
+/* ------LEGENDA ERRORI------
+-1 : IMPOSSIBILE ESEGUIRE LA FUNZIONE SU DI UN GRAFO NULLO
+-2 : IMPOSSIBILE ALLOCARE MEMORIA
+ 
+*/
 
 void freeEdges(edge* l);
 edge* insertEdge(edge* l,int d, float w);
@@ -18,11 +23,21 @@ edge* removeEdge(edge* l,int k);
 visit* initializeVisit(graph* g);
 
 edge* insertEdge(edge* l,int d,float w){
-	edge* e=(edge*)malloc(sizeof(edge));
-	e->k=d;
-	e->weight=w;
-	e->next=l;
-	return e;
+	if(l!=NULL){
+		if(l->k==d) return NULL;
+		l->next=insertEdge(l->next,d,w);
+	} else {
+		edge* e=(edge*)malloc(sizeof(edge));
+		if(e!=NULL){
+			e->k=d;
+			e->weight=w;
+			e->next=NULL;
+			l=e;
+		} else {
+			GRAPH_ERROR=-2;
+		}
+	}
+	return l;
 }
 
 
@@ -38,7 +53,7 @@ graph* createRandomGraph(){
 		n=rand()%20;
 		g->nodes=(node*) calloc(n,sizeof(node));
 		if(g->nodes==NULL){
-			GRAPH_ERROR==-3;
+			GRAPH_ERROR==-2;
 			g->n=0;
 		} else {
 			g->n=n;
@@ -59,7 +74,7 @@ graph* createRandomGraph(){
 					if(i!=j){
 						p=(float)((rand()%n)+1)/n;
 						if(p<=RANDOM_SUCC){
-							addEdge(g,i,j,rand());
+							addEdge(g,i,j,rand()%20);
 						}
 					}
 				}
@@ -233,7 +248,7 @@ visit* Djikstra(graph* g,int s){
 	int i,c;
 	float d;
 	
-	if(g!=NULL){
+	if(g!=NULL && g->n!=0){
 		v=initializeVisit(g);
 		if(v!=NULL){
 			v->dist[s]=0;
@@ -241,33 +256,31 @@ visit* Djikstra(graph* g,int s){
 			q=newQueue(g->n-1);
 			if(q!=NULL){
 				for(i=0;i<g->n;i++) //FILL THE QUEUE
-					if(g->nodes[i].height>=g->nodes[s].height && g->nodes[i].height!=INT_MIN)
-						insertElem(q,i,v->dist[i]);
-					else v->dist[i]=-2;
+					insertElem(q,i,v->dist[i]);
 				while(!isEmpty(q)){
 					c=extract(q);
 					if(v->dist[c]==FLT_MAX) break;
-					l=g->nodes[c].adj;
-					while(l!=NULL){ //FOREACH ADJ
-						if(v->dist[l->k]!=-2){ // IF K IS NOT A UTIL NODE
+						l=g->nodes[c].adj;
+						while(l!=NULL){ //FOREACH ADJ
 							d=v->dist[c]+l->weight;
-							if(d<v->dist[l->k]){ //RELAX, TAKE IT EASY
+							if(d<v->dist[l->k] && v->col[l->k]==0 && g->nodes[c].height<g->nodes[l->k].height){ //RELAX, TAKE IT EASY
 								v->dist[l->k]=d;
 								v->pred[l->k]=c;
+								v->col[l->k]=1;
 								updateElem(q,l->k,v->dist[l->k]);
 							}
-							v->col[c]=2;
-						}
 						l=l->next;
+						}
 					}
+					v->col[c]=2;
 				}
 				freeQueue(q);
 			} else {
 				GRAPH_ERROR=-2;
 				freeVisit(v);
 			}
-		}
-	}GRAPH_ERROR=-1;
+	} else if(g==NULL)GRAPH_ERROR=-1;
+		   else GRAPH_ERROR=-4;
 	return v;
 }
 
