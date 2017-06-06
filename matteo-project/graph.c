@@ -316,6 +316,16 @@ list* DFSVisitUphillList(graph* g,visit* v,int s){
 	}
 	return l;
 }
+
+void printPath(visit* v,int s){
+	if(v!=NULL && v->pred!=NULL){
+		if(v->pred[s]!=-1){
+			printPath(v,v->pred[s]);
+		} 
+		printf("%d ",s);
+	}	
+}
+
 /*
 void collapseGraph(graph* g);
 */
