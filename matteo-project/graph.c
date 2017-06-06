@@ -3,7 +3,7 @@
 #include <limits.h>
 #include <float.h>
 #include "graph.h"
-#include "queue.h"
+#include "list.h"
 
 #define RANDOM_SUCC 0.33
 
@@ -11,7 +11,7 @@ int GRAPH_ERROR=0;
 /* ------LEGENDA ERRORI------
 -1 : IMPOSSIBILE ESEGUIRE LA FUNZIONE SU DI UN GRAFO NULLO
 -2 : IMPOSSIBILE ALLOCARE MEMORIA
- 
+-5 : SUPPORT DATA STRUCTURE ERROR
 */
 
 void freeEdges(edge* l);
@@ -21,6 +21,7 @@ void DFSVisitColors(graph* g,int* col,int s);
 void connectGraph(graph *g);
 edge* removeEdge(edge* l,int k);
 visit* initializeVisit(graph* g);
+list* DFSVisitUphillList(graph* g,visit* v,int s);
 
 edge* insertEdge(edge* l,int d,float w){
 	if(l!=NULL){
@@ -241,68 +242,24 @@ void deleteNode(graph* g,int s){
 	} GRAPH_ERROR=-1;
 }
 
-visit* Djikstra(graph* g,int s){
-	visit* v=NULL;
-	queue* q=NULL;
-	edge* l=NULL;
-	int i,c;
-	float d;
-	if(g!=NULL && g->n!=0){
-		v=initializeVisit(g);
-		if(v!=NULL){
-			v->dist[s]=0;
-			q=newQueue(g->n-1);
-			if(q!=NULL){
-				for(i=0;i<g->n;i++) //FILL THE QUEUE
-					insertElem(q,i,v->dist[i]);
-				while(!isEmpty(q)){
-					c=extract(q);
-					v->col[c]=1;
-					if(v->dist[c]==FLT_MAX) break;
-						l=g->nodes[c].adj;
-						while(l!=NULL){ //FOREACH ADJ
-							d=v->dist[c]+l->weight;
-							if(d<v->dist[l->k] && g->nodes[c].height<g->nodes[l->k].height){ //RELAX, TAKE IT EASY
-								v->dist[l->k]=d;
-								v->pred[l->k]=c;
-								v->col[l->k]=1;
-								updateElem(q,l->k,v->dist[l->k]);
-							}
-						l=l->next;
-						}
-					}
-					v->col[c]=2;
-				}
-				freeQueue(q);
-			} else {
-				GRAPH_ERROR=-2;
-				freeVisit(v);
-			}
-	} else if(g==NULL)GRAPH_ERROR=-1;
-		   else GRAPH_ERROR=-4;
-	return v;
-}
-
 visit* initializeVisit(graph* g){
 	visit *ret=NULL;
 	int i=0;
-	if(g!=NULL){
-		ret= (visit*) malloc(sizeof(visit));
-		if(ret!=NULL){
-			ret->col=(int*)calloc(g->n,sizeof(int));
-			ret->dist=(float*)malloc(g->n*sizeof(float));
-			ret->pred=(int*)malloc(g->n*sizeof(int));
-			if(ret->col!=NULL && ret->dist!=NULL && ret->pred!=NULL){
-				for(i=0;i<g->n;i++){
-					ret->dist[i]=FLT_MAX;
-					ret->pred[i]=-1;
-				}
-			}else{
-				freeVisit(ret);
-				GRAPH_ERROR=-2;
+	ret= (visit*) malloc(sizeof(visit));
+	if(ret!=NULL){
+		ret->col=(int*)calloc(g->n,sizeof(int));
+		ret->dist=(float*)malloc(g->n*sizeof(float));
+		ret->pred=(int*)malloc(g->n*sizeof(int));
+		if(ret->col!=NULL && ret->dist!=NULL && ret->pred!=NULL){
+			for(i=0;i<g->n;i++){
+				ret->dist[i]=FLT_MAX;
+				ret->pred[i]=-1;
 			}
-		} else GRAPH_ERROR=-2;
-	} else GRAPH_ERROR=-1;
+		}else{
+			freeVisit(ret);
+			GRAPH_ERROR=-2;
+		}
+	} else GRAPH_ERROR=-2;
 	return ret;
 }
 
@@ -313,6 +270,51 @@ void freeVisit(visit* v){
 		if(v->pred!=NULL) free(v->pred);
 		free(v);
 	}
+}
+
+visit* uphillVisit(graph* g,int s){
+	visit* v=NULL;
+	edge* adj=NULL;
+	list* l=NULL , *head=NULL;
+	int i;
+	if(g!=NULL){
+		v=initializeVisit(g);
+		if(GRAPH_ERROR==0){
+			head=l=DFSVisitUphillList(g,v,s);
+			v->dist[s]=0;
+			while(l!=NULL){
+				adj=g->nodes[l->k].adj;
+				while(adj!=NULL){
+					if(v->dist[adj->k]>v->dist[l->k]+adj->weight)
+						v->dist[adj->k]=v->dist[l->k]+adj->weight;
+					adj=adj->next;
+				}
+				l=l->next;
+			}
+			freeList(head);
+		}
+	} else GRAPH_ERROR=-1;
+	return v;
+}
+
+list* DFSVisitUphillList(graph* g,visit* v,int s){
+	list* l=NULL;
+	edge* adj=NULL;
+	v->col[s]=1;
+	adj=g->nodes[s].adj;
+	while(adj!=NULL){
+		if(g->nodes[adj->k].height > g->nodes[s].height && v->col[adj->k]==0){
+			l=DFSVisitUphillList(g,v,adj->k);
+			v->pred[adj->k]=s;
+		}
+		l=insertTop(l,s);
+		if(LIST_ERROR!=0){
+			GRAPH_ERROR=-5;
+		}
+		v->col[s]=2;
+		adj=adj->next;
+	}
+	return l;
 }
 /*
 void collapseGraph(graph* g);

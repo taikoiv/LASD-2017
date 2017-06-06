@@ -25,7 +25,7 @@ typedef struct visit{
 
 graph* createGraph();
 graph* createRandomGraph();
-visit* Djikstra(graph* g,int s);
+visit* uphillVisit(graph* g,int s);
 void printGraph(graph* g);
 void collapseGraph(graph* g);
 void addEdge(graph* g,int s,int d, float w);

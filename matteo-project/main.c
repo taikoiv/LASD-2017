@@ -9,10 +9,9 @@ int main(int argc, char *argv[]) {
 	srand(time(NULL));
 	graph* g=createRandomGraph();
 	printGraph(g);
-	visit* v=Djikstra(g,0);
 	int i;
 	for(i=0;i<g->n;i++){
-		printf("NODO %d { COL : %d  |  DIST : %f | PRED : %d}\n",i,v->col[i],v->dist[i],v->pred[i]);
+		//printf("NODO %d { COL : %d  |  DIST : %f | PRED : %d}\n",i,v->col[i],v->dist[i],v->pred[i]);
 	}
 		
 	freeGraph(g);
