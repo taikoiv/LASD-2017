@@ -281,15 +281,17 @@ visit* uphillVisit(graph* g,int s){
 		v=initializeVisit(g);
 		if(GRAPH_ERROR==0){
 			head=l=DFSVisitUphillList(g,v,s);
-			v->dist[s]=0;
-			while(l!=NULL){
-				adj=g->nodes[l->k].adj;
-				while(adj!=NULL){
-					if(v->dist[adj->k]>v->dist[l->k]+adj->weight)
-						v->dist[adj->k]=v->dist[l->k]+adj->weight;
-					adj=adj->next;
+			if(GRAPH_ERROR==0){
+				v->dist[s]=0;
+				while(l!=NULL){
+					adj=g->nodes[l->k].adj;
+					while(adj!=NULL){
+						if(v->dist[adj->k]>v->dist[l->k]+adj->weight)
+							v->dist[adj->k]=v->dist[l->k]+adj->weight;
+						adj=adj->next;
+					}
+					l=l->next;
 				}
-				l=l->next;
 			}
 			freeList(head);
 		}
