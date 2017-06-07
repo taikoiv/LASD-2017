@@ -22,17 +22,19 @@ int isEmpty(heap *h){
 }
 
 void swap(heap *h, int s, int t){
-	float temp;
-	int sw = 0;
-	temp = h->data[s].priority;
-	h->data[s].priority = h->data[t].priority;
-	h->data[t].priority = temp;
-	sw = h->pos[h->data[s].id];
-	h->pos[h->data[s].id] = h->pos[h->data[t].id];
-	h->pos[h->data[t].id] = sw;
-	sw=h->data[s].id;
-	h->data[s].id=h->data[t].id;
-	h->data[t].id=sw;
+	if(h!=NULL){
+		float temp;
+		int sw = 0;
+		temp = h->data[s].priority;
+		h->data[s].priority = h->data[t].priority;
+		h->data[t].priority = temp;
+		sw = h->pos[h->data[s].id];
+		h->pos[h->data[s].id] = h->pos[h->data[t].id];
+		h->pos[h->data[t].id] = sw;
+		sw=h->data[s].id;
+		h->data[s].id=h->data[t].id;
+		h->data[t].id=sw;
+	}
 }
 
 void heapify(heap *h, int i){ //restore heap properties
@@ -101,9 +103,9 @@ int extractMin(heap *h){
 }
 
 void update(heap *h, int k, float p){
-	float temp = h->data[h->pos[k]].priority;
-	h->data[h->pos[k]].priority = p;
-	if(h!=0){
+	if(h!=NULL){
+		float temp = h->data[h->pos[k]].priority;
+		h->data[h->pos[k]].priority = p;
 		if(temp > p)
 			climbheap(h, h->pos[k]);
 		else
@@ -121,4 +123,21 @@ void freeheap(heap *h){
 	}
 }
 
-
+float *heapSort(graph *g){
+	heap *h=NULL;
+	float *info=NULL;
+	if(g!=NULL){
+		int i=0;
+		info = (float *)malloc(g->n*sizeof(float));
+		h = createHeap(g->n);
+		for(; i<g->n; i++)
+			insert(h, i, g->nodes[i].height);
+		i=0;
+		while(!isEmpty(h)){
+			info[i]=h->data[i].priority;
+			i++;
+		}
+		free(h);
+	}
+	return info;
+}
