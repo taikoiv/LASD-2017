@@ -3,7 +3,6 @@
 #include <limits.h>
 #include <float.h>
 #include "graph.h"
-#include "list.h"
 
 #define RANDOM_SUCC 0.33
 
@@ -11,17 +10,20 @@ int GRAPH_ERROR=0;
 /* ------LEGENDA ERRORI------
 -1 : IMPOSSIBILE ESEGUIRE LA FUNZIONE SU DI UN GRAFO NULLO
 -2 : IMPOSSIBILE ALLOCARE MEMORIA
+-4 : ALMENO UN PARAMETRO NON VALIDO
 -5 : SUPPORT DATA STRUCTURE ERROR
 */
 
-void freeEdges(edge* l);
-edge* insertEdge(edge* l,int d, float w);
-int isConnected(graph *g,int* col);
-void DFSVisitColors(graph* g,int* col,int s);
-void connectGraph(graph *g);
-edge* removeEdge(edge* l,int k);
-visit* initializeVisit(graph* g);
-list* DFSVisitUphillList(graph* g,visit* v,int s);
+/* ----------------------------------------------- SUPPORT FUNCTIONS ---------------------------------------------------------*/
+void freeEdges(edge* l); //FREE AN ADJ LIST
+edge* insertEdge(edge* l,int d, float w); //INSERT A WEIGHTED EDGE IN THE ADJ LIST
+int isConnected(graph *g,int* col); //VERIFY IF THE GRAPH IS CONNECTED
+void DFSVisitColors(graph* g,int* col,int s); //DFSVISIT RETURNS COLOR ARRAY
+void connectGraph(graph *g); // CONNECT A NOT CONNECTED GRAPH
+edge* removeEdge(edge* l,int k); //DELETE AN EDGE IN THE ADJ LIST
+visit* initializeVisit(graph* g); //INITIALIZE THE STRUCT VISIT
+list* DFSVisitUphillList(graph* g,visit* v,int s); //DEPHT VISIT THAT BUILD TOPOLOGICAL ORDER
+/*---------------------------------------------------------------------------------------------------------------------------*/
 
 edge* insertEdge(edge* l,int d,float w){
 	if(l!=NULL){
@@ -41,7 +43,6 @@ edge* insertEdge(edge* l,int d,float w){
 	return l;
 }
 
-
 graph* createRandomGraph(){
 	graph *g=NULL;
 	int n,i,j,max=INT_MIN;
@@ -51,7 +52,7 @@ graph* createRandomGraph(){
 	if(g==NULL){
 		GRAPH_ERROR==-2;
 	} else {
-		n=rand()%20;
+		n=rand()%20+1;
 		g->nodes=(node*) calloc(n,sizeof(node));
 		if(g->nodes==NULL){
 			GRAPH_ERROR==-2;
@@ -144,12 +145,14 @@ void freeEdges(edge* l){
 }
 
 void freeGraph(graph* g){
-	while(g->n>0){
-		freeEdges(g->nodes[g->n-1].adj);
-		g->n--;
+	if(g!=NULL){
+		while(g->n>0){
+			freeEdges(g->nodes[g->n-1].adj);
+			g->n--;
+		}
+		free(g->nodes);
+		free(g);
 	}
-	free(g->nodes);
-	free(g);
 }
 
 int isConnected(graph *g,int* col){
@@ -328,6 +331,39 @@ void printPath(visit* v,int s){
 	}	
 }
 
-/*
-void collapseGraph(graph* g);
-*/
+list* pathGenerator(graph* g,visit* v,int s){
+	list* l=NULL;
+	if(g!=NULL && v!=NULL){
+		while(s>-1 && s<g->n){
+			l=insertTop(l,s);
+			if(LIST_ERROR==0)
+				s=v->pred[s];
+			else{
+				LIST_ERROR=0;
+				GRAPH_ERROR=-5;
+				s=-1;
+				freeList(l);
+			}
+		}
+	}
+	return l;
+}
+
+list* pathExtender(graph* g,list* path,visit* v,int s){
+	if(g!=NULL && v!=NULL){
+		while(s>-1 && s<g->n){
+			path=insertTail(path,s);
+			if(LIST_ERROR==0)
+				s=v->pred[s];
+			else{
+				LIST_ERROR=0;
+				GRAPH_ERROR=-5;
+				s=-1;
+				freeList(path);
+			}
+		}
+	} else {
+		GRAPH_ERROR=-5;
+	}
+	return path;
+}

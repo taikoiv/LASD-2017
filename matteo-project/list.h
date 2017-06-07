@@ -9,6 +9,8 @@ typedef struct list{
 extern int LIST_ERROR;
 
 list* insertTop(list* l,int k);
+list* insertTail(list* l,int k);
 void freeList(list* l);
+void printList(list* l);
 
 #endif

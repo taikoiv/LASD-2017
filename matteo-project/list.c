@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "list.h"
 
 int LIST_ERROR=0;
@@ -20,4 +21,23 @@ void freeList(list* l){
 		freeList(l->next);
 		free(l);
 	}
+}
+
+void printList(list* l){
+	if(l!=NULL){
+		printf("%d -> ",l->k);
+		printList(l->next);
+	}
+}
+
+list* insertTail(list* l,int k){
+	if(l!=NULL){
+		if(l->k!=k)
+			l->next=insertTail(l->next,k);
+	} else {
+		l=(list*) malloc(sizeof(list));
+		l->k=k;
+		l->next=NULL;
+	}
+	return l;
 }
