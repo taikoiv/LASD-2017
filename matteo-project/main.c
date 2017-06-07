@@ -4,8 +4,7 @@
 #include <float.h>
 #include "graph.h"
 
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
-void loseWeightPathPrinter(graph *g,int s,int d);
+void loseWeightPathPrinter(graph *g,int s,int d); //PRINT THE PATH CALCULATED BY MATTEO'S CRITERIA
 
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
@@ -31,7 +30,6 @@ int main(int argc, char *argv[]) {
 	addEdge(g,6,8,20);
 	addEdge(g,6,7,56);
 	addEdge(g,7,8,37);
-	system("pause");
 	printGraph(g);
 	loseWeightPathPrinter(g,0,g->n-1);
 	freeGraph(g);

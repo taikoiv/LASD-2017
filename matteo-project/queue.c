@@ -37,9 +37,9 @@ void heapify(heap *h, int i){ //restore heap properties
 		int min = i;
 		int l = left(i);
 		int r = right(i);
-		if(l <= size(h) && h->data[l]<h->data[i])
+		if(l <= h->size && h->data[l].priority<h->data[i].priority)
 			min = l;
-		if(r <= size(h) && h->data[r]<h->data[min])
+		if(r <= h->size && h->data[r].priority<h->data[min].priority)
 			min = r;
 		if(min!=i){
 			swap(h, i, min);
@@ -54,7 +54,7 @@ heap *createHeap(int n){
 	if(h!=NULL){
 		h->size = 0;
 		h->allocated = n;
-		h->data = (node *)malloc((n)*sizeof(node));
+		h->data = (elem *)malloc((n)*sizeof(elem));
 		h->pos = (int *)malloc((n)*sizeof(int));
 		
 	}
@@ -65,7 +65,7 @@ heap *createHeap(int n){
 }
 
 int climbheap(heap *h, int i) { //swap element with his parent until is possible
-	if (i!=0 && h->data[i] < h->data[parent(i)]) {
+	if (i!=0 && h->data[i].priority < h->data[parent(i)].priority) {
 		swap(h, i, parent(i));
 		return climbheap(h, parent(i));
 	}else{
@@ -78,8 +78,8 @@ void insert(heap *h, int k, float f){
 		h->size++;
 		h->data[h->size].priority = f;
 		h->data[h->size].id = k;
-		h->pos[k] = h->data[h->size];
-		climbheap(h, h->size));
+		h->pos[k] = h->size;
+		climbheap(h, h->size);
 	}
 }
 
@@ -98,7 +98,7 @@ int extractMin(heap *h){
 }
 
 void update(heap *h, int k, float p){
-	temp = h->data[h->pos[k]].priority;
+	float temp = h->data[h->pos[k]].priority;
 	h->data[h->pos[k]].priority = p;
 	if(h!=0){
 		if(temp > p)
@@ -111,9 +111,11 @@ void update(heap *h, int k, float p){
 }
 
 void freeheap(heap *h){
-	free(heap->pos);
-	free(h->data);
-	free(h);
+	if(h!=NULL){
+		if(h->pos!=NULL)free(h->pos);
+		if(h->data!=NULL)free(h->data);
+		free(h);
+	}
 }
 
 

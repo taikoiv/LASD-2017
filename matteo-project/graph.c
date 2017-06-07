@@ -45,7 +45,8 @@ edge* insertEdge(edge* l,int d,float w){
 
 graph* createRandomGraph(){
 	graph *g=NULL;
-	int n,i,j,max=INT_MIN;
+	int n,i,j;
+	float max=INT_MIN;
 	float p;
 	
 	g=(graph*) malloc(sizeof(graph));
@@ -68,8 +69,8 @@ graph* createRandomGraph(){
 					max=g->nodes[i].height;
 			}
 			//GENERAZIONE DI SORGENTE E DESTINAZIONE IN MODO DA NON ESSERE I PUNTI CON ALTEZZA MASSIMA
-			g->nodes[n-1].height=rand()%max;
-			g->nodes[0].height=rand()%max;
+			g->nodes[n-1].height=rand()%(int)max+1;
+			g->nodes[0].height=rand()%(int)max+1;
 			//GENERAZIONE DEGLI ARCHI
 			for(i=0;i<g->n;i++){
 				for(j=0;j<g->n;j++){
@@ -93,7 +94,7 @@ void printGraph(graph* g){
 		int i;
 		edge *l=NULL;
 		for(i=0;i<g->n;i++){
-			if(g->nodes[i].height!=INT_MIN){ //NON STAMPO I NODI SENTINELLA
+			if(g->nodes[i].height!=FLT_MIN){ //NON STAMPO I NODI SENTINELLA
 				printf("%d - %f |",i,g->nodes[i].height);
 				l=g->nodes[i].adj;
 				while(l!=NULL){
@@ -126,7 +127,7 @@ graph* createGraph(){
 void addEdge(graph* g,int s,int d,float w){
 	edge* e=NULL;
 	if(g!=NULL){
-		if(s>=0 && s<g->n && g->nodes[s].height!=INT_MIN && d>=0 && d<g->n && g->nodes[d].height!=INT_MIN){
+		if(s>=0 && s<g->n && g->nodes[s].height!=INT_MIN && d>=0 && d<g->n && g->nodes[d].height!=FLT_MIN){
 			g->nodes[s].adj=insertEdge(g->nodes[s].adj,d,w);
 			g->nodes[d].adj=insertEdge(g->nodes[d].adj,s,w);
 		}else{
@@ -193,7 +194,7 @@ void DFSVisitColors(graph* g,int* col,int s){
 
 void deleteEdge(graph* g,int s,int d){
 	if(g!=NULL){
-		if(s>=0 && s<g->n && g->nodes[s].height!=INT_MIN && d>=0 && d<g->n && g->nodes[d].height!=INT_MIN){
+		if(s>=0 && s<g->n && g->nodes[s].height!=INT_MIN && d>=0 && d<g->n && g->nodes[d].height!=FLT_MIN){
 			g->nodes[s].adj=removeEdge(g->nodes[s].adj,d);
 			g->nodes[d].adj=removeEdge(g->nodes[d].adj,s);
 		}else GRAPH_ERROR=-4;
@@ -216,7 +217,7 @@ void addNode(graph* g,float h){
 	if(g!=NULL){
 		if(g->n>0){
 			int i=0;
-			while(i<g->n && g->nodes[i].height!=INT_MIN)
+			while(i<g->n && g->nodes[i].height!=FLT_MIN)
 				i++;
 			if(i==g->n){
 				node* app=g->nodes;
@@ -247,7 +248,7 @@ void deleteNode(graph* g,int s){
 				g->nodes[i].adj=removeEdge(g->nodes[i].adj,s);
 				i++;
 			}
-			g->nodes[s].height=INT_MIN;
+			g->nodes[s].height=FLT_MIN;
 			freeEdges(g->nodes[s].adj);
 			g->nodes[s].adj=NULL;
 		} GRAPH_ERROR=-4;

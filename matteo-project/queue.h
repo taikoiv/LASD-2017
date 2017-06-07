@@ -2,15 +2,15 @@
 #define QUEUE_H_INCLUDED
 
 
-typedef struct node{
+typedef struct elem{
 	float priority;
 	int id;
-};
+} elem;
 
 typedef struct{
 	int size; //the real size of the array used to represent the heap
 	int allocated;
-	node *data;
+	elem *data;
 	int *pos;
 }heap;
 
