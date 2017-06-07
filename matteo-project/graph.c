@@ -27,15 +27,16 @@ list* DFSVisitUphillList(graph* g,visit* v,int s); //DEPHT VISIT THAT BUILD TOPO
 
 edge* insertEdge(edge* l,int d,float w){
 	if(l!=NULL){
+		printf("L!=NULL\n");
 		if(l->k==d) return l;
 		l->next=insertEdge(l->next,d,w);
 	} else {
-		edge* e=(edge*)malloc(sizeof(edge));
-		if(e!=NULL){
-			e->k=d;
-			e->weight=w;
-			e->next=NULL;
-			l=e;
+		l=(edge*)malloc(sizeof(edge));
+		printf("AGGIUNGO NODO ALLA LISTA\n");
+		if(l!=NULL){
+			l->k=d;
+			l->weight=w;
+			l->next=NULL;
 		} else {
 			GRAPH_ERROR=-2;
 		}
