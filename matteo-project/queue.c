@@ -30,6 +30,9 @@ void swap(heap *h, int s, int t){
 	sw = h->pos[h->data[s].id];
 	h->pos[h->data[s].id] = h->pos[h->data[t].id];
 	h->pos[h->data[t].id] = sw;
+	sw=h->data[s].id;
+	h->data[s].id=h->data[t].id;
+	h->data[t].id=sw;
 }
 
 void heapify(heap *h, int i){ //restore heap properties
@@ -52,7 +55,7 @@ heap *createHeap(int n){
 	heap *h = NULL;
 	h = (heap *)malloc(sizeof(heap));
 	if(h!=NULL){
-		h->size = 0;
+		h->size = -1;
 		h->allocated = n;
 		h->data = (elem *)malloc((n)*sizeof(elem));
 		h->pos = (int *)malloc((n)*sizeof(int));

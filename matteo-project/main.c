@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
 	addNode(g,26);
 	addNode(g,16);
 	addNode(g,10);
-	printGraph(g);
 	addEdge(g,0,1,100);
 	addEdge(g,0,4,26);
 	addEdge(g,1,3,55);
@@ -44,8 +43,10 @@ void loseWeightPathPrinter(graph *g,int s,int d){
 	float min=FLT_MAX;
 	list* path=NULL;
 	
-	upHill=uphillVisit(g,s);
-	downHill=uphillVisit(g,d);
+	//upHill=uphillVisit(g,s);
+	//downHill=uphillVisit(g,d);
+	upHill=Djikstra(g,s);
+	downHill=Djikstra(g,d);
 	if(GRAPH_ERROR==0){
 		for(i=0;i<g->n;i++){
 			if(upHill->pred[i]!=-1 && downHill->pred[i]!=-1){
