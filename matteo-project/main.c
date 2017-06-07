@@ -4,11 +4,14 @@
 #include <float.h>
 #include "graph.h"
 
-void loseWeightPathPrinter(graph *g,int s,int d); //PRINT THE PATH CALCULATED BY MATTEO'S CRITERIA
+int hasDuplicates(graph *g);
+void loseWeightPathPrinter(graph *g,int s,int d, int hasDup); //PRINT THE PATH CALCULATED BY MATTEO'S CRITERIA
 
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
 	graph* g=createGraph();
+	float* x=NULL;
+	int i;
 	addNode(g,20);
 	addNode(g,50);
 	addNode(g,47);
@@ -30,23 +33,26 @@ int main(int argc, char *argv[]) {
 	addEdge(g,6,7,56);
 	addEdge(g,7,8,37);
 	printGraph(g);
-	loseWeightPathPrinter(g,0,g->n-1);
+
+	loseWeightPathPrinter(g,0,8,hasDuplicates(g));
 	freeGraph(g);
 	return 0;
 }
 
-void loseWeightPathPrinter(graph *g,int s,int d){
+void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
 	if(s<0 || s>g->n-1 || d<0 || s>g->n-1)
 		return;
 	visit *upHill=NULL , *downHill=NULL;
 	int i , maxWeightPoint=-1;
 	float min=FLT_MAX;
 	list* path=NULL;
-	
-	//upHill=uphillVisit(g,s);
-	//downHill=uphillVisit(g,d);
-	upHill=Djikstra(g,s);
-	downHill=Djikstra(g,d);
+	if(hasDuplicates){
+		upHill=Djikstra(g,s);
+		downHill=Djikstra(g,d);
+	} else {
+		upHill=uphillVisit(g,s);
+		downHill=uphillVisit(g,d);
+	}
 	if(GRAPH_ERROR==0){
 		for(i=0;i<g->n;i++){
 			if(upHill->pred[i]!=-1 && downHill->pred[i]!=-1){
@@ -68,4 +74,17 @@ void loseWeightPathPrinter(graph *g,int s,int d){
 	freeVisit(upHill);
 	freeVisit(downHill);
 	freeList(path);
+}
+
+int hasDuplicates(graph* g){
+	float *x=(float*)malloc((g->n)*sizeof(float));
+	int ret=0, i=0;
+	heapSort(g,x);
+	for(i=1;i<g->n;i++){
+		if(x[i-1]==x[i]){
+			ret=1;
+			break;
+		}
+	}
+	return ret;
 }

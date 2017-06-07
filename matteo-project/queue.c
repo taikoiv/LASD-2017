@@ -13,12 +13,11 @@ int right(int i){
 }
 
 int parent(int i){
-	if(i==1) return i;
 	return i/2;
 }
 
 int isEmpty(heap *h){
-	return (h->size==0);
+	return (h->size<0);
 }
 
 void swap(heap *h, int s, int t){
@@ -70,7 +69,7 @@ heap *createHeap(int n){
 }
 
 int climbheap(heap *h, int i) { //swap element with his parent until is possible
-	if (i!=0 && h->data[i].priority < h->data[parent(i)].priority) {
+	if (i>=0 && h->data[i].priority < h->data[parent(i)].priority) {
 		swap(h, i, parent(i));
 		return climbheap(h, parent(i));
 	}else{
@@ -123,21 +122,19 @@ void freeheap(heap *h){
 	}
 }
 
-float *heapSort(graph *g){
+void *heapSort(graph *g,float* info){
 	heap *h=NULL;
-	float *info=NULL;
 	if(g!=NULL){
-		int i=0;
-		info = (float *)malloc(g->n*sizeof(float));
 		h = createHeap(g->n);
+		int i=0;
 		for(; i<g->n; i++)
 			insert(h, i, g->nodes[i].height);
 		i=0;
 		while(!isEmpty(h)){
-			info[i]=h->data[i].priority;
+			info[i]=h->data[0].priority;
 			i++;
+			extractMin(h);
 		}
 		free(h);
 	}
-	return info;
 }
