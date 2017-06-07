@@ -27,12 +27,10 @@ list* DFSVisitUphillList(graph* g,visit* v,int s); //DEPHT VISIT THAT BUILD TOPO
 
 edge* insertEdge(edge* l,int d,float w){
 	if(l!=NULL){
-		printf("L!=NULL\n");
 		if(l->k==d) return l;
 		l->next=insertEdge(l->next,d,w);
 	} else {
 		l=(edge*)malloc(sizeof(edge));
-		printf("AGGIUNGO NODO ALLA LISTA\n");
 		if(l!=NULL){
 			l->k=d;
 			l->weight=w;
@@ -118,7 +116,7 @@ graph* createGraph(){
 	if(g==NULL){
 		GRAPH_ERROR==-2;
 	} else {
-		g->nodes=(node*) calloc(0,sizeof(node));
+		g->nodes=NULL;
 		g->n=0;	
 	}
 	return g;
@@ -215,19 +213,28 @@ edge* removeEdge(edge* l,int k){
 
 void addNode(graph* g,float h){
 	if(g!=NULL){
-		if(h>=0){
+		if(g->n>0){
 			int i=0;
 			while(i<g->n && g->nodes[i].height!=INT_MIN)
 				i++;
 			if(i==g->n){
-				g->nodes=realloc(g->nodes,g->n+1);
+				node* app=g->nodes;
+				g->nodes=malloc((g->n+1)*sizeof(node));
+				for(i=0;i<g->n;i++)
+					g->nodes[i]=app[i];
+				free(app);
 				if(g->nodes!=NULL){
 					g->nodes[g->n].height=h;
 					g->nodes[g->n].adj=NULL;
 					g->n++;
 				} else GRAPH_ERROR==-2;
 			} else g->nodes[i].height=h;
-		} else GRAPH_ERROR=-4;
+		} else {
+			g->nodes=calloc(1,sizeof(node));
+			g->nodes[0].adj=NULL;
+			g->nodes[0].height=h;
+			g->n++;
+		}
 	} else GRAPH_ERROR=-1;
 }
 

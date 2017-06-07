@@ -10,7 +10,6 @@ void loseWeightPathPrinter(graph *g,int s,int d);
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
 	graph* g=createGraph();
-	printf("add node\n");
 	addNode(g,20);
 	addNode(g,50);
 	addNode(g,47);
@@ -21,8 +20,7 @@ int main(int argc, char *argv[]) {
 	addNode(g,16);
 	addNode(g,10);
 	printGraph(g);
-	printf("add edge\n");
-	addEdge(g,0,1,(float)100);
+	addEdge(g,0,1,100);
 	addEdge(g,0,4,26);
 	addEdge(g,1,3,55);
 	addEdge(g,1,2,72);
