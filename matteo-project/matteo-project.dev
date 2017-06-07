@@ -28,7 +28,11 @@ Folders=
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
+<<<<<<< HEAD
 CompilerSettings=0000000000000000000000000
+=======
+CompilerSettings=0000000000000000001000000
+>>>>>>> d27c79cdf084166b1b875c8412e011bc5a48a436
 UnitCount=7
 
 [VersionInfo]
