@@ -415,6 +415,7 @@ visit* Djikstra(graph* g,int s){
 						GRAPH_ERROR=-5;
 					}
 				}
+				freeheap(q);
 			} else {
 				HEAP_ERROR=0;
 				GRAPH_ERROR=-5;
@@ -423,4 +424,6 @@ visit* Djikstra(graph* g,int s){
 	} else {
 		GRAPH_ERROR=-1;
 	}
+	if(GRAPH_ERROR!=0) freeVisit(v);
+	return v;
 }
