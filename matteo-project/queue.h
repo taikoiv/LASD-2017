@@ -8,8 +8,6 @@ typedef struct{
 	int *pos;
 }heap;
 
-extern int HEAP_ERROR;
-
 int isEmpty(heap *h);					// IF HEAP CONTAINS 0 ELEMENTS RETURN 0 ELSE RETURN 1
 int extractMin(heap *h);						// RETURN THE MINIMUM VALUE IN THE HEAP OR 0 IF HEAP IS EMPTY
 void insert(heap *h,int k,float p);				// ADD k TO THE HEAP
