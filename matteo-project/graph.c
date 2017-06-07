@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <float.h>
 #include "graph.h"
+#include "queue.h"
 
 #define RANDOM_SUCC 0.33
 
@@ -373,4 +374,53 @@ list* pathExtender(graph* g,list* path,visit* v,int s){
 		GRAPH_ERROR=-5;
 	}
 	return path;
+}
+
+visit* Djikstra(graph* g,int s){
+	visit* v=NULL;
+	heap* q=NULL;
+	edge* adj=NULL;
+	int i;
+	if(g!=NULL){
+		v=initializeVisit(g);
+		if(GRAPH_ERROR==0){
+			v->dist[0];
+			v->col[i]=2;
+			q=createHeap(g->n-1);
+			if(HEAP_ERROR!=0){
+				for(i=0;i<g->n && HEAP_ERROR==0;i++){
+					insert(q,i,v->dist[i]);
+				}
+				if(HEAP_ERROR!=0){
+					HEAP_ERROR=0;
+					GRAPH_ERROR=-5;
+				} else {
+					while(!isEmpty(q) && HEAP_ERROR==0 ){
+						i=extractMin(q);
+						adj=g->nodes[i].adj;
+						while(adj!=NULL){
+							if(g->nodes[adj->k].height>g->nodes[i].height){
+								v->col[adj->k]=2;
+								if(v->dist[adj->k]>v->dist[i]+adj->weight){
+									v->dist[adj->k]=v->dist[i]+adj->weight;
+									update(q,adj->k,v->dist[adj->k]);
+									v->pred[adj->k]=i;
+								}
+							}
+							adj=adj->next;
+						}
+					}
+					if(HEAP_ERROR!=0){
+						HEAP_ERROR=0;
+						GRAPH_ERROR=-5;
+					}
+				}
+			} else {
+				HEAP_ERROR=0;
+				GRAPH_ERROR=-5;
+			}
+		}
+	} else {
+		GRAPH_ERROR=-1;
+	}
 }

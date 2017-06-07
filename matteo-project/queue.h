@@ -15,5 +15,6 @@ void delete(heap *h,int k);
 heap *createHeap(int n);
 void update(heap *h, int k, float p);
 
+extern int HEAP_ERROR;
 
 #endif

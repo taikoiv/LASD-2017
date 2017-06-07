@@ -40,4 +40,6 @@ void freeVisit(visit* v); //FREE A VISIT
 void printPath(visit* v,int s); //PRINT A PATH AFTER A VISIT
 list* pathGenerator(graph* g,visit* v,int s);
 list* pathExtender(graph* g,list* path,visit* v,int s);
+visit* Djikstra(graph* g,int s);
+
 #endif

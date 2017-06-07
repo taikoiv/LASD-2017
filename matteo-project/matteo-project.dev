@@ -28,8 +28,8 @@ Folders=
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0000000000000000000000000
-UnitCount=5
+CompilerSettings=0000000000000000001000000
+UnitCount=7
 
 [VersionInfo]
 Major=1
@@ -92,6 +92,26 @@ BuildCmd=
 
 [Unit4]
 FileName=list.h
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit6]
+FileName=queue.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit7]
+FileName=queue.h
 CompileCpp=0
 Folder=
 Compile=1
