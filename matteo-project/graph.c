@@ -22,7 +22,7 @@ void DFSVisitColors(graph* g,int* col,int s); //DFSVISIT RETURNS COLOR ARRAY
 void connectGraph(graph *g); // CONNECT A NOT CONNECTED GRAPH
 edge* removeEdge(edge* l,int k); //DELETE AN EDGE IN THE ADJ LIST
 visit* initializeVisit(graph* g); //INITIALIZE THE STRUCT VISIT
-list* DFSVisitUphillList(graph* g,visit* v,int s); //DEPHT VISIT THAT BUILD TOPOLOGICAL ORDER
+list* DFSVisitUphillList(graph* g,visit* v,list* l,int s); //DEPHT VISIT THAT BUILD TOPOLOGICAL ORDER
 /*---------------------------------------------------------------------------------------------------------------------------*/
 
 edge* insertEdge(edge* l,int d,float w){
@@ -291,7 +291,7 @@ visit* uphillVisit(graph* g,int s){
 	if(g!=NULL){
 		v=initializeVisit(g);
 		if(GRAPH_ERROR==0){
-			head=l=DFSVisitUphillList(g,v,s);
+			head=l=DFSVisitUphillList(g,v,l,s);
 			if(GRAPH_ERROR==0){
 				v->dist[s]=0;
 				while(l!=NULL){
@@ -310,14 +310,13 @@ visit* uphillVisit(graph* g,int s){
 	return v;
 }
 
-list* DFSVisitUphillList(graph* g,visit* v,int s){
-	list* l=NULL;
+list* DFSVisitUphillList(graph* g,visit* v,list* l,int s){
 	edge* adj=NULL;
 	v->col[s]=1;
 	adj=g->nodes[s].adj;
 	while(adj!=NULL){
 		if(g->nodes[adj->k].height > g->nodes[s].height && v->col[adj->k]==0){
-			l=DFSVisitUphillList(g,v,adj->k);
+			l=DFSVisitUphillList(g,v,l,adj->k);
 			v->pred[adj->k]=s;
 		}
 		l=insertTop(l,s);
