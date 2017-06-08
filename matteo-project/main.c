@@ -4,12 +4,64 @@
 #include <float.h>
 #include "graph.h"
 
+void clearBuffer();
 int hasDuplicates(graph *g);
 void loseWeightPathPrinter(graph *g,int s,int d, int hasDup); //PRINT THE PATH CALCULATED BY MATTEO'S CRITERIA
 
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
-	graph* g=createRandomGraph();
+	graph* g=NULL;
+	int input=-1;
+	while(input < 0 || input > 3){
+		system("cls");
+		printf("------------------------------------------------------------------\n");
+		printf("Welcome to the lose weight path calculator\n");
+		printf("It's easy! Using a graph representation of your city, it calculates the best path that you must follow from a source point to a destination point and let you lose weight\n");
+		printf("------------------------------------------------------------------\n");
+		printf("1) Test this software using a random graph\n");
+		printf("2) Create a new graph step-by-step\n");
+		printf("\n0) Exit\n");
+		scanf("%d",&input);
+		if(input==1){
+			g=createRandomGraph();
+			printf("************************  RANDOM GRAPH   **********************\n");
+			printGraph(g);
+			loseWeightPathPrinter(g,0,g->n-1,hasDuplicates(g));
+			freeGraph(g);
+			if(GRAPH_ERROR == 0) input=-1;
+			else input=0;
+			system("pause");
+		} else if(input==0) {
+			return GRAPH_ERROR;
+		}
+		clearBuffer();
+	}
+	g=createGraph();
+	input=-1;
+	while(input < 0 || input > 5){
+		system("cls");
+		if(g->n>0) printGraph(g);
+		printf("--------------------------------------------------------------------\n");
+		printf("1) ADD A NODE\n");
+		printf("2) ADD AN EDGE\n");
+		printf("3) DELETE A NODE");
+		printf("4) DELETE AN EDGE\n");
+		printf("5) PRINT THE BEST PATH TO LOSE WEIGHT\n");
+		printf("\n0) EXIT\n");
+		scanf("%d",&input);
+		switch(input){
+			case 1 : break;
+			case 2 : break;
+			case 3 : break;
+			case 4 : break;
+			case 5 : break;
+			default: if(input==0){
+					 	freeGraph(g);
+					 	return GRAPH_ERROR;
+					 }
+					 break;
+		}
+	}
 /*	int i;
 	addNode(g,20);
 	addNode(g,50);
@@ -66,6 +118,7 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
 			path=pathGenerator(g,upHill,maxWeightPoint);
 			path=pathExtender(g,path,downHill,maxWeightPoint);
 			printList(path);
+			printf("\n");
 		} else {
 			printf("SORRY MATTEO, PATH TO LOSE WEIGHT DOESN'T EXIST\n");
 		}	
@@ -86,4 +139,9 @@ int hasDuplicates(graph* g){
 		}
 	}
 	return ret;
+}
+
+void clearBuffer(){ //clear the stdin when user write an invalid input data
+	char c;
+	while ((c = getchar()) != '\n' && c != EOF) { };
 }

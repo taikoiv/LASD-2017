@@ -33,7 +33,7 @@ edge* insertEdge(edge* l,int d,float w){
 		l=(edge*) malloc(sizeof(edge));
 		if(l!=NULL){
 			l->k=d;
-			l->weight;
+			l->weight=w;
 			l->next=NULL;
 		} else GRAPH_ERROR=-2;
 	}
