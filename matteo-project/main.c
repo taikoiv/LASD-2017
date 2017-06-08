@@ -11,7 +11,8 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup); //PRINT THE PATH C
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
 	graph* g=NULL;
-	int input=-1;
+	int input=-1, app;
+	float hw;
 	while(input < 0 || input > 3){
 		system("cls");
 		printf("------------------------------------------------------------------\n");
@@ -40,28 +41,69 @@ int main(int argc, char *argv[]) {
 	input=-1;
 	while(input < 0 || input > 5){
 		system("cls");
+		printf("********************** MAIN MENU ***********************************\n");
 		if(g->n>0) printGraph(g);
 		printf("--------------------------------------------------------------------\n");
 		printf("1) ADD A NODE\n");
 		printf("2) ADD AN EDGE\n");
-		printf("3) DELETE A NODE");
+		printf("3) DELETE A NODE\n");
 		printf("4) DELETE AN EDGE\n");
 		printf("5) PRINT THE BEST PATH TO LOSE WEIGHT\n");
 		printf("\n0) EXIT\n");
 		scanf("%d",&input);
+		clearBuffer();
+		printf("\n");
 		switch(input){
-			case 1 : break;
-			case 2 : break;
-			case 3 : break;
-			case 4 : break;
-			case 5 : break;
-			default: if(input==0){
-					 	freeGraph(g);
-					 	return GRAPH_ERROR;
-					 }
-					 break;
+			case 0 :freeGraph(g);
+					return GRAPH_ERROR;
+			
+			case 1 :printf("Insert the height : ");
+					scanf("%f",&hw);
+					clearBuffer();
+					addNode(g,hw);
+					break;
+			
+			case 2 :printf("Insert the edge source point : ");
+					scanf("%d",&input);
+					clearBuffer();
+					printf("\nInsert the edge destination point : ");
+					scanf("%d",&app);
+					clearBuffer();
+					printf("\nInsert the edge weight : ");
+					scanf("%f", &hw);
+					clearBuffer();
+					addEdge(g,input,app,hw);
+					break;
+			
+			case 3 :printf("Insert the node you want to delete : ");
+					scanf("%d",&input);
+					deleteNode(g,input);
+					break;
+			
+			case 4 :printf("Insert the edge source point : ");
+					scanf("%d",&input);
+					clearBuffer();
+					printf("\nInsert the edge destination point : ");
+					scanf("%d",&app);
+					clearBuffer();
+					deleteEdge(g,input,app);
+					break;
+					
+			case 5 :printf("Insert the path source point : ");
+					scanf("%d",&input);
+					clearBuffer();
+					printf("\nInsert the path destination point : ");
+					scanf("%d",&app);
+					clearBuffer();
+					loseWeightPathPrinter(g,input,app,hasDuplicates(g));
+					break;
+			default: break;
 		}
+		if(GRAPH_ERROR==0) input=-1;
+		else break;
 	}
+	freeGraph(g);
+	return GRAPH_ERROR;
 /*	int i;
 	addNode(g,20);
 	addNode(g,50);
@@ -82,12 +124,12 @@ int main(int argc, char *argv[]) {
 	addEdge(g,5,8,33);
 	addEdge(g,6,8,20);
 	addEdge(g,6,7,56);
-	addEdge(g,7,8,37);*/
+	addEdge(g,7,8,37);
 	printGraph(g);
 
 	loseWeightPathPrinter(g,0,g->n-1,hasDuplicates(g));
 	freeGraph(g);
-	return 0;
+	return 0;*/
 }
 
 void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
