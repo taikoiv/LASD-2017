@@ -9,9 +9,8 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup); //PRINT THE PATH C
 
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
-	graph* g=createGraph();
-	float* x=NULL;
-	int i;
+	graph* g=createRandomGraph();
+/*	int i;
 	addNode(g,20);
 	addNode(g,50);
 	addNode(g,47);
@@ -31,10 +30,10 @@ int main(int argc, char *argv[]) {
 	addEdge(g,5,8,33);
 	addEdge(g,6,8,20);
 	addEdge(g,6,7,56);
-	addEdge(g,7,8,37);
+	addEdge(g,7,8,37);*/
 	printGraph(g);
 
-	loseWeightPathPrinter(g,0,8,hasDuplicates(g));
+	loseWeightPathPrinter(g,0,g->n-1,hasDuplicates(g));
 	freeGraph(g);
 	return 0;
 }
@@ -46,7 +45,7 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
 	int i , maxWeightPoint=-1;
 	float min=FLT_MAX;
 	list* path=NULL;
-	if(hasDuplicates){
+	if(hasDuplicates(g)){
 		upHill=Djikstra(g,s);
 		downHill=Djikstra(g,d);
 	} else {
@@ -68,7 +67,7 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
 			path=pathExtender(g,path,downHill,maxWeightPoint);
 			printList(path);
 		} else {
-			printf("PATH TO LOSE WEIGHT NOT EXISTS\n");
+			printf("SORRY MATTEO, PATH TO LOSE WEIGHT DOESN'T EXIST\n");
 		}	
 	}
 	freeVisit(upHill);

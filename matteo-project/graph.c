@@ -28,17 +28,14 @@ list* DFSVisitUphillList(graph* g,visit* v,list* l,int s); //DEPHT VISIT THAT BU
 
 edge* insertEdge(edge* l,int d,float w){
 	if(l!=NULL){
-		if(l->k==d) return l;
-		l->next=insertEdge(l->next,d,w);
+		if(l->k!=d) l->next=insertEdge(l->next,d,w);
 	} else {
-		l=(edge*)malloc(sizeof(edge));
+		l=(edge*) malloc(sizeof(edge));
 		if(l!=NULL){
 			l->k=d;
-			l->weight=w;
+			l->weight;
 			l->next=NULL;
-		} else {
-			GRAPH_ERROR=-2;
-		}
+		} else GRAPH_ERROR=-2;
 	}
 	return l;
 }
@@ -62,15 +59,11 @@ graph* createRandomGraph(){
 			g->n=n;
 			printf("N RANDOM = %d\n",n);
 			//GENERAZIONE DEI NODI
-			for(i=1;i<n-1;i++){
+			for(i=0;i<n;i++){
 				j=0;
 				g->nodes[i].height=rand();
-				if(g->nodes[i].height>max)
-					max=g->nodes[i].height;
+				g->nodes[i].adj=NULL;
 			}
-			//GENERAZIONE DI SORGENTE E DESTINAZIONE IN MODO DA NON ESSERE I PUNTI CON ALTEZZA MASSIMA
-			g->nodes[n-1].height=rand()%(int)max+1;
-			g->nodes[0].height=rand()%(int)max+1;
 			//GENERAZIONE DEGLI ARCHI
 			for(i=0;i<g->n;i++){
 				for(j=0;j<g->n;j++){
@@ -127,7 +120,7 @@ graph* createGraph(){
 void addEdge(graph* g,int s,int d,float w){
 	edge* e=NULL;
 	if(g!=NULL){
-		if(s>=0 && s<g->n && g->nodes[s].height!=INT_MIN && d>=0 && d<g->n && g->nodes[d].height!=FLT_MIN){
+		if(s>=0 && s<g->n && g->nodes[s].height!=FLT_MIN && d>=0 && d<g->n && g->nodes[d].height!=FLT_MIN){
 			g->nodes[s].adj=insertEdge(g->nodes[s].adj,d,w);
 			g->nodes[d].adj=insertEdge(g->nodes[d].adj,s,w);
 		}else{
