@@ -23,7 +23,7 @@ void DFSVisitColors(graph* g,int* col,int s); //DFSVISIT RETURNS COLOR ARRAY
 void connectGraph(graph *g); // CONNECT A NOT CONNECTED GRAPH
 edge* removeEdge(edge* l,int k); //DELETE AN EDGE IN THE ADJ LIST
 visit* initializeVisit(graph* g); //INITIALIZE THE STRUCT VISIT
-list* DFSVisitUphillList(graph* g,visit* v,list* l,int s); //DEPHT VISIT THAT BUILD TOPOLOGICAL ORDER
+list* DFSVisitUphillList(graph* g,visit* v,list* l,int s); //DEPTH VISIT THAT BUILD TOPOLOGICAL ORDER
 /*---------------------------------------------------------------------------------------------------------------------------*/
 
 edge* insertEdge(edge* l,int d,float w){
@@ -120,7 +120,7 @@ graph* createGraph(){
 void addEdge(graph* g,int s,int d,float w){
 	edge* e=NULL;
 	if(g!=NULL){
-		if(s>=0 && s<g->n && g->nodes[s].height!=FLT_MIN && d>=0 && d<g->n && g->nodes[d].height!=FLT_MIN){
+		if(s>=0 && s<g->n && g->nodes[s].height!=FLT_MIN && d>=0 && d<g->n && g->nodes[d].height!=FLT_MIN && w>0){
 			g->nodes[s].adj=insertEdge(g->nodes[s].adj,d,w);
 			g->nodes[d].adj=insertEdge(g->nodes[d].adj,s,w);
 		}else{
@@ -244,8 +244,8 @@ void deleteNode(graph* g,int s){
 			g->nodes[s].height=FLT_MIN;
 			freeEdges(g->nodes[s].adj);
 			g->nodes[s].adj=NULL;
-		} GRAPH_ERROR=-4;
-	} GRAPH_ERROR=-1;
+		} else GRAPH_ERROR=-4;
+	} else GRAPH_ERROR=-1;
 }
 
 visit* initializeVisit(graph* g){
@@ -347,6 +347,8 @@ list* pathGenerator(graph* g,visit* v,int s){
 				freeList(l);
 			}
 		}
+	} else {
+		GRAPH_ERROR=-2;
 	}
 	return l;
 }
@@ -376,44 +378,48 @@ visit* Djikstra(graph* g,int s){
 	edge* adj=NULL;
 	int i;
 	if(g!=NULL){
-		v=initializeVisit(g);
-		if(GRAPH_ERROR==0){
-			v->dist[s]=0;
-			v->col[s]=2;
-			q=createHeap(g->n-1);
-			if(HEAP_ERROR==0){
-				for(i=0;i<g->n && HEAP_ERROR==0;i++){
-					insert(q,i,v->dist[i]);
-				}
-				if(HEAP_ERROR!=0){
-					HEAP_ERROR=0;
-					GRAPH_ERROR=-5;
-				} else {
-					while(!isEmpty(q) && HEAP_ERROR==0 ){
-						i=extractMin(q);
-						adj=g->nodes[i].adj;
-						while(adj!=NULL){
-							if(g->nodes[adj->k].height>g->nodes[i].height){
-								v->col[adj->k]=2;
-								if(v->dist[adj->k]>v->dist[i]+adj->weight){
-									v->dist[adj->k]=v->dist[i]+adj->weight;
-									update(q,adj->k,v->dist[adj->k]);
-									v->pred[adj->k]=i;
-								}
-							}
-							adj=adj->next;
-						}
+		if(s>=0 && s<g->n){
+			v=initializeVisit(g);
+			if(GRAPH_ERROR==0){
+				v->dist[s]=0;
+				v->col[s]=2;
+				q=createHeap(g->n-1);
+				if(HEAP_ERROR==0){
+					for(i=0;i<g->n && HEAP_ERROR==0;i++){
+						insert(q,i,v->dist[i]);
 					}
 					if(HEAP_ERROR!=0){
 						HEAP_ERROR=0;
 						GRAPH_ERROR=-5;
+					} else {
+						while(!isEmpty(q) && HEAP_ERROR==0 ){
+							i=extractMin(q);
+							adj=g->nodes[i].adj;
+							while(adj!=NULL){
+								if(g->nodes[adj->k].height>g->nodes[i].height){
+									v->col[adj->k]=2;
+									if(v->dist[adj->k]>v->dist[i]+adj->weight){
+										v->dist[adj->k]=v->dist[i]+adj->weight;
+										update(q,adj->k,v->dist[adj->k]);
+										v->pred[adj->k]=i;
+									}
+								}
+								adj=adj->next;
+							}
+						}
+						if(HEAP_ERROR!=0){
+							HEAP_ERROR=0;
+							GRAPH_ERROR=-5;
+						}
 					}
+					freeheap(q);
+				} else {
+					HEAP_ERROR=0;
+					GRAPH_ERROR=-5;
 				}
-				freeheap(q);
-			} else {
-				HEAP_ERROR=0;
-				GRAPH_ERROR=-5;
 			}
+		} else {
+			GRAPH_ERROR=-4;
 		}
 	} else {
 		GRAPH_ERROR=-1;

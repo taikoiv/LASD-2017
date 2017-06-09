@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
 	graph* g=NULL;
 	int input=-1, app;
 	float hw;
-	while(input < 0 || input > 3){
+	while(input < 0 || input > 2){
 		system("cls");
 		printf("------------------------------------------------------------------\n");
 		printf("Welcome to the lose weight path calculator\n");
@@ -63,20 +63,27 @@ int main(int argc, char *argv[]) {
 					addNode(g,hw);
 					break;
 			
-			case 2 :printf("Insert the edge source point : ");
-					scanf("%d",&input);
-					clearBuffer();
-					printf("\nInsert the edge destination point : ");
-					scanf("%d",&app);
-					clearBuffer();
+			case 2 :do{
+						printf("Insert the edge source point : ");
+						scanf("%d",&input);
+						clearBuffer();
+					}while(input>g->n || input<0);
+					do{
+						printf("\nInsert the edge destination point : ");
+						scanf("%d",&app);
+						clearBuffer();
+					}while(app>g->n || input<0);
 					printf("\nInsert the edge weight : ");
 					scanf("%f", &hw);
 					clearBuffer();
 					addEdge(g,input,app,hw);
 					break;
 			
-			case 3 :printf("Insert the node you want to delete : ");
-					scanf("%d",&input);
+			case 3 :do{
+						printf("Insert the node you want to delete : ");
+						scanf("%d",&input);
+						clearBuffer();
+					}while(input < 0 || input > g->n);
 					deleteNode(g,input);
 					break;
 			
@@ -97,39 +104,16 @@ int main(int argc, char *argv[]) {
 					clearBuffer();
 					loseWeightPathPrinter(g,input,app,hasDuplicates(g));
 					break;
-			default: break;
+			default:printf("Not a valid action\n");
+					break;
 		}
-		if(GRAPH_ERROR==0) input=-1;
-		else break;
+		if(GRAPH_ERROR==0){
+			system("pause");
+			input=-1;
+		} else break;
 	}
 	freeGraph(g);
 	return GRAPH_ERROR;
-/*	int i;
-	addNode(g,20);
-	addNode(g,50);
-	addNode(g,47);
-	addNode(g,72);
-	addNode(g,30);
-	addNode(g,15);
-	addNode(g,26);
-	addNode(g,16);
-	addNode(g,10);
-	addEdge(g,0,1,100);
-	addEdge(g,0,4,26);
-	addEdge(g,1,3,55);
-	addEdge(g,1,2,72);
-	addEdge(g,4,6,12);
-	addEdge(g,3,5,46);
-	addEdge(g,2,5,200);
-	addEdge(g,5,8,33);
-	addEdge(g,6,8,20);
-	addEdge(g,6,7,56);
-	addEdge(g,7,8,37);
-	printGraph(g);
-
-	loseWeightPathPrinter(g,0,g->n-1,hasDuplicates(g));
-	freeGraph(g);
-	return 0;*/
 }
 
 void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
@@ -138,7 +122,7 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
 	visit *upHill=NULL , *downHill=NULL;
 	int i , maxWeightPoint=-1;
 	float min=FLT_MAX;
-	list* path=NULL;
+	list* path=NULL , head;
 	if(hasDuplicates(g)){
 		upHill=Djikstra(g,s);
 		downHill=Djikstra(g,d);
@@ -160,7 +144,7 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
 			path=pathGenerator(g,upHill,maxWeightPoint);
 			path=pathExtender(g,path,downHill,maxWeightPoint);
 			printList(path);
-			printf("\n");
+			printf("DISTANCE TO COVER : %f\n",min);
 		} else {
 			printf("SORRY MATTEO, PATH TO LOSE WEIGHT DOESN'T EXIST\n");
 		}	

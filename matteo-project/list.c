@@ -25,8 +25,13 @@ void freeList(list* l){
 
 void printList(list* l){
 	if(l!=NULL){
-		printf("%d -> ",l->k);
-		printList(l->next);
+		printf("%d",l->k);
+		if(l->next!=NULL){
+			printf(" -> ");
+			printList(l->next);
+		} else {
+			printf("\n");
+		}
 	}
 }
 
