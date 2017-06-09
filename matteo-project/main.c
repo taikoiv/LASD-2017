@@ -8,7 +8,7 @@
 
 int hasDuplicates(graph *g);
 
-void loseWeightPathPrinter(graph *g,int s,int d, int hasDup); //PRINT THE PATH CALCULATED BY MATTEO'S CRITERIA
+void loseWeightPathPrinter(graph *g,int s,int d); //PRINT THE PATH CALCULATED BY MATTEO'S CRITERIA
 
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
@@ -70,12 +70,12 @@ int main(int argc, char *argv[]) {
 							printf("Insert the edge source point : ");
 							scanf("%d",&input);
 							clearBuffer();
-						}while(input>g->n || input<0);
+						}while(input>g->n-1 || input<0);
 						do{
 							printf("\nInsert the edge destination point : ");
 							scanf("%d",&app);
 							clearBuffer();
-						}while(app>g->n || input<0);
+						}while(app>g->n-1 || app<0);
 						do{
 							printf("\nInsert the edge weight : ");
 							scanf("%f", &hw);
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 							printf("Insert the node you want to delete : ");
 							scanf("%d",&input);
 							clearBuffer();
-						}while(input < 0 || input > g->n);
+						}while(input < 0 || input > g->n-1);
 						deleteNode(g,input);
 					} else printf("You can't delete a node in an empty graph\n");
 					break;
@@ -100,29 +100,29 @@ int main(int argc, char *argv[]) {
 							printf("Insert the edge source point : ");
 							scanf("%d",&input);
 							clearBuffer();
-						}while(input>g->n || input<0);
+						}while(input>g->n-1 || input<0);
 						do{
 							printf("\nInsert the edge destination point : ");
 							scanf("%d",&app);
 							clearBuffer();
-						}while(app>g->n || input<0);
+						}while(app>g->n-1 || app<0);
 						deleteEdge(g,input,app);
 					} else printf("You can't delete an edge in an empty graph\n");
 					break;
 					
 			case 5 :if(g->n>1){
 						do{
-							printf("Insert the edge source point : ");
+							printf("Insert the path source point : ");
 							scanf("%d",&input);
 							clearBuffer();
-						}while(input>g->n || input<0);
+						}while(input>g->n-1 || input<0);
 						do{
-							printf("\nInsert the edge destination point : ");
+							printf("\nInsert the path destination point : ");
 							scanf("%d",&app);
 							clearBuffer();
-						}while(app>g->n || input<0);
+						}while(app>g->n-1 || app<0);
 						
-						loseWeightPathPrinter(g,input,app,hasDuplicates(g));
+						loseWeightPathPrinter(g,input,app);
 					} else printf("This functions needs more nodes\n");
 					break;
 			case 6:
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
 					printf("Insert the node to add an Alias : ");
 					scanf("%d",&input);
 					clearBuffer();
-				}while(input < 0 || input > g->n);
+				}while(input < 0 || input > g->n-1);
 				do{
 					printf("Insert the Alias to add : ");
 					scanf("%126s",data);
@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
 	return GRAPH_ERROR;
 }
 
-void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
+void loseWeightPathPrinter(graph *g,int s,int d){
 	if(s<0 || s>g->n-1 || d<0 || s>g->n-1)
 		return;
 	visit *upHill=NULL , *downHill=NULL;
@@ -177,7 +177,6 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
 					if(upHill->dist[i]+downHill->dist[i]<min){
 						min=upHill->dist[i] + downHill->dist[i];
 						maxWeightPoint=i;
-						printf("INTERSECT POINT : %d",i);
 					}
 				}
 			}

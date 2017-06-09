@@ -431,6 +431,6 @@ visit* Djikstra(graph* g,int s){
 	} else {
 		GRAPH_ERROR=-1;
 	}
-	if(GRAPH_ERROR!=0) freeVisit(v);
+	freeVisit(v);
 	return v;
 }

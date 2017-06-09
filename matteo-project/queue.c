@@ -57,7 +57,7 @@ heap *createHeap(int n){
 	h = (heap *)malloc(sizeof(heap));
 	if(h!=NULL){
 		h->size = -1;
-		h->allocated = n;
+		h->allocated = n-1;
 		h->data = (elem *)malloc((n)*sizeof(elem));
 		h->pos = (int *)malloc((n)*sizeof(int));
 		
@@ -135,6 +135,6 @@ void *heapSort(graph *g,float* info){
 			i++;
 			extractMin(h);
 		}
-		free(h);
+		freeheap(h);
 	}
 }

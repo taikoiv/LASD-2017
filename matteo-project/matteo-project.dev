@@ -33,7 +33,7 @@ CompilerSettings=0000000000000000000000000
 =======
 CompilerSettings=0000000000000000001000000
 >>>>>>> d27c79cdf084166b1b875c8412e011bc5a48a436
-UnitCount=7
+UnitCount=9
 
 [VersionInfo]
 Major=1
@@ -116,6 +116,26 @@ BuildCmd=
 
 [Unit7]
 FileName=queue.h
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit8]
+FileName=utils.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit9]
+FileName=utils.h
 CompileCpp=0
 Folder=
 Compile=1
