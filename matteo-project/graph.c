@@ -57,7 +57,6 @@ graph* createRandomGraph(){
 			g->n=0;
 		} else {
 			g->n=n;
-			printf("N RANDOM = %d\n",n);
 			//GENERAZIONE DEI NODI
 			for(i=0;i<n;i++){
 				j=0;
@@ -293,8 +292,10 @@ visit* uphillVisit(graph* g,int s){
 					while(l!=NULL){
 						adj=g->nodes[l->k].adj;
 						while(adj!=NULL){
-							if(v->dist[adj->k]>v->dist[l->k]+adj->weight)
+							if(v->dist[adj->k]>v->dist[l->k]+adj->weight){
 								v->dist[adj->k]=v->dist[l->k]+adj->weight;
+								v->pred[adj->k]=l->k;
+							}
 							adj=adj->next;
 						}
 						l=l->next;

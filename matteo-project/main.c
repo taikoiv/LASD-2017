@@ -115,6 +115,7 @@ int main(int argc, char *argv[]) {
 							scanf("%d",&app);
 							clearBuffer();
 						}while(app>g->n || input<0);
+						
 						loseWeightPathPrinter(g,input,app,hasDuplicates(g));
 					} else printf("This functions needs more nodes\n");
 					break;
@@ -145,17 +146,23 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
 		upHill=uphillVisit(g,s);
 		downHill=uphillVisit(g,d);
 	}
-
+	/* TEST VISISTS
+	printf("ID\tCOL1\tCOL2\tPRED1\tPRED2\tDIST1\tDIST2\n");
+	for(i=0;i<g->n;i++){
+		printf("%d\t%d\t%d\t%d\t%d\t%.2f\t%.2f\n",i,upHill->col[i],downHill->col[i],upHill->pred[i],downHill->pred[i],upHill->dist[i],downHill->dist[i]);
+	}*/
 	if(GRAPH_ERROR==0){
-		for(i=0;i<g->n;i++){
-			if(upHill->pred[i]!=-1 && downHill->pred[i]!=-1 && upHill->col[i]==2 && downHill->col[i]==2){
-				if(upHill->dist[i]+downHill->dist[i]<min){
-					min=upHill->dist[i]+downHill->dist[i];
-					maxWeightPoint=i;
+		if(upHill->col[d]!=2 || downHill->col[s]!=2){
+			for(i=0;i<g->n;i++){
+				if(upHill->col[i]==2 && upHill->col[i]==2 && i!=s && i!=d){
+					if(upHill->dist[i]+downHill->dist[i]<min){
+						min=upHill->dist[i] + downHill->dist[i];
+						maxWeightPoint=i;
+						printf("INTERSECT POINT : %d",i);
+					}
 				}
 			}
 		}
-		
 		if(maxWeightPoint!=-1){
 			printf("PATH TO LOSE WEIGHT FOUND :\n");
 			path=pathGenerator(g,upHill,maxWeightPoint);
