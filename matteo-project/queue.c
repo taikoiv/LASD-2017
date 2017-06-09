@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <float.h>
 #include "queue.h"
 
 int HEAP_ERROR=0;
@@ -17,7 +18,13 @@ int parent(int i){
 }
 
 int isEmpty(heap *h){
-	return (h->size<0);
+	if(h->size>=0){
+		int i=0;
+		for(;i<=h->size;i++){
+			if(h->data[i].priority!=FLT_MAX) return 1;
+		}
+	}
+	return 0;
 }
 
 void swap(heap *h, int s, int t){
