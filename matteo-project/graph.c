@@ -70,7 +70,7 @@ graph* createRandomGraph(){
 					if(i!=j){
 						p=(float)((rand()%n)+1)/n;
 						if(p<=RANDOM_SUCC){
-							addEdge(g,i,j,rand()%20);
+							addEdge(g,i,j,rand()%20+1);
 						}
 					}
 				}
@@ -88,10 +88,10 @@ void printGraph(graph* g){
 		edge *l=NULL;
 		for(i=0;i<g->n;i++){
 			if(g->nodes[i].height!=FLT_MIN){ //NON STAMPO I NODI SENTINELLA
-				printf("%d - %f |",i,g->nodes[i].height);
+				printf("%d - %.2f |",i,g->nodes[i].height);
 				l=g->nodes[i].adj;
 				while(l!=NULL){
-					printf("(%d , %f)",l->k,l->weight);
+					printf("(%d , %.2f)",l->k,l->weight);
 					l=l->next;
 					if(l!=NULL){
 						printf(" -> ");
@@ -187,7 +187,7 @@ void DFSVisitColors(graph* g,int* col,int s){
 
 void deleteEdge(graph* g,int s,int d){
 	if(g!=NULL){
-		if(s>=0 && s<g->n && g->nodes[s].height!=INT_MIN && d>=0 && d<g->n && g->nodes[d].height!=FLT_MIN){
+		if(s>=0 && s<g->n && g->nodes[s].height!=FLT_MIN && d>=0 && d<g->n && g->nodes[d].height!=FLT_MIN){
 			g->nodes[s].adj=removeEdge(g->nodes[s].adj,d);
 			g->nodes[d].adj=removeEdge(g->nodes[d].adj,s);
 		}else GRAPH_ERROR=-4;
@@ -284,23 +284,25 @@ visit* uphillVisit(graph* g,int s){
 	list* l=NULL , *head=NULL;
 	int i;
 	if(g!=NULL){
-		v=initializeVisit(g);
-		if(GRAPH_ERROR==0){
-			head=l=DFSVisitUphillList(g,v,l,s);
+		if(g->nodes[i].height!=FLT_MIN){
+			v=initializeVisit(g);
 			if(GRAPH_ERROR==0){
-				v->dist[s]=0;
-				while(l!=NULL){
-					adj=g->nodes[l->k].adj;
-					while(adj!=NULL){
-						if(v->dist[adj->k]>v->dist[l->k]+adj->weight)
-							v->dist[adj->k]=v->dist[l->k]+adj->weight;
-						adj=adj->next;
+				head=l=DFSVisitUphillList(g,v,l,s);
+				if(GRAPH_ERROR==0){
+					v->dist[s]=0;
+					while(l!=NULL){
+						adj=g->nodes[l->k].adj;
+						while(adj!=NULL){
+							if(v->dist[adj->k]>v->dist[l->k]+adj->weight)
+								v->dist[adj->k]=v->dist[l->k]+adj->weight;
+							adj=adj->next;
+						}
+						l=l->next;
 					}
-					l=l->next;
 				}
+				freeList(head);
 			}
-			freeList(head);
-		}
+		} else GRAPH_ERROR=-4;
 	} else GRAPH_ERROR=-1;
 	return v;
 }
@@ -335,39 +337,43 @@ void printPath(visit* v,int s){
 
 list* pathGenerator(graph* g,visit* v,int s){
 	list* l=NULL;
-	if(g!=NULL && v!=NULL){
-		while(s>-1 && s<g->n){
-			l=insertTop(l,s);
-			if(LIST_ERROR==0)
-				s=v->pred[s];
-			else{
-				LIST_ERROR=0;
-				GRAPH_ERROR=-5;
-				s=-1;
-				freeList(l);
+	if(g!=NULL){
+		if( v!=NULL && g->nodes[s].height!=FLT_MIN){
+			while(s>-1 && s<g->n){
+				l=insertTop(l,s);
+				if(LIST_ERROR==0)
+					s=v->pred[s];
+				else{
+					LIST_ERROR=0;
+					GRAPH_ERROR=-5;
+					s=-1;
+					freeList(l);
+				}
 			}
-		}
+		} else GRAPH_ERROR=-4;
 	} else {
-		GRAPH_ERROR=-2;
+		GRAPH_ERROR=-1;
 	}
 	return l;
 }
 
 list* pathExtender(graph* g,list* path,visit* v,int s){
-	if(g!=NULL && v!=NULL){
-		while(s>-1 && s<g->n){
-			path=insertTail(path,s);
-			if(LIST_ERROR==0)
-				s=v->pred[s];
-			else{
-				LIST_ERROR=0;
-				GRAPH_ERROR=-5;
-				s=-1;
-				freeList(path);
+	if(g!=NULL){
+		if(v!=NULL){
+			while(s>-1 && s<g->n){
+				path=insertTail(path,s);
+				if(LIST_ERROR==0)
+					s=v->pred[s];
+				else{
+					LIST_ERROR=0;
+					GRAPH_ERROR=-5;
+					s=-1;
+					freeList(path);
+				}
 			}
-		}
+		}else GRAPH_ERROR=-4;
 	} else {
-		GRAPH_ERROR=-5;
+		GRAPH_ERROR=-1;
 	}
 	return path;
 }
@@ -378,7 +384,7 @@ visit* Djikstra(graph* g,int s){
 	edge* adj=NULL;
 	int i;
 	if(g!=NULL){
-		if(s>=0 && s<g->n){
+		if(s>=0 && s<g->n && g->nodes[s].height!=FLT_MIN){
 			v=initializeVisit(g);
 			if(GRAPH_ERROR==0){
 				v->dist[s]=0;

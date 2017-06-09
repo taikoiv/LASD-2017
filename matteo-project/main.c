@@ -25,19 +25,15 @@ int main(int argc, char *argv[]) {
 		scanf("%d",&input);
 		if(input==1){
 			g=createRandomGraph();
-			printf("************************  RANDOM GRAPH   **********************\n");
-			printGraph(g);
-			loseWeightPathPrinter(g,0,g->n-1,hasDuplicates(g));
-			freeGraph(g);
-			if(GRAPH_ERROR == 0) input=-1;
-			else input=0;
+			if(GRAPH_ERROR == 0) break;
+			else return GRAPH_ERROR;
 			system("pause");
 		} else if(input==0) {
 			return GRAPH_ERROR;
 		}
 		clearBuffer();
 	}
-	g=createGraph();
+	if(g==NULL)	g=createGraph();
 	input=-1;
 	while(input < 0 || input > 5){
 		system("cls");
@@ -63,46 +59,64 @@ int main(int argc, char *argv[]) {
 					addNode(g,hw);
 					break;
 			
-			case 2 :do{
-						printf("Insert the edge source point : ");
-						scanf("%d",&input);
-						clearBuffer();
-					}while(input>g->n || input<0);
-					do{
-						printf("\nInsert the edge destination point : ");
-						scanf("%d",&app);
-						clearBuffer();
-					}while(app>g->n || input<0);
-					printf("\nInsert the edge weight : ");
-					scanf("%f", &hw);
-					clearBuffer();
-					addEdge(g,input,app,hw);
+			case 2 :if(g->n>0){
+						do{
+							printf("Insert the edge source point : ");
+							scanf("%d",&input);
+							clearBuffer();
+						}while(input>g->n || input<0);
+						do{
+							printf("\nInsert the edge destination point : ");
+							scanf("%d",&app);
+							clearBuffer();
+						}while(app>g->n || input<0);
+						do{
+							printf("\nInsert the edge weight : ");
+							scanf("%f", &hw);
+							clearBuffer();
+						}while(hw<=0);
+						addEdge(g,input,app,hw);	
+					} else printf("You can't add an edge in an empty graph\n");
 					break;
 			
-			case 3 :do{
-						printf("Insert the node you want to delete : ");
-						scanf("%d",&input);
-						clearBuffer();
-					}while(input < 0 || input > g->n);
-					deleteNode(g,input);
+			case 3 :if(g->n>0){	
+						do{
+							printf("Insert the node you want to delete : ");
+							scanf("%d",&input);
+							clearBuffer();
+						}while(input < 0 || input > g->n);
+						deleteNode(g,input);
+					} else printf("You can't delete a node in an empty graph\n");
 					break;
 			
-			case 4 :printf("Insert the edge source point : ");
-					scanf("%d",&input);
-					clearBuffer();
-					printf("\nInsert the edge destination point : ");
-					scanf("%d",&app);
-					clearBuffer();
-					deleteEdge(g,input,app);
+			case 4 :if(g->n>0){
+						do{
+							printf("Insert the edge source point : ");
+							scanf("%d",&input);
+							clearBuffer();
+						}while(input>g->n || input<0);
+						do{
+							printf("\nInsert the edge destination point : ");
+							scanf("%d",&app);
+							clearBuffer();
+						}while(app>g->n || input<0);
+						deleteEdge(g,input,app);
+					} else printf("You can't delete an edge in an empty graph\n");
 					break;
 					
-			case 5 :printf("Insert the path source point : ");
-					scanf("%d",&input);
-					clearBuffer();
-					printf("\nInsert the path destination point : ");
-					scanf("%d",&app);
-					clearBuffer();
-					loseWeightPathPrinter(g,input,app,hasDuplicates(g));
+			case 5 :if(g->n>1){
+						do{
+							printf("Insert the edge source point : ");
+							scanf("%d",&input);
+							clearBuffer();
+						}while(input>g->n || input<0);
+						do{
+							printf("\nInsert the edge destination point : ");
+							scanf("%d",&app);
+							clearBuffer();
+						}while(app>g->n || input<0);
+						loseWeightPathPrinter(g,input,app,hasDuplicates(g));
+					} else printf("This functions needs more nodes\n");
 					break;
 			default:printf("Not a valid action\n");
 					break;
@@ -123,6 +137,7 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
 	int i , maxWeightPoint=-1;
 	float min=FLT_MAX;
 	list* path=NULL , head;
+
 	if(hasDuplicates(g)){
 		upHill=Djikstra(g,s);
 		downHill=Djikstra(g,d);
@@ -130,20 +145,23 @@ void loseWeightPathPrinter(graph *g,int s,int d, int hasDup){
 		upHill=uphillVisit(g,s);
 		downHill=uphillVisit(g,d);
 	}
+
 	if(GRAPH_ERROR==0){
 		for(i=0;i<g->n;i++){
-			if(upHill->pred[i]!=-1 && downHill->pred[i]!=-1){
+			if(upHill->pred[i]!=-1 && downHill->pred[i]!=-1 && upHill->col[i]==2 && downHill->col[i]==2){
 				if(upHill->dist[i]+downHill->dist[i]<min){
 					min=upHill->dist[i]+downHill->dist[i];
 					maxWeightPoint=i;
 				}
 			}
 		}
+		
 		if(maxWeightPoint!=-1){
 			printf("PATH TO LOSE WEIGHT FOUND :\n");
 			path=pathGenerator(g,upHill,maxWeightPoint);
 			path=pathExtender(g,path,downHill,maxWeightPoint);
 			printList(path);
+			
 			printf("DISTANCE TO COVER : %f\n",min);
 		} else {
 			printf("SORRY MATTEO, PATH TO LOSE WEIGHT DOESN'T EXIST\n");
