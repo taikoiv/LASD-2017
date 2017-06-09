@@ -10,12 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="32a972cc-cded-450f-b115-de050665ec64" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/matteo-project/utils.c" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/matteo-project/utils.h" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/matteo-project/matteo.c" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/abr-library/.idea/workspace.xml" afterPath="$PROJECT_DIR$/abr-library/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matteo-project/main.c" afterPath="$PROJECT_DIR$/matteo-project/main.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/matteo-project/utils.c" afterPath="$PROJECT_DIR$/matteo-project/utils.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -57,8 +53,8 @@
       <file leaf-file-name="utils.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/matteo-project/utils.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="682">
-              <caret line="31" column="53" lean-forward="false" selection-start-line="31" selection-start-column="53" selection-end-line="31" selection-end-column="53" />
+            <state relative-caret-position="704">
+              <caret line="32" column="30" lean-forward="false" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -467,12 +463,20 @@
       <workItem from="1490712401731" duration="1280000" />
       <workItem from="1491289589860" duration="885000" />
       <workItem from="1494501099301" duration="1195000" />
-      <workItem from="1497005788140" duration="6452000" />
+      <workItem from="1497005788140" duration="6521000" />
     </task>
+    <task id="LOCAL-00001" summary="UTILS&#10;&#10;">
+      <created>1497012259332</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1497012259332</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9812000" />
+    <option name="totallyTimeSpent" value="9881000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -502,6 +506,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="UTILS&#10;&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="UTILS&#10;&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -670,8 +678,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/matteo-project/utils.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
-          <caret line="31" column="53" lean-forward="false" selection-start-line="31" selection-start-column="53" selection-end-line="31" selection-end-column="53" />
+        <state relative-caret-position="704">
+          <caret line="32" column="30" lean-forward="false" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
           <folding />
         </state>
       </provider>

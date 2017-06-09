@@ -30,6 +30,7 @@ void addAlias(lkTable* tbl, int node, char* alias){
         newAlias->alias = alias;
         newAlias->state = 1;
         aliasRow* tmp = (aliasRow *)malloc(tbl->size*sizeof(aliasRow*));
+        memcpy(tmp,tbl->table,);
         printf("new\n");
     }
 }
