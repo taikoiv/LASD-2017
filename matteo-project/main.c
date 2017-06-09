@@ -3,9 +3,11 @@
 #include <time.h>
 #include <float.h>
 #include "graph.h"
+#include "utils.h"
 
-void clearBuffer();
+
 int hasDuplicates(graph *g);
+
 void loseWeightPathPrinter(graph *g,int s,int d, int hasDup); //PRINT THE PATH CALCULATED BY MATTEO'S CRITERIA
 
 int main(int argc, char *argv[]) {
@@ -13,6 +15,9 @@ int main(int argc, char *argv[]) {
 	graph* g=NULL;
 	int input=-1, app;
 	float hw;
+	lkTable* tbl = NULL;
+    char *data = malloc(sizeof(char) * 128);;
+    tbl = createAliasTable();
 	while(input < 0 || input > 2){
 		system("cls");
 		printf("------------------------------------------------------------------\n");
@@ -45,6 +50,7 @@ int main(int argc, char *argv[]) {
 		printf("3) DELETE A NODE\n");
 		printf("4) DELETE AN EDGE\n");
 		printf("5) PRINT THE BEST PATH TO LOSE WEIGHT\n");
+		printf("6) ADD AN ALIAS TO A NODE\n");
 		printf("\n0) EXIT\n");
 		scanf("%d",&input);
 		clearBuffer();
@@ -119,6 +125,19 @@ int main(int argc, char *argv[]) {
 						loseWeightPathPrinter(g,input,app,hasDuplicates(g));
 					} else printf("This functions needs more nodes\n");
 					break;
+			case 6:
+				do{
+					printf("Insert the node to add an Alias : ");
+					scanf("%d",&input);
+					clearBuffer();
+				}while(input < 0 || input > g->n);
+				do{
+					printf("Insert the Alias to add : ");
+					scanf("%126s",data);
+					clearBuffer();
+                }while(data==NULL);
+				addAlias(tbl,input,data);
+				break;
 			default:printf("Not a valid action\n");
 					break;
 		}
@@ -192,7 +211,3 @@ int hasDuplicates(graph* g){
 	return ret;
 }
 
-void clearBuffer(){ //clear the stdin when user write an invalid input data
-	char c;
-	while ((c = getchar()) != '\n' && c != EOF) { };
-}
