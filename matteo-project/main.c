@@ -4,7 +4,7 @@
 #include <float.h>
 #include "graph.h"
 #include "utils.h"
-
+#include "queue.h"
 
 int hasDuplicates(graph *g);
 

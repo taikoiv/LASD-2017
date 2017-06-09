@@ -134,6 +134,7 @@ void freeEdges(edge* l){
 	if(l!=NULL){
 		freeEdges(l->next);
 		free(l);
+		l=NULL;
 	}
 }
 
@@ -431,6 +432,5 @@ visit* Djikstra(graph* g,int s){
 	} else {
 		GRAPH_ERROR=-1;
 	}
-	freeVisit(v);
 	return v;
 }
