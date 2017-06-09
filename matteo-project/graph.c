@@ -391,7 +391,7 @@ visit* Djikstra(graph* g,int s){
 			if(GRAPH_ERROR==0){
 				v->dist[s]=0;
 				v->col[s]=2;
-				q=createHeap(g->n-1);
+				q=createHeap(g->n);
 				if(HEAP_ERROR==0){
 					for(i=0;i<g->n && HEAP_ERROR==0;i++){
 						insert(q,i,v->dist[i]);

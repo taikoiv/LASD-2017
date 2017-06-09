@@ -21,10 +21,10 @@ int isEmpty(heap *h){
 	if(h->size>=0){
 		int i=0;
 		for(;i<=h->size;i++){
-			if(h->data[i].priority!=FLT_MAX) return 1;
+			if(h->data[i].priority!=FLT_MAX) return 0;
 		}
 	}
-	return 0;
+	return 1;
 }
 
 void swap(heap *h, int s, int t){

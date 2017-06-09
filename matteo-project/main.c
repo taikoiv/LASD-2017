@@ -156,7 +156,7 @@ void loseWeightPathPrinter(graph *g,int s,int d){
 	visit *upHill=NULL , *downHill=NULL;
 	int i , maxWeightPoint=-1;
 	float min=FLT_MAX;
-	list* path=NULL , head;
+	list* path=NULL;
 
 	if(hasDuplicates(g)){
 		upHill=Djikstra(g,s);
@@ -173,7 +173,7 @@ void loseWeightPathPrinter(graph *g,int s,int d){
 	if(GRAPH_ERROR==0){
 		if(upHill->col[d]!=2 || downHill->col[s]!=2){
 			for(i=0;i<g->n;i++){
-				if(upHill->col[i]==2 && upHill->col[i]==2 && i!=s && i!=d){
+				if(upHill->col[i]==2 && upHill->col[i]==2){
 					if(upHill->dist[i]+downHill->dist[i]<min){
 						min=upHill->dist[i] + downHill->dist[i];
 						maxWeightPoint=i;
