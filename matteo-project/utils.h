@@ -1,3 +1,5 @@
+#include <string.h>
+
 #ifndef LASD_2017_UTILS_H
 #define LASD_2017_UTILS_H
 
@@ -17,6 +19,7 @@ void clearBuffer();
 
 lkTable* createAliasTable();
 void addAlias(lkTable* tbl, int node, char* alias);
+void printAliasesTable(lkTable* tbl);
 void editAlias(lkTable* tbl, int node, char* alias);
 void deleteAlias(lkTable* tbl, int node);
 int getIntFromInput(int *data);

@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 	int input=-1, app;
 	float hw;
 	lkTable* tbl = NULL;
-    char *data = malloc(sizeof(char) * 128);;
+    char *data = malloc(sizeof(char) * 128);
     tbl = createAliasTable();
 	while(input < 0 || input > 2){
 		system("cls");
@@ -45,6 +45,7 @@ int main(int argc, char *argv[]) {
 		system("cls");
 		printf("********************** MAIN MENU ***********************************\n");
 		if(g->n>0) printGraph(g);
+		if(tbl->size>0) printAliasesTable(tbl);
 		printf("--------------------------------------------------------------------\n");
 		printf("1) ADD A NODE\n");
 		printf("2) ADD AN EDGE\n");
@@ -52,6 +53,8 @@ int main(int argc, char *argv[]) {
 		printf("4) DELETE AN EDGE\n");
 		printf("5) PRINT THE BEST PATH TO LOSE WEIGHT\n");
 		printf("6) ADD AN ALIAS TO A NODE\n");
+		printf("7) DELETE AN ALIAS\n");
+		printf("8) EDIT AN ALIAS\n");
 		printf("\n0) EXIT\n");
 		while(!getIntFromInput(&input)){
 			printf("WRONG INPUT DATA\n");
@@ -117,11 +120,29 @@ int main(int argc, char *argv[]) {
 				}while(!getIntFromInput(&input) || input > g->n-1);
 				do{
 					printf("Insert the Alias to add : ");
-					scanf("%126s",data);
-					clearBuffer();
+					fgets (data, 128, stdin);
                 }while(data==NULL);
+				data[strlen(data)-1]='\0';
 				addAlias(tbl,input,data);
 				break;
+			case 7:
+				do{
+					printf("Insert the node to delete the Alias : ");
+				}while(!getIntFromInput(&input) || input > g->n-1 || input > tbl->size-1);
+				deleteAlias(tbl,input);
+				break;
+			case 8:
+				do{
+					printf("Insert the node to edit the Alias : ");
+				}while(!getIntFromInput(&input) || input > g->n-1 || input > tbl->size-1 || tbl->table[input].state==0);
+				do{
+					printf("Insert the Alias to edit (old : %s) : ",tbl->table[input].alias);
+					fgets (data, 128, stdin);
+				}while(data==NULL);
+				data[strlen(data)-1]='\0';
+				editAlias(tbl,input,data);
+				break;
+
 			default:printf("Not a valid action\n");
 					break;
 		}
