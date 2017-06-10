@@ -27,7 +27,9 @@ int main(int argc, char *argv[]) {
 		printf("1) Test this software using a random graph\n");
 		printf("2) Create a new graph step-by-step\n");
 		printf("\n0) Exit\n");
-		scanf("%d",&input);
+		while(!getIntFromInput(&input)){
+			printf("WRONG INPUT DATA\n");
+		};
 		if(input==1){
 			g=createRandomGraph();
 			if(GRAPH_ERROR == 0) break;
@@ -36,7 +38,6 @@ int main(int argc, char *argv[]) {
 		} else if(input==0) {
 			return GRAPH_ERROR;
 		}
-		clearBuffer();
 	}
 	if(g==NULL)	g=createGraph();
 	input=-1;
@@ -52,35 +53,30 @@ int main(int argc, char *argv[]) {
 		printf("5) PRINT THE BEST PATH TO LOSE WEIGHT\n");
 		printf("6) ADD AN ALIAS TO A NODE\n");
 		printf("\n0) EXIT\n");
-		scanf("%d",&input);
-		clearBuffer();
+		while(!getIntFromInput(&input)){
+			printf("WRONG INPUT DATA\n");
+		};
 		printf("\n");
 		switch(input){
 			case 0 :freeGraph(g);
 					return GRAPH_ERROR;
 			
-			case 1 :printf("Insert the height : ");
-					scanf("%f",&hw);
-					clearBuffer();
+			case 1 :do{
+					printf("Insert the height : ");
+					}while(!getFloatFromInput(&hw));
 					addNode(g,hw);
 					break;
 			
 			case 2 :if(g->n>0){
 						do{
 							printf("Insert the edge source point : ");
-							scanf("%d",&input);
-							clearBuffer();
-						}while(input>g->n-1 || input<0);
+						}while(!getIntFromInput(&input) || input>g->n-1);
 						do{
 							printf("\nInsert the edge destination point : ");
-							scanf("%d",&app);
-							clearBuffer();
-						}while(app>g->n-1 || app<0);
+						}while(!getIntFromInput(&app) || app>g->n-1);
 						do{
 							printf("\nInsert the edge weight : ");
-							scanf("%f", &hw);
-							clearBuffer();
-						}while(hw<=0);
+						}while(!getFloatFromInput(&hw) || hw<=0);
 						addEdge(g,input,app,hw);	
 					} else printf("You can't add an edge in an empty graph\n");
 					break;
@@ -88,9 +84,7 @@ int main(int argc, char *argv[]) {
 			case 3 :if(g->n>0){	
 						do{
 							printf("Insert the node you want to delete : ");
-							scanf("%d",&input);
-							clearBuffer();
-						}while(input < 0 || input > g->n-1);
+						}while(!getIntFromInput(&input) || input > g->n-1);
 						deleteNode(g,input);
 					} else printf("You can't delete a node in an empty graph\n");
 					break;
@@ -98,14 +92,10 @@ int main(int argc, char *argv[]) {
 			case 4 :if(g->n>0){
 						do{
 							printf("Insert the edge source point : ");
-							scanf("%d",&input);
-							clearBuffer();
-						}while(input>g->n-1 || input<0);
+						}while(!getIntFromInput(&input) || input>g->n-1);
 						do{
 							printf("\nInsert the edge destination point : ");
-							scanf("%d",&app);
-							clearBuffer();
-						}while(app>g->n-1 || app<0);
+						}while(!getIntFromInput(&app) || app>g->n-1);
 						deleteEdge(g,input,app);
 					} else printf("You can't delete an edge in an empty graph\n");
 					break;
@@ -113,14 +103,10 @@ int main(int argc, char *argv[]) {
 			case 5 :if(g->n>1){
 						do{
 							printf("Insert the path source point : ");
-							scanf("%d",&input);
-							clearBuffer();
-						}while(input>g->n-1 || input<0);
+						}while(!getIntFromInput(&input) || input>g->n-1);
 						do{
 							printf("\nInsert the path destination point : ");
-							scanf("%d",&app);
-							clearBuffer();
-						}while(app>g->n-1 || app<0);
+						}while(!getIntFromInput(&app) || app>g->n-1);
 						
 						loseWeightPathPrinter(g,input,app);
 					} else printf("This functions needs more nodes\n");
@@ -128,9 +114,7 @@ int main(int argc, char *argv[]) {
 			case 6:
 				do{
 					printf("Insert the node to add an Alias : ");
-					scanf("%d",&input);
-					clearBuffer();
-				}while(input < 0 || input > g->n-1);
+				}while(!getIntFromInput(&input) || input > g->n-1);
 				do{
 					printf("Insert the Alias to add : ");
 					scanf("%126s",data);
