@@ -171,9 +171,9 @@ void loseWeightPathPrinter(graph *g,int s,int d){
 		printf("%d\t%d\t%d\t%d\t%d\t%.2f\t%.2f\n",i,upHill->col[i],downHill->col[i],upHill->pred[i],downHill->pred[i],upHill->dist[i],downHill->dist[i]);
 	}*/
 	if(GRAPH_ERROR==0){
-		if(upHill->col[d]!=2 || downHill->col[s]!=2){
+		if(upHill->col[d]!=2 && downHill->col[s]!=2){
 			for(i=0;i<g->n;i++){
-				if(upHill->col[i]==2 && upHill->col[i]==2){
+				if(upHill->col[i]==2 && downHill->col[i]==2){
 					if(upHill->dist[i]+downHill->dist[i]<min){
 						min=upHill->dist[i] + downHill->dist[i];
 						maxWeightPoint=i;

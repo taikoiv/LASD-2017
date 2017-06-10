@@ -337,14 +337,17 @@ void printPath(visit* v,int s){
 	}	
 }
 
+/*
+ Genera un percorso sotto forma di lista puntata da una visita precedentemente eseguita. necessita di una sorgente dal quale far partire il percorso.
+*/
 list* pathGenerator(graph* g,visit* v,int s){
 	list* l=NULL;
 	if(g!=NULL){
 		if( v!=NULL && g->nodes[s].height!=FLT_MIN){
-			while(s>-1 && s<g->n){
-				l=insertTop(l,s);
+			while(s>-1 && s<g->n){ //FINCHè ESISTE UN PREDECESSORE E NON SFORA IL GRAFO
+				l=insertTop(l,s); //INSERISCI IN TESTA
 				if(LIST_ERROR==0)
-					s=v->pred[s];
+					s=v->pred[s]; //VAI AL PREDECESSORE
 				else{
 					LIST_ERROR=0;
 					GRAPH_ERROR=-5;
@@ -359,13 +362,16 @@ list* pathGenerator(graph* g,visit* v,int s){
 	return l;
 }
 
+/*
+Estende un percorso precedentemente generato. Necessita anche lui di una sorgente e della visita che dettaglia il percorso
+*/
 list* pathExtender(graph* g,list* path,visit* v,int s){
 	if(g!=NULL){
 		if(v!=NULL){
-			while(s>-1 && s<g->n){
-				path=insertTail(path,s);
+			while(s>-1 && s<g->n){ //FINCHE C'è UN PREDECESSORE
+				path=insertTail(path,s); //INSERIMENTO IN TESTA EVITANDO I DUPLICATI
 				if(LIST_ERROR==0)
-					s=v->pred[s];
+					s=v->pred[s]; //VAI AL PREDECESSORE
 				else{
 					LIST_ERROR=0;
 					GRAPH_ERROR=-5;
