@@ -24,7 +24,7 @@ int getIntFromInput(int *data){
 	
 	i = 0;
 	
-	while( buffer[i]>47 && buffer[i]<57 ) i++;
+	while( buffer[i]>47 && buffer[i]<58 ) i++;
 	
 	ok = (buffer[i]=='\0' && i>0 );
 	
@@ -43,11 +43,11 @@ int getFloatFromInput(float *f){
 	clearBuffer();
 	
 	cont = off = (buffer[0]=='-') ? 1 : 0;
-	while(buffer[cont]>47 && buffer[cont]<57) cont++;
+	while(buffer[cont]>47 && buffer[cont]<58) cont++;
 	if(buffer[cont]=='.'){
 		cont++;
 		off++;
-		while(buffer[cont]>47 && buffer[cont]<57) cont++;		
+		while(buffer[cont]>47 && buffer[cont]<58) cont++;		
 	}
 	
 	ret = (buffer[cont]=='\0' && cont>off);

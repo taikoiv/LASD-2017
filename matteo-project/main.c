@@ -112,35 +112,41 @@ int main(int argc, char *argv[]) {
 						}while(!getIntFromInput(&app) || app>g->n-1);
 						
 						loseWeightPathPrinter(g,input,app);
-					} else printf("This functions needs more nodes\n");
+					} else printf("This function needs more nodes\n");
 					break;
 			case 6:
-				do{
-					printf("Insert the node to add an Alias : ");
-				}while(!getIntFromInput(&input) || input > g->n-1);
-				do{
-					printf("Insert the Alias to add : ");
-					fgets (data, 128, stdin);
-                }while(data==NULL);
-				data[strlen(data)-1]='\0';
-				addAlias(tbl,input,data);
+				if(g->n>0){
+					do{
+						printf("Insert the node to add an Alias : ");
+					}while(!getIntFromInput(&input) || input > g->n-1);
+					do{
+						printf("Insert the Alias to add : ");
+						fgets (data, 128, stdin);
+	                }while(data==NULL);
+					data[strlen(data)-1]='\0';
+					addAlias(tbl,input,data);
+				} else printf("You can't add an alias in an empty graph\n");
 				break;
 			case 7:
-				do{
-					printf("Insert the node to delete the Alias : ");
-				}while(!getIntFromInput(&input) || input > g->n-1 || input > tbl->size-1);
-				deleteAlias(tbl,input);
+				if(tbl->size>0 && g->n>0){
+					do{
+						printf("Insert the node to delete the Alias : ");
+					}while(!getIntFromInput(&input) || input > g->n-1 || input > tbl->size-1);
+					deleteAlias(tbl,input);
+				} else printf("There aren't alias to delete\n");
 				break;
 			case 8:
-				do{
-					printf("Insert the node to edit the Alias : ");
-				}while(!getIntFromInput(&input) || input > g->n-1 || input > tbl->size-1 || tbl->table[input].state==0);
-				do{
-					printf("Insert the Alias to edit (old : %s) : ",tbl->table[input].alias);
-					fgets (data, 128, stdin);
-				}while(data==NULL);
-				data[strlen(data)-1]='\0';
-				editAlias(tbl,input,data);
+				if(tbl->size>0 && g->n>0){
+					do{
+						printf("Insert the node to edit the Alias : ");
+					}while(!getIntFromInput(&input) || input > g->n-1 || input > tbl->size-1 || tbl->table[input].state==0);
+					do{
+						printf("Insert the Alias to edit (old : %s) : ",tbl->table[input].alias);
+						fgets (data, 128, stdin);
+					}while(data==NULL);
+					data[strlen(data)-1]='\0';
+					editAlias(tbl,input,data);
+				} else printf("There aren't alias to edit\n");
 				break;
 
 			default:printf("Not a valid action\n");
@@ -192,7 +198,7 @@ void loseWeightPathPrinter(graph *g,int s,int d){
 			path=pathExtender(g,path,downHill,maxWeightPoint);
 			printList(path);
 			
-			printf("DISTANCE TO COVER : %f\n",min);
+			printf("DISTANCE TO COVER : %.2f\n",min);
 		} else {
 			printf("SORRY MATTEO, PATH TO LOSE WEIGHT DOESN'T EXIST\n");
 		}	
