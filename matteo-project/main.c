@@ -10,7 +10,7 @@
 #define PAUSE system("pause")
 #else
 #define CLS system("clear")
-#define PAUSE "echo 'Press a button to continue...' && read "
+#define PAUSE printf("Press enter to continue ...");getchar()
 #endif
 
 void loseWeightPathPrinter(graph *g,int s,int d); //PRINT THE PATH CALCULATED BY MATTEO'S CRITERIA
