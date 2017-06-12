@@ -4,7 +4,14 @@
 #include <float.h>
 #include "graph.h"
 #include "utils.h"
-#include "queue.h"
+
+#ifdef _WIN32
+#define CLS system("cls")
+#define PAUSE system("pause")
+#else
+#define CLS system("clear")
+#define PAUSE "echo 'Press a button to continue...' && read "
+#endif
 
 void loseWeightPathPrinter(graph *g,int s,int d); //PRINT THE PATH CALCULATED BY MATTEO'S CRITERIA
 
@@ -14,7 +21,7 @@ int main(int argc, char *argv[]) {
 	int input=-1, app;
 	float hw;
 	while(input < 0 || input > 2){
-		system("cls");
+		CLS;
 		printf("------------------------------------------------------------------\n");
 		printf("Welcome to the lose weight path calculator\n");
 		printf("It's easy! Using a graph representation of your city, it calculates the best path that you must follow from a source point to a destination point and let you lose weight\n");
@@ -37,7 +44,7 @@ int main(int argc, char *argv[]) {
 	if(g==NULL)	g=createGraph();
 	input=-1;
 	while(input < 0 || input > 5){
-		system("cls");
+		CLS;
 		printf("********************** MAIN MENU ***********************************\n");
 		if(g->n>0) printGraph(g);
 		printf("--------------------------------------------------------------------\n");
@@ -109,7 +116,7 @@ int main(int argc, char *argv[]) {
 					break;
 		}
 		if(GRAPH_ERROR==0){
-			system("pause");
+			PAUSE;
 			input=-1;
 		} else break;
 	}
