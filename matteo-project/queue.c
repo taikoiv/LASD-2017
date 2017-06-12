@@ -129,7 +129,7 @@ void freeheap(heap *h){
 	}
 }
 
-void *heapSort(graph *g,float* info){
+void heapSort(graph *g,float* info){
 	heap *h=NULL;
 	if(g!=NULL){
 		h = createHeap(g->n);

@@ -20,7 +20,7 @@ void insert(heap *h,int k,float p);				// ADD k TO THE HEAP
 heap *createHeap(int n);
 void update(heap *h, int k, float p);
 void freeheap(heap *h);
-void *heapSort(graph *g,float* info);
+void heapSort(graph *g,float* info);
 extern int HEAP_ERROR;
 
 #endif

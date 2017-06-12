@@ -13,8 +13,6 @@ int main(int argc, char *argv[]) {
 	graph* g=NULL;
 	int input=-1, app;
 	float hw;
-	lkTable* tbl = NULL;
-    char *data = malloc(sizeof(char) * 128);
 	while(input < 0 || input > 2){
 		system("cls");
 		printf("------------------------------------------------------------------\n");

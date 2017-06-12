@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <limits.h>
 #include <float.h>
 #include "graph.h"
 #include "queue.h"
@@ -44,7 +43,6 @@ edge* insertEdge(edge* l,int d,float w){
 graph* createRandomGraph(){
 	graph *g=NULL;
 	int n,i,j;
-	float max=INT_MIN;
 	float p;
 	
 	g=(graph*) malloc(sizeof(graph));
@@ -117,7 +115,6 @@ graph* createGraph(){
 }
 
 void addEdge(graph* g,int s,int d,float w){
-	edge* e=NULL;
 	if(g!=NULL){
 		if(s>=0 && s<g->n && g->nodes[s].height!=FLT_MIN && d>=0 && d<g->n && g->nodes[d].height!=FLT_MIN && w>0){
 			g->nodes[s].adj=insertEdge(g->nodes[s].adj,d,w);
@@ -246,7 +243,6 @@ visit* uphillVisit(graph* g,int s){
 	visit* v=NULL;
 	edge* adj=NULL;
 	list* l=NULL , *head=NULL;
-	int i;
 	if(g!=NULL){
 		if(g->nodes[s].height!=FLT_MIN){
 			v=initializeVisit(g);
