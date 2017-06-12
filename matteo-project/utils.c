@@ -91,14 +91,13 @@ void editAlias(lkTable* tbl, int node, char* alias){
 }
 void printAliasesTable(lkTable* tbl){
 	int i;
-	printf("\n\t|Aliases Table|\n");
-	printf("\t|-Id|--Alias--|\n");
-	printf("\t|---|---------|\n");
+	printf("\n|Aliases Table|\n");
+	printf("|-Id|--Alias--|\n");
+	printf("|---|---------|\n");
 	for(i=0;i<tbl->size;i++){
 		if(tbl->table[i].state==1){
-			printf("\t|");
-			if(i<10) printf("--");
-			else if(i<100) printf("-");
+			if(i<10) printf("|--");
+			else if(i<100) printf("|-");
 			printf("%d",i);
 			printf("|");
 			printf("%s",tbl->table[i].alias);
@@ -110,5 +109,6 @@ void printAliasesTable(lkTable* tbl){
 void deleteAlias(lkTable* tbl, int node){
 	if(tbl->table[node].state==1){
 		tbl->table[node].state=0;
+		tbl->size--;
 	}
 }

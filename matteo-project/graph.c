@@ -8,11 +8,12 @@
 #define RANDOM_SUCC 0.33
 
 int GRAPH_ERROR=0;
-/* ------LEGENDA ERRORI------
--1 : IMPOSSIBILE ESEGUIRE LA FUNZIONE SU DI UN GRAFO NULLO
--2 : IMPOSSIBILE ALLOCARE MEMORIA
--4 : ALMENO UN PARAMETRO NON VALIDO
+/* ------ERRORS LEGEND------
+-1 : IT'S IMPOSSIBLE TO PERFORM THE FUNCTION ON A NOT ALLOCATED GRAPH
+-2 : IT'S IMPOSSIBLE TO ALLOCATE MEMORY
+-4 : THERE IS AT LEAST ONE NOT VALID PARAMETER 
 -5 : SUPPORT DATA STRUCTURE ERROR
+-6 : NO TOPOLOGICAL ORDER FOUND
 */
 
 /* ----------------------------------------------- SUPPORT FUNCTIONS ---------------------------------------------------------*/
@@ -50,7 +51,7 @@ graph* createRandomGraph(){
 	if(g==NULL){
 		GRAPH_ERROR==-2;
 	} else {
-		n=rand()%20+1;
+		n=rand()%100+1;
 		g->nodes=(node*) calloc(n,sizeof(node));
 		if(g->nodes==NULL){
 			GRAPH_ERROR==-2;
@@ -74,7 +75,6 @@ graph* createRandomGraph(){
 					}
 				}
 			}
-			connectGraph(g);
 		}
 		
 	}
@@ -147,42 +147,6 @@ void freeGraph(graph* g){
 		free(g->nodes);
 		free(g);
 	}
-}
-
-int isConnected(graph *g,int* col){
-	int k;
-	if(g->n>1){
-		DFSVisitColors(g,col,0);
-		for(k=0;k<g->n;k++)
-			if(col[k]!=2) return 0;
-	}
-	return 1;
-}
-
-void connectGraph(graph *g){
-	int i;
-	int *col=(int*) calloc(g->n,sizeof(int));
-	if(col!=NULL){
-		if(!isConnected(g,col))
-			for(i=1;i<g->n;i++)
-				if(col[i]==0){
-					addEdge(g,0,i,rand());
-					DFSVisitColors(g,col,i);
-				}
-		free(col);
-	}
-}
-
-void DFSVisitColors(graph* g,int* col,int s){
-	col[s]=1;
-	edge* l=g->nodes[s].adj;
-	while(l!=NULL){
-		if(col[l->k]==0){
-			DFSVisitColors(g,col,l->k);
-		}
-		l=l->next;
-	}
-	col[s]=2;
 }
 
 void deleteEdge(graph* g,int s,int d){
@@ -284,7 +248,7 @@ visit* uphillVisit(graph* g,int s){
 	list* l=NULL , *head=NULL;
 	int i;
 	if(g!=NULL){
-		if(g->nodes[i].height!=FLT_MIN){
+		if(g->nodes[s].height!=FLT_MIN){
 			v=initializeVisit(g);
 			if(GRAPH_ERROR==0){
 				head=l=DFSVisitUphillList(g,v,l,s);
@@ -314,9 +278,12 @@ list* DFSVisitUphillList(graph* g,visit* v,list* l,int s){
 	v->col[s]=1;
 	adj=g->nodes[s].adj;
 	while(adj!=NULL){
-		if(g->nodes[adj->k].height > g->nodes[s].height && v->col[adj->k]==0){
-			l=DFSVisitUphillList(g,v,l,adj->k);
+		if(g->nodes[adj->k].height >= g->nodes[s].height && v->col[adj->k]==0){
 			v->pred[adj->k]=s;
+			l=DFSVisitUphillList(g,v,l,adj->k);
+		} else if(v->col[adj->k]==1 && v->pred[s]!=adj->k){
+			//CICLO
+			GRAPH_ERROR=-6;
 		}
 		l=insertTop(l,s);
 		if(LIST_ERROR!=0){
@@ -344,7 +311,7 @@ list* pathGenerator(graph* g,visit* v,int s){
 	list* l=NULL;
 	if(g!=NULL){
 		if( v!=NULL && g->nodes[s].height!=FLT_MIN){
-			while(s>-1 && s<g->n){ //FINCHè ESISTE UN PREDECESSORE E NON SFORA IL GRAFO
+			while(s>-1 && s<g->n){ //FINCHï¿½ ESISTE UN PREDECESSORE E NON SFORA IL GRAFO
 				l=insertTop(l,s); //INSERISCI IN TESTA
 				if(LIST_ERROR==0)
 					s=v->pred[s]; //VAI AL PREDECESSORE
@@ -368,7 +335,7 @@ Estende un percorso precedentemente generato. Necessita anche lui di una sorgent
 list* pathExtender(graph* g,list* path,visit* v,int s){
 	if(g!=NULL){
 		if(v!=NULL){
-			while(s>-1 && s<g->n){ //FINCHE C'è UN PREDECESSORE
+			while(s>-1 && s<g->n){ //FINCHE C'ï¿½ UN PREDECESSORE
 				path=insertTail(path,s); //INSERIMENTO IN TESTA EVITANDO I DUPLICATI
 				if(LIST_ERROR==0)
 					s=v->pred[s]; //VAI AL PREDECESSORE
@@ -386,7 +353,7 @@ list* pathExtender(graph* g,list* path,visit* v,int s){
 	return path;
 }
 
-visit* Djikstra(graph* g,int s){
+visit* Dijkstra(graph* g,int s){
 	visit* v=NULL;
 	heap* q=NULL;
 	edge* adj=NULL;

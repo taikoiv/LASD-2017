@@ -6,8 +6,6 @@
 #include "utils.h"
 #include "queue.h"
 
-int hasDuplicates(graph *g);
-
 void loseWeightPathPrinter(graph *g,int s,int d); //PRINT THE PATH CALCULATED BY MATTEO'S CRITERIA
 
 int main(int argc, char *argv[]) {
@@ -109,7 +107,7 @@ int main(int argc, char *argv[]) {
 						}while(!getIntFromInput(&input) || input>g->n-1);
 						do{
 							printf("\nInsert the path destination point : ");
-						}while(!getIntFromInput(&app) || app>g->n-1);
+						}while(!getIntFromInput(&app) || app>g->n-1 || app==input);
 						
 						loseWeightPathPrinter(g,input,app);
 					} else printf("This function needs more nodes\n");
@@ -162,32 +160,35 @@ int main(int argc, char *argv[]) {
 }
 
 void loseWeightPathPrinter(graph *g,int s,int d){
-	if(s<0 || s>g->n-1 || d<0 || s>g->n-1)
+	if(s<0 || s>g->n-1 || d<0 || s>g->n-1 || s==d)
 		return;
 	visit *upHill=NULL , *downHill=NULL;
 	int i , maxWeightPoint=-1;
 	float min=FLT_MAX;
 	list* path=NULL;
-
-	if(hasDuplicates(g)){
-		upHill=Djikstra(g,s);
-		downHill=Djikstra(g,d);
-	} else {
-		upHill=uphillVisit(g,s);
-		downHill=uphillVisit(g,d);
+	
+	upHill=uphillVisit(g,s);
+	if(GRAPH_ERROR==-6){ //SE NON ESISTE ORDINAMENTO TOPOLOGICO NELLA VISITA DALLA SORGENTE
+		GRAPH_ERROR=0;
+		freeVisit(upHill);
+		upHill=Dijkstra(g,s);
+		downHill=Dijkstra(g,d);
+	} else if(GRAPH_ERROR==0) downHill=uphillVisit(g,d);
+	
+	if(GRAPH_ERROR==-6){ //SE NON ESISTE ORDINAMENTO TOPOLOGICO NELLA VISITA DALLA DESTINAZIONE
+		GRAPH_ERROR=0;
+		freeVisit(upHill);
+		freeVisit(downHill);
+		upHill=Dijkstra(g,s);
+		downHill=Dijkstra(g,d);
 	}
-	/* TEST VISISTS
-	printf("ID\tCOL1\tCOL2\tPRED1\tPRED2\tDIST1\tDIST2\n");
-	for(i=0;i<g->n;i++){
-		printf("%d\t%d\t%d\t%d\t%d\t%.2f\t%.2f\n",i,upHill->col[i],downHill->col[i],upHill->pred[i],downHill->pred[i],upHill->dist[i],downHill->dist[i]);
-	}*/
-	if(GRAPH_ERROR==0){
+	if(GRAPH_ERROR==0){ //TUTTO A BUON FINE
 		if(upHill->col[d]!=2 && downHill->col[s]!=2){
 			for(i=0;i<g->n;i++){
 				if(upHill->col[i]==2 && downHill->col[i]==2){
 					if(upHill->dist[i]+downHill->dist[i]<min){
 						min=upHill->dist[i] + downHill->dist[i];
-						maxWeightPoint=i;
+						maxWeightPoint=i; //PUNTO MIGLIORE DI INCROCIO DELLE VISITE
 					}
 				}
 			}
@@ -200,24 +201,10 @@ void loseWeightPathPrinter(graph *g,int s,int d){
 			
 			printf("DISTANCE TO COVER : %.2f\n",min);
 		} else {
-			printf("SORRY MATTEO, PATH TO LOSE WEIGHT DOESN'T EXIST\n");
+			printf("PATH TO LOSE WEIGHT DOESN'T EXIST BETWEEN %d AND %d WITH THIS CONFIGURATION\n",s,d);
 		}	
 	}
 	freeVisit(upHill);
 	freeVisit(downHill);
 	freeList(path);
 }
-
-int hasDuplicates(graph* g){
-	float *x=(float*)malloc((g->n)*sizeof(float));
-	int ret=0, i=0;
-	heapSort(g,x);
-	for(i=1;i<g->n;i++){
-		if(x[i-1]==x[i]){
-			ret=1;
-			break;
-		}
-	}
-	return ret;
-}
-
