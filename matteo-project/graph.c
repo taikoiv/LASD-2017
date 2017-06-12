@@ -51,7 +51,7 @@ graph* createRandomGraph(){
 	if(g==NULL){
 		GRAPH_ERROR==-2;
 	} else {
-		n=rand()%100+1;
+		n=rand()%50+1;
 		g->nodes=(node*) calloc(n,sizeof(node));
 		if(g->nodes==NULL){
 			GRAPH_ERROR==-2;
@@ -61,7 +61,7 @@ graph* createRandomGraph(){
 			//GENERAZIONE DEI NODI
 			for(i=0;i<n;i++){
 				j=0;
-				g->nodes[i].height=rand();
+				g->nodes[i].height=rand()%100;
 				g->nodes[i].adj=NULL;
 			}
 			//GENERAZIONE DEGLI ARCHI
@@ -70,7 +70,7 @@ graph* createRandomGraph(){
 					if(i!=j){
 						p=(float)((rand()%n)+1)/n;
 						if(p<=RANDOM_SUCC){
-							addEdge(g,i,j,rand()%20+1);
+							addEdge(g,i,j,rand()%100+1);
 						}
 					}
 				}
