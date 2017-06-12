@@ -3,12 +3,6 @@
 #include <string.h>
 #include "utils.h"
 
-void clearBuffer();
-lkTable* createAliasTable();
-void addAlias(lkTable* tbl, int node, char* alias);
-void editAlias(lkTable* tbl, int node, char* alias);
-void deleteAlias(lkTable* tbl, int node);
-
 void clearBuffer(){ //clear the stdin when user write an invalid input data
     char c;
     while ((c = getchar()) != '\n' && c != EOF) { };
@@ -56,59 +50,4 @@ int getFloatFromInput(float *f){
 		*f = atof(buffer);
 		
 	return ret;
-}
-
-lkTable* createAliasTable(){
-    lkTable* tbl =  (lkTable *)malloc(sizeof(lkTable));
-	tbl->size=0;
-    return tbl;
-}
-
-void addAlias(lkTable* tbl, int node, char* alias){
-    if(node<tbl->size){
-        tbl->table[node].state=1;
-        tbl->table[node].alias=alias;
-    }else{
-		aliasRow newAlias;
-		newAlias.alias = alias;
-		newAlias.state = 1;
-		if(tbl->size != 0) {
-			aliasRow* tmp = (aliasRow *)realloc(tbl->table,(node+1)*sizeof(aliasRow));
-			tmp[node] = newAlias;
-			tbl->table = tmp;
-			tbl->size = node+1;
-		}else{
-			tbl->table = (aliasRow *)malloc((node+1)*sizeof(aliasRow));
-			tbl->table[node] = newAlias;
-			tbl->size = node+1;
-		}
-	}
-}
-void editAlias(lkTable* tbl, int node, char* alias){
-	if(tbl->table[node].state==1){
-		tbl->table[node].alias=alias;
-	}
-}
-void printAliasesTable(lkTable* tbl){
-	int i;
-	printf("\n|Aliases Table|\n");
-	printf("|-Id|--Alias--|\n");
-	printf("|---|---------|\n");
-	for(i=0;i<tbl->size;i++){
-		if(tbl->table[i].state==1){
-			if(i<10) printf("|--");
-			else if(i<100) printf("|-");
-			printf("%d",i);
-			printf("|");
-			printf("%s",tbl->table[i].alias);
-			printf("|\n");
-		}
-	}
-}
-
-void deleteAlias(lkTable* tbl, int node){
-	if(tbl->table[node].state==1){
-		tbl->table[node].state=0;
-		tbl->size--;
-	}
 }

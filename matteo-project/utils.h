@@ -12,6 +12,7 @@ typedef struct aliasRow{
 
 typedef struct lkTable{
     int size;
+    int inserted;
     aliasRow* table;
  } lkTable;
 

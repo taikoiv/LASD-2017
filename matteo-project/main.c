@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
 	float hw;
 	lkTable* tbl = NULL;
     char *data = malloc(sizeof(char) * 128);
-    tbl = createAliasTable();
 	while(input < 0 || input > 2){
 		system("cls");
 		printf("------------------------------------------------------------------\n");
@@ -43,16 +42,12 @@ int main(int argc, char *argv[]) {
 		system("cls");
 		printf("********************** MAIN MENU ***********************************\n");
 		if(g->n>0) printGraph(g);
-		if(tbl->size>0) printAliasesTable(tbl);
 		printf("--------------------------------------------------------------------\n");
 		printf("1) ADD A NODE\n");
 		printf("2) ADD AN EDGE\n");
 		printf("3) DELETE A NODE\n");
 		printf("4) DELETE AN EDGE\n");
 		printf("5) PRINT THE BEST PATH TO LOSE WEIGHT\n");
-		printf("6) ADD AN ALIAS TO A NODE\n");
-		printf("7) DELETE AN ALIAS\n");
-		printf("8) EDIT AN ALIAS\n");
 		printf("\n0) EXIT\n");
 		while(!getIntFromInput(&input)){
 			printf("WRONG INPUT DATA\n");
@@ -112,41 +107,6 @@ int main(int argc, char *argv[]) {
 						loseWeightPathPrinter(g,input,app);
 					} else printf("This function needs more nodes\n");
 					break;
-			case 6:
-				if(g->n>0){
-					do{
-						printf("Insert the node to add an Alias : ");
-					}while(!getIntFromInput(&input) || input > g->n-1);
-					do{
-						printf("Insert the Alias to add : ");
-						fgets (data, 128, stdin);
-	                }while(data==NULL);
-					data[strlen(data)-1]='\0';
-					addAlias(tbl,input,data);
-				} else printf("You can't add an alias in an empty graph\n");
-				break;
-			case 7:
-				if(tbl->size>0 && g->n>0){
-					do{
-						printf("Insert the node to delete the Alias : ");
-					}while(!getIntFromInput(&input) || input > g->n-1 || input > tbl->size-1);
-					deleteAlias(tbl,input);
-				} else printf("There aren't alias to delete\n");
-				break;
-			case 8:
-				if(tbl->size>0 && g->n>0){
-					do{
-						printf("Insert the node to edit the Alias : ");
-					}while(!getIntFromInput(&input) || input > g->n-1 || input > tbl->size-1 || tbl->table[input].state==0);
-					do{
-						printf("Insert the Alias to edit (old : %s) : ",tbl->table[input].alias);
-						fgets (data, 128, stdin);
-					}while(data==NULL);
-					data[strlen(data)-1]='\0';
-					editAlias(tbl,input,data);
-				} else printf("There aren't alias to edit\n");
-				break;
-
 			default:printf("Not a valid action\n");
 					break;
 		}
